@@ -13,7 +13,7 @@ export function Search () {
     <div>
       <form>
         <input type="text" name="searchQuery" onChange={handleSearch}/>
-        <input type="submit" name="submit" />
+        <input type="submit" name="search" />
       </form>
     </div>
   )
