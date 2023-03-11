@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Map } from './Components/Map/Map.jsx';
+import { Search } from './Components/messageList/Search.jsx';
 
 
 export class App extends Component {
@@ -9,6 +10,7 @@ export class App extends Component {
       <div>
         <h1>Hello World!</h1>
         <Map/>
+        <Search />
       </div>
     )
   }
