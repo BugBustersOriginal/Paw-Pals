@@ -1,5 +1,8 @@
 import React from "react";
 import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+
+
 import { App } from './App.jsx';
 
 class ErrorBoundary extends React.Component {
@@ -31,4 +34,8 @@ class ErrorBoundary extends React.Component {
 
 }
 
-ReactDOM.render(<ErrorBoundary />, document.getElementById('root'));
+const root = createRoot(document.getElementById("root"));
+
+root.render(<ErrorBoundary />);
+
+
