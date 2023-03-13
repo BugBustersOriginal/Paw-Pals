@@ -7,6 +7,12 @@ export function Search () {
   const [search, setSearch] = useState('');
   const [tileStatus, setTileStatus] = useState(false)
 
+  useEffect(() => {
+    if (search === '') {
+      setTileStatus(false);
+    }
+  }, [search])
+
   const handleSearch = (event) => {
     setSearch(event.target.value);
   }
@@ -19,13 +25,19 @@ export function Search () {
     setTileStatus(true);
   }
 
+  const userInfo = {
+    thumbnailUrl: 'https://hs.sbcounty.gov/cn/Photo%20Gallery/_w/Sample%20Picture%20-%20Koala_jpg.jpg',
+    userName: 'tivo_this',
+    friend: false
+  }
+
   return (
     <div>
       <form>
         <input type="text" name="searchQuery" onChange={handleSearch}/>
         <input type="submit" name="search" onClick={submitSearch}/>
       </form>
-      {tileStatus ? <SearchTile /> : null}
+      {tileStatus ? <SearchTile userInfo={userInfo}/> : null}
     </div>
   )
 }
