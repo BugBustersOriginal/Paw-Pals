@@ -32,7 +32,7 @@ export function Search () {
   const userInfo = {
     thumbnailUrl: 'https://hs.sbcounty.gov/cn/Photo%20Gallery/_w/Sample%20Picture%20-%20Koala_jpg.jpg',
     userName: 'tivo',
-    friend: true
+    friend: false
   }
 
   return (
