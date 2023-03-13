@@ -12,7 +12,7 @@ export function SelectFriend (props) {
     <div class="select-friend-tile">
       <input type="checkbox" name="select" value="true" onClick={handleClick}/>
       <img class="user-photo-thumbnail" src={props.userInfo.thumbnailUrl}/>
-      <p>{props.userInfo.userName}</p>
+      <p>@{props.userInfo.userName}</p>
     </div>
   )
 }

@@ -21,7 +21,6 @@ export function Search () {
   }, [search])
 
   const submitSearch = (event) => {
-    console.log('this is the search: ',search);
     event.preventDefault();
 
     // axios.post('/searchFriend', {searchQuery: search});
