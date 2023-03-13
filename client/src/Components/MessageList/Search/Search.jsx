@@ -18,15 +18,13 @@ export function Search () {
     if (search !== 'tivo') {
       setTileStatus(false);
     }
+    axios.post('/searchFriend', {searchQuery: search});
   }, [search])
 
   const submitSearch = (event) => {
     event.preventDefault();
-
-    // axios.post('/searchFriend', {searchQuery: search});
-    // after sucessful search, change tileStatus to true
-
     setSearch(event.target.value);
+    // after sucessful search, change tileStatus to true
   }
 
   const handleSelection = (username) => {
