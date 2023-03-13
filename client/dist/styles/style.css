@@ -1,4 +1,19 @@
-.friendRequestIcon {
+.friend-request-icon {
   width: 30px;
   height: 30px;
+}
+
+.user-photo-thumbnail {
+  width: 90px;
+  height: 80px;
+}
+
+.friend-request-tile, .select-friend-tile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.friend-request-tile > img, .select-friend-tile > img {
+  margin: 1em .5em 1em .5em;
 }
