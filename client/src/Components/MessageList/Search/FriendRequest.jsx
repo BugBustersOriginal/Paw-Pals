@@ -6,7 +6,7 @@ export function FriendRequest (props) {
 
   const handleFriendRequest = (event) => {
     setRequestSent(true);
-    props.handleSelection();
+    props.handleSelection(props.userInfo.userName);
     //make an axios call to send a friend request
   }
 

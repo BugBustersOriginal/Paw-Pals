@@ -29,14 +29,14 @@ export function Search () {
     setSearch(event.target.value);
   }
 
-  const handleSelection = (event) => {
-    console.log('handleSelection clicked');
+  const handleSelection = (username) => {
+    console.log('username selected: ', username);
   }
 
   const userInfo = {
     thumbnailUrl: 'https://hs.sbcounty.gov/cn/Photo%20Gallery/_w/Sample%20Picture%20-%20Koala_jpg.jpg',
     userName: 'tivo',
-    friend: false
+    friend: true
   }
 
   return (
