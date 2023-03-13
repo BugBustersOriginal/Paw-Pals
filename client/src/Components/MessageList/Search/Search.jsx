@@ -18,7 +18,9 @@ export function Search () {
     if (search !== 'tivo') {
       setTileStatus(false);
     }
-    axios.post('/searchFriend', {searchQuery: search});
+    setTimeout(() => {
+      axios.post('/searchFriend', {searchQuery: search});
+    }, 500);
   }, [search])
 
   const submitSearch = (event) => {
@@ -34,7 +36,7 @@ export function Search () {
   const userInfo = {
     thumbnailUrl: 'https://hs.sbcounty.gov/cn/Photo%20Gallery/_w/Sample%20Picture%20-%20Koala_jpg.jpg',
     userName: 'tivo',
-    friend: true
+    friend: false
   }
 
   return (
