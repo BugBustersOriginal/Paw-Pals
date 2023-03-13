@@ -8,33 +8,38 @@ export function Search () {
   const [tileStatus, setTileStatus] = useState(false)
 
   useEffect(() => {
-    if (search === '') {
+    if (!search) {
+      setTileStatus(false);
+    }
+    //refactor when mongodb database is set up for searching
+    if (search === 'tivo') {
+      setTileStatus(true)
+    }
+    if (search !== 'tivo') {
       setTileStatus(false);
     }
   }, [search])
 
-  const handleSearch = (event) => {
-    setSearch(event.target.value);
-  }
-
   const submitSearch = (event) => {
     console.log('this is the search: ',search);
     event.preventDefault();
+
     // axios.post('/searchFriend', {searchQuery: search});
     // after sucessful search, change tileStatus to true
-    setTileStatus(true);
+
+    setSearch(event.target.value);
   }
 
   const userInfo = {
     thumbnailUrl: 'https://hs.sbcounty.gov/cn/Photo%20Gallery/_w/Sample%20Picture%20-%20Koala_jpg.jpg',
-    userName: 'tivo_this',
+    userName: 'tivo',
     friend: true
   }
 
   return (
     <div>
       <form>
-        <input type="text" name="searchQuery" onChange={handleSearch}/>
+        <input type="text" name="searchQuery" onChange={submitSearch}/>
         <input type="submit" name="search" onClick={submitSearch}/>
       </form>
       {tileStatus ? <SearchTile userInfo={userInfo}/> : null}
