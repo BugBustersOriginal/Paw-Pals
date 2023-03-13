@@ -14,8 +14,19 @@
   align-items: center;
   border: 1px solid;
   border-color: black;
+  width: 60%;
 }
 
 .friend-request-tile > img, .select-friend-tile > img {
   margin: 1em .5em 1em .5em;
+}
+
+.arrow {
+  margin-left: 10em;
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
 }
