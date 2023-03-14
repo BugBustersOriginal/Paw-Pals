@@ -1,5 +1,7 @@
 const {Conversation, Message} = require('./index.js');
 
+
+
 const setPhotoExpiration = async (conversationId, messageId) => {
   try {
   const conversation = await Conversation.findById(conversationId);
@@ -39,3 +41,5 @@ const sendMessage= async (conversationId, messageData) => {
     console.error(error);
   }
 }
+
+module.exports = { setPhotoExpiration, sendMessage}
