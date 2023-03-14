@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/Pawpals',{ useUnifiedTopology: true, useNewUrlParser:true }, function() {
-  //mongoose.connection.db.dropDatabase();
-  console.log('connected!')
-});
+mongoose.connect('mongodb://localhost/Pawpals', { useNewUrlParser: true })
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch(err => console.error('Error connecting to MongoDB', err));
 
 let messagesSchema = new mongoose.Schema({
   sender: String,
@@ -14,24 +15,13 @@ let messagesSchema = new mongoose.Schema({
 })
 
 let conversationsSchema = new mongoose.Schema({
- participiants : String,
+ participiants : [String],
  messages:[messagesSchema]
 })
 let Message = mongoose.model('Messages', messagesSchema);
 let Conversation = mongoose.model('Conversations', conversationsSchema);
 
 
-const setPhotoExpiration = async (conversationId, messageId, expirationDate) => {
-  const conversation = await Conversation.findById(conversationId);
-  const message = conversation.messages.id(messageId);
-    if (message.type === 'photo') {
-      //check if the message is expired
-      if(!message.expiresAt) {
-        // set the expiration date to 60 seconds after the message is viewed
-        const expirationDate = new Date(Date.now() + 60 * 1000);
-        message.expiresAt = expirationDate;
-        //save the changes to the db
-        await conversation.save();
-      }
-    }
-}
+
+
+module.exports = { Message, Conversation}
