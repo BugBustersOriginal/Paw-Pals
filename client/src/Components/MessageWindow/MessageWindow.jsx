@@ -9,7 +9,7 @@ export default function MessageWindow(props) {
     socket.emit('get-conversation', conversationID);
     socket.on('conversation', (data) => {
       console.log(`convo is equal to ${JSON.stringify(data)}`);
-      setConversation(data);
+      setConversation([...data]);
     })
     // prevents memory leaks, this function is executed when the component unmounts
     return () => {
@@ -18,8 +18,12 @@ export default function MessageWindow(props) {
   },[]) // change to props.conversationID
 
   useEffect(()=> {
-    console.log(`conversation is equal to ${JSON.stringify(conversation)}`)
-  },[])
+    let messages = conversation[0]
+    console.log(`messages is equal to ${JSON.stringify(messages)}`);
+    // const mappedMessages = reviews.map((review) => {
+    //   return <IndividualReview reviewInfo = {review} key = {review.review_id} review_id = {review.review_id}/>
+    // })
+  },[conversation])
 
   return (
     <div>
