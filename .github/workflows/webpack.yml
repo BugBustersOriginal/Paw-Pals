@@ -21,9 +21,10 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-
-    - name: Build
-      run: |
-        npm install
-        npm run client-dev
-        npm run server-dev
+        
+    - name: Install dependencies
+      run: npm install
+    - name: Build client
+      run: npm run build
+    - name: Build server
+      run: npm run server
