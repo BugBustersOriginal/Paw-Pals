@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search } from './Search.jsx';
+import { Search } from './Search/Search.jsx';
 
 const FriendTileList = () => {
 
