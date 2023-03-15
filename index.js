@@ -80,6 +80,31 @@ app.get("/conversations/:userId", async (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+   // Handle new message
+   socket.on('new-message', async (data) => {
+    // Save message to database
+    const message = await Message.create(data);
+
+    // Broadcast message to all users in the conversation
+    socket.to(data.conversationId).emit('new-message', message);
+  });
+
+  // Handle user joining conversation
+  socket.on('join-conversation', (conversationId) => {
+    socket.join(conversationId);
+  });
+
+  // Handle user leaving conversation
+  socket.on('leave-conversation', (conversationId) => {
+    socket.leave(conversationId);
+  });
+  // Handle getting the current conversation
+  socket.on('get-conversation', async (conversationId) => {
+    // Retrieve all messages associated with the conversation ID
+    const messages = await Conversation.find({_id:conversationId});
+    // Emit the messages back to the client
+    socket.emit('conversation', messages);
+  });
 });
 
 server.listen(3000, () => {

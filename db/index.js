@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/Pawpals', { useNewUrlParser: true })
   .then(() => {
+    //mongoose.connection.db.dropDatabase()
     console.log('Connected to MongoDB');
   })
   .catch(err => console.error('Error connecting to MongoDB', err));
 
 let messagesSchema = new mongoose.Schema({
-  sender: String,
+  sender: String, // will just be an user id coming from login /signup database?
   content: String,
   createdAt: {type: Date, default: Date.now},
   openedAt: Date,// field to record when a photo was opened
@@ -33,7 +34,7 @@ let messagesSchema = new mongoose.Schema({
 // });
 
 let conversationsSchema = new mongoose.Schema({
- participiants : [String],
+ participiants : [String], // will be an array of 2 user ids?
  messages:[messagesSchema]
 })
 let Message = mongoose.model('Messages', messagesSchema);
