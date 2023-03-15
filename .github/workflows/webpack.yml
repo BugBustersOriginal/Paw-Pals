@@ -28,7 +28,3 @@ jobs:
       run: npm install
     - name: Build client
       run: npm run build
-    - name: Build server
-      run: npm run server
-    - name: Stop server
-      run: killall node
