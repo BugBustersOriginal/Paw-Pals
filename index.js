@@ -66,11 +66,13 @@ app.get('/conversation/:id', async (req, res) => {
 
 // messageslist will use this route to get all conversations?
 app.get("/conversations/:userId", async (req, res) => {
+  console.log(req.params.userId);
   const userId = req.params.userId;
   try {
     const conversations = await Conversation.find({
       participants: { $elemMatch: { $eq: userId } }
     });
+    console.log(conversations);
     res.json(conversations);
   } catch (err) {
     console.error(err);
@@ -80,12 +82,17 @@ app.get("/conversations/:userId", async (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-   // Handle new message
+   // Handle new messages when user is in chat room
    socket.on('new-message', async (data) => {
     // Save message to database
     const message = await Message.create(data);
+    const conversation = await Conversation.findOneAndUpdate(
+      {_id:data.conversationId},
+      {$push: {messages:message}},
+      {new:true} // returns back the conversation after adding new message
+    )
 
-    // Broadcast message to all users in the conversation
+    // Broadcast message to all users in the conversation room
     socket.to(data.conversationId).emit('new-message', message);
   });
 
@@ -105,6 +112,11 @@ io.on('connection', (socket) => {
     // Emit the messages back to the client
     socket.emit('conversation', messages);
   });
+
+   //Handle if user is on the message/friends list so that they can get notifications
+  socket.on('get-notifications', async(userId) => {
+
+  })
 });
 
 server.listen(3000, () => {
