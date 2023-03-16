@@ -11,7 +11,7 @@ export function SelectFriend (props) {
   }
 
   return (
-    <div class="select-friend-tile">
+    <div class="select-friend-tile" data-testid="search-tile">
       <input type="checkbox" name="select" value="true" onClick={handleClick}/>
       <img class="user-photo-thumbnail" src={props.userInfo.thumbnailUrl}/>
       <p>@{props.userInfo.userName}</p>

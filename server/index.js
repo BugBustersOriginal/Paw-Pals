@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/searchFriend', (req, res) => {
-  console.log('this is the request: ', req.body.searchQuery);
+  console.log('search param: ', req.body.searchQuery);
 })
 
 app.listen(PORT, () => {

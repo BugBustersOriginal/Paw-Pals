@@ -11,11 +11,11 @@ export function FriendRequest (props) {
   }
 
   return (
-    <div class="friend-request-tile">
+    <div className="friend-request-tile" data-testid="search-tile">
       {requestSent ?
-      <img class="friend-request-icon" src="https://cdn-icons-png.flaticon.com/512/3602/3602500.png" onClick={handleFriendRequest}/> :
-      <img class="friend-request-icon" src="https://cdn-icons-png.flaticon.com/512/4458/4458569.png" onClick={handleFriendRequest}/>}
-      <img class="user-photo-thumbnail" src={props.userInfo.thumbnailUrl}/>
+      <img className="friend-request-icon" src="https://cdn-icons-png.flaticon.com/512/3602/3602500.png" onClick={handleFriendRequest}/> :
+      <img className="friend-request-icon" src="https://cdn-icons-png.flaticon.com/512/4458/4458569.png" onClick={handleFriendRequest}/>}
+      <img className="user-photo-thumbnail" src={props.userInfo.thumbnailUrl}/>
       <p>@{props.userInfo.userName}</p>
     </div>
   )
