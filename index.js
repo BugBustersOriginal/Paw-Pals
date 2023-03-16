@@ -23,6 +23,10 @@ app.get('/', (req, res) => {
   res.send("connected");
 });
 
+// front end needs to make a newconversation if the conversation has not happened before
+app.post("/newConversation", async (req,res) => {
+
+})
 app.post("/openedImage/:id", async (req, res) => {
   const imageId = req.params.id;
   try {
@@ -106,9 +110,25 @@ io.on('connection', (socket) => {
     socket.leave(conversationId);
   });
   // Handle getting the current conversation
-  socket.on('get-conversation', async (conversationId) => {
+  socket.on('get-conversation', async (conversationId, participants) => {
     // Retrieve all messages associated with the conversation ID
-    const messages = await Conversation.find({_id:conversationId});
+    let conversation;
+    if(conversationId === null) {
+      conversation = new Conversation ({
+        participants: [participants.userId, participants.friendId],
+        messages:[]
+      });
+      await conversation.save();
+    } else {
+      conversation = await Conversation.findById(conversationId);
+    }
+    const messages = conversation.messages.filter((message) => {
+      if ( message.type === 'image ') {
+        const timeDifference = Math.abs(new Date() - message.openedAt);
+        const timeDifferenceInSec = Math.floor(timeDifference/1000);
+        return timeDifferenceInSec <=60;
+      }
+    })
     // Emit the messages back to the client
     socket.emit('conversation', messages);
   });
