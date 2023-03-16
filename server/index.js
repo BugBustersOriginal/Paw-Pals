@@ -16,6 +16,13 @@ app.get('/', (req, res) => {
   res.send('ok');
 })
 
+// ********** MAP ROUTES ********** //
+app.get('/api/key', (req, res) => {
+  console.log('api key sent');
+  res.json({ apiKey: process.env.MAP_API_KEY });
+});
+// ******************************** //
+
 app.post('/searchFriend', (req, res) => {
   console.log('search param: ', req.body.searchQuery);
 })
