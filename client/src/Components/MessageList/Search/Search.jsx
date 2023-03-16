@@ -44,10 +44,12 @@ export function Search () {
 
 
   return (
-    <div data-testid="search-bar">
+    <div data-testid="search-component">
       <form>
-        <input type="text" name="searchQuery" onChange={submitSearch}/>
-        <input type="submit" name="search" onClick={submitSearch}/>
+        <label>
+          <input data-testid="search-input" type="text" name="searchQuery" onChange={() => submitSearch}/>
+          {/* <button data-testid="submit-button" type="submit" name="search" onClick={() => submitSearch}>Search</button> */}
+        </label>
       </form>
       {tileStatus ? <SearchTile userInfo={userInfo} handleSelection={handleSelection}/> : null}
     </div>
