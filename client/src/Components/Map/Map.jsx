@@ -1,12 +1,26 @@
 import React from 'react'
 import { useMemo } from 'react'
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
-// import { MAP_API_KEY } from './config.js';
 
 export function Map() {
 
-  // const {} = useLoadScript({googleMapsApiKey: process.env.MAP_API_KEY})
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey:''
+  });
+
+  if (!isLoaded) return <div>Loading...</div>
   return (
-    <div>Map</div>
+    <MapView />
+    // <div>Map</div>
   )
+}
+
+function MapView() {
+  return (
+    <GoogleMap
+    zoom={10}
+    center={{lat: 44, lng: -80}}
+    mapContainerClassName="map-container"
+    ></GoogleMap>
+  );
 }
