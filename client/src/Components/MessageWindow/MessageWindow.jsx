@@ -2,12 +2,15 @@ import React, {useState, useEffect} from 'react';
 import {socket} from '../../socket.js'
 import "../../../../client/chat.css"
 import Message from '../MessageWindow/Message.jsx'
+import MessageBox from '../MessageWindow/MessageBox.jsx'
 
 
 export default function MessageWindow(props) {
   const [conversationID, setConversationID] = useState('6173c3d2a87a173a1b6f60e6'); // messageID should tell us who the two users are
   const [conversation, setConversation] = useState([]);
   const [message, setMessage]  = useState('');
+  const [mappedMessages, setMappedMessages] = useState([]);
+
   useEffect(() => {
     socket.emit("join-conversation", conversationID);
     socket.emit('get-conversation', conversationID);
@@ -20,14 +23,20 @@ export default function MessageWindow(props) {
       socket.off("get-conversation");
     }
   },[]) // change to props.conversationID
+  useEffect(()=> {
+    if(conversation.length !== 0) {
+      let messages = conversation[0]
+      let keys = Object.keys(messages);
+      console.log(`messages is equal to ${JSON.stringify(keys)}`);
+      console.log(`messages is equal to ${typeof messages}`);
+      const newMappedMessages = conversation.map((message) => {
+        return <MessageBox key={message._id} sender={message.sender} content={message.content} />;
+      });
+      setMappedMessages(newMappedMessages);
+    }
 
-  // useEffect(()=> {
-  //   let messages = conversation[0]
-  //   console.log(`messages is equal to ${JSON.stringify(messages)}`);
-  //   // const mappedMessages = reviews.map((review) => {
-  //   //   return <IndividualReview reviewInfo = {review} key = {review.review_id} review_id = {review.review_id}/>
-  //   // })
-  // },[conversation])
+  },[conversation])
+
 
   // set state message
   const new_message = (new_message)=>{
@@ -35,14 +44,12 @@ export default function MessageWindow(props) {
   }
   useEffect(()=> {
     console.log("message", message)
-
-    socket.emit('new-message', message)
+    //socket.emit('new-message', message)
   })
   return (
   <div class = "window">
-    <Message
-    newMessage = {new_message}
-    />
+    {mappedMessages}
+    <Message newMessage = {new_message}/>
   </div>
   )
 }
