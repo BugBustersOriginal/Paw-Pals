@@ -37,8 +37,16 @@ let conversationsSchema = new mongoose.Schema({
  participants : [String], // will be an array of 2 user ids?
  messages:[messagesSchema]
 })
+
+
+let friendListSchema = new mongoose.Schema({
+  userId: String,
+  friends: [String],
+})
+
 let Message = mongoose.model('Messages', messagesSchema);
 let Conversation = mongoose.model('Conversations', conversationsSchema);
+let FriendList = mongoose.model('FriendList', friendListSchema);
 
 
-module.exports = { Message, Conversation}
+module.exports = { Message, Conversation, FriendList}
