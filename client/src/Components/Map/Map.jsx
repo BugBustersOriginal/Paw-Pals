@@ -85,6 +85,7 @@ function MapView({ user, friends, screenCenter, setScreenCenter }) {
           icon={{
             url: user.profileImage
           }}
+          onClick={() => setScreenCenter(user.location)}
         />
 
         {/* generate friends' location */}
