@@ -1,0 +1,42 @@
+#main {
+  height: 100%;
+}
+#root {
+  height: 100%;
+}
+
+.window {
+  row-gap: 50px;
+  margin: auto;
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  width: 95%;
+  height: 95%;
+}
+
+.write_message {
+  position: relative;
+  top: 75%;
+  border: 2px solid #111010;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 5px;
+  width: 98%;
+  height: 20%;
+  transition: 0.3s all;
+  resize: none;
+}
+
+.msg_box{
+  position: relative;
+  top: 75%;
+  border: 2px solid #111010;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 5px;
+  width: 90%;
+  height: 5%;
+  transition: 0.3s all;
+}
