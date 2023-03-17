@@ -33,6 +33,8 @@ export function Map() {
     list: []
   })
 
+  const [screenCenter, setScreenCenter] = useState(user.location);
+
   const handleChange = (e) => {
     const results = friends.filter(friend => {
       if (e.target.value === "") return friends
@@ -42,27 +44,32 @@ export function Map() {
       query: e.target.value,
       list: results
     })
+    setScreenCenter(state.list[0].location)
   }
 
   if (!isLoaded) return <div>Loading...</div>
   return (
     <>
     <h1>Map</h1>
+
+    {/* search bar */}
     <form>
       <input type="search" value={state.query} onChange={handleChange} />
     </form>
+
+    {/* search result */}
       <ul>
         {(state.query === '' ? "" : state.list.map(friend => {
           return <li key={friend.name}>{friend.name}</li>
         }))}
       </ul>
-      <MapView user={user} friends={friends}/>
+
+      <MapView screenCenter={screenCenter} user={user} friends={friends}/>
     </>
   )
 }
 
-function MapView({ user, friends }) {
-  const [screenCenter, setScreenCenter] = useState(user.location);
+function MapView({ user, friends, screenCenter }) {
 
   return (
     <>
