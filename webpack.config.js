@@ -1,6 +1,4 @@
 const path = require("path");
-require('dotenv').config({ path: './.env' });
-// import { DefinePlugin } from 'webpack'
 
 module.exports = {
    entry: {
@@ -9,7 +7,8 @@ module.exports = {
       path: path.join(__dirname, '/client/dist'),
       filename: 'bundle.js'
    },
-   plugins: [],
+   plugins: [
+   ],
    module: {
       rules: [
          {
