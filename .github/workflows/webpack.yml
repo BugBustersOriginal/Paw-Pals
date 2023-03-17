@@ -21,18 +21,8 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-<<<<<<< HEAD
 
-    - name: Build
-      run: |
-        npm install
-        npm run client-dev
-        npm run server-dev
-        npm test
-=======
-        
     - name: Install dependencies
       run: npm install
     - name: Build client
       run: npm run build
->>>>>>> main
