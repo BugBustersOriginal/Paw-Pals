@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ProfileInfo = (props) => {
-  console.log(props, 'line 4 ProfileInfo');
+  // console.log(props, 'line 4 ProfileInfo');
 
   return (
     <div>

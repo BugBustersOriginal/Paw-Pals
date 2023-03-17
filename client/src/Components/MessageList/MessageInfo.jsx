@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 //import axios from 'axios'; //I don't think I will need this since props provided from message chat history
 
 const MessageInfo = (props) => {
-  console.log(props, 'line 5 FriendTile')
+  // console.log(props, 'line 5 FriendTile')
   /**
    * note: the state will change based on the message chat history so will need props from message chat history component
    * questions:

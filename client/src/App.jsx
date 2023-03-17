@@ -17,7 +17,7 @@ export function App()  {
 
     if(e.target.innerText === 'Login') {
       navigate("/");
-    } else if (e.target.innerText === 'FriendTileList') {
+    } else if (e.target.innerText === 'FriendList') {
       navigate("/home");
     } else {
       navigate(`/${(e.target.innerText).toLowerCase()}`);
@@ -31,8 +31,8 @@ export function App()  {
       <h5>DEV BUTTONS</h5>
       <button onClick={(e) => handleDevClick(e)}>Login</button>
       <button onClick={(e) => handleDevClick(e)}>Register</button>
-      <button onClick={(e) => handleDevClick(e)}>FriendTile</button>
-      <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
+      {/* <button onClick={(e) => handleDevClick(e)}>FriendTile</button> */}
+      <button onClick={(e) => handleDevClick(e)}>FriendList</button>
       <button onClick={(e) => handleDevClick(e)}>Map</button>
     </div>
 
