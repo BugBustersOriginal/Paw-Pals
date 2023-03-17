@@ -34,7 +34,6 @@ export default function MessageWindow(props) {
       });
       setMappedMessages(newMappedMessages);
     }
-
   },[conversation])
 
 
