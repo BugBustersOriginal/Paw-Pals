@@ -64,12 +64,12 @@ export function Map() {
         }))}
       </ul>
 
-      <MapView screenCenter={screenCenter} user={user} friends={friends}/>
+      <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={user} friends={friends}/>
     </>
   )
 }
 
-function MapView({ user, friends, screenCenter }) {
+function MapView({ user, friends, screenCenter, setScreenCenter }) {
 
   return (
     <>
@@ -94,6 +94,7 @@ function MapView({ user, friends, screenCenter }) {
           icon={{
             url: friend.profileImage
           }}
+          onClick={() => setScreenCenter(friend.location)}
         />
         )}
       </GoogleMap>
