@@ -10,6 +10,7 @@ export default function MessageWindow(props) {
   const [conversation, setConversation] = useState([]);
   const [message, setMessage]  = useState('');
   const [mappedMessages, setMappedMessages] = useState([]);
+  const [sender, setSender] = useState(1)
 
   useEffect(() => {
     socket.emit("join-conversation", conversationID);
@@ -25,10 +26,6 @@ export default function MessageWindow(props) {
   },[]) // change to props.conversationID
   useEffect(()=> {
     if(conversation.length !== 0) {
-      let messages = conversation[0]
-      let keys = Object.keys(messages);
-      console.log(`messages is equal to ${JSON.stringify(keys)}`);
-      console.log(`messages is equal to ${typeof messages}`);
       const newMappedMessages = conversation.map((message) => {
         return <MessageBox key={message._id} sender={message.sender} content={message.content} />;
       });
@@ -48,7 +45,7 @@ export default function MessageWindow(props) {
   return (
   <div class = "window">
     {mappedMessages}
-    <Message newMessage = {new_message}/>
+    <Message sender = {sender} newMessage = {new_message}/>
   </div>
   )
 }
