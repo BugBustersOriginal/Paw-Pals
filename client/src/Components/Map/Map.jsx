@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useMemo } from 'react'
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 
+
 export function Map() {
 
   let user = {
@@ -27,10 +28,36 @@ export function Map() {
     googleMapsApiKey: "AIzaSyB1le7LEHbnuufJ03zPAF2Mh1xlmszRo4U" // restricted key
   });
 
-  if (!isLoaded) return <div>Loading...</div>
+  const [state, setstate] = useState({
+    query: '',
+    list: []
+  })
 
+  const handleChange = (e) => {
+    const results = friends.filter(friend => {
+      if (e.target.value === "") return friends
+      return friend.name.toLowerCase().includes(e.target.value.toLowerCase())
+    })
+    setstate({
+      query: e.target.value,
+      list: results
+    })
+  }
+
+  if (!isLoaded) return <div>Loading...</div>
   return (
-    <MapView user={user} friends={friends}/>
+    <>
+    <h1>Map</h1>
+    <form>
+      <input type="search" value={state.query} onChange={handleChange} />
+    </form>
+      <ul>
+        {(state.query === '' ? "" : state.list.map(friend => {
+          return <li key={friend.name}>{friend.name}</li>
+        }))}
+      </ul>
+      <MapView user={user} friends={friends}/>
+    </>
   )
 }
 
