@@ -1,47 +1,47 @@
-import React from 'react'
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-
-
-const containerStyle = {
-  width: '400px',
-  height: '400px'
-};
-
-const center = {
-  lat: -3.745,
-  lng: -38.523
-};
+import React, { useState, useEffect } from 'react'
+import { useMemo } from 'react'
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 
 export function Map() {
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: ""  // publicly available API key
-  })
+  const [apiKey, setApiKey] = useState('');
 
-  const [map, setMap] = React.useState(null)
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyB1le7LEHbnuufJ03zPAF2Mh1xlmszRo4U" // restricted key
+  });
 
-  const onLoad = React.useCallback(function callback(map) {
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
+  if (!isLoaded) return <div>Loading...</div>
+  return (
+    <MapView />
+  )
+}
 
-    setMap(map)
-  }, [])
-
-  const onUnmount = React.useCallback(function callback(map) {
-    setMap(null)
-  }, [])
-
-  return isLoaded ? (
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-      >
-        { /* Child components, such as markers, info windows, etc. */ }
-        <></>
-      </GoogleMap>
-  ) : <></>
+function MapView() {
+  return (
+    <>
+    <GoogleMap
+    zoom={10}
+    center={{lat: 44, lng: -80}}
+    mapContainerClassName="map-container"
+    >
+            <Marker
+        position={{lat: 44, lng: -80}}
+        icon={{
+          url: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485565/pngwing.com_1_ka3o33.png'
+        }}
+        />
+      <Marker
+        position={{lat: 44, lng: -79.9}}
+        icon={{
+          url: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485565/pngwing.com_4_hssthb.png'
+        }}
+        />
+      <Marker
+        position={{lat: 44, lng: -79.8}}
+        icon={{
+          url: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485700/pngwing.com_3_ja6dw9.png'
+        }}
+        />
+    </GoogleMap>
+    </>
+  );
 }
