@@ -1,8 +1,28 @@
+/* Main App*/
+
 #main {
   height: 100%;
+  background: rgb(252,255,178);
+  background: radial-gradient(circle, rgba(252,255,178,1) 0%, rgb(249, 252, 154) 80%, rgb(255, 246, 149) 100%);
 }
+
 #root {
   height: 100%;
+}
+
+.App {
+  text-align:center;
+  display: flex;
+  min-height: 100vh;
+  align-items:center;
+  justify-content:baseline;
+  flex-direction: column;
+
+}
+
+.devButtons {
+  flex-direction: row;
+  padding-bottom: 0.5rem;
 }
 
 .window {
@@ -39,4 +59,51 @@
   width: 90%;
   height: 5%;
   transition: 0.3s all;
+}
+
+/*Login and Register*/
+
+.auth-form-container, .login-form, .register-form {
+  display:flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 600px) {
+  .auth-form-container {
+    padding: 2rem;
+    padding-top: 0;
+    border: 3px solid white;
+    border-radius: 18px;
+    margin: 0.5rem;
+  }
+}
+
+form label {
+  text-align: left;
+  padding: 0.25rem 0;
+}
+
+form input {
+  margin: 0.5vh 0;
+  padding: .5vh 1rem;
+  border: none;
+  border-radius: 10px;
+}
+
+button[type="submit"]  {
+  border: none;
+  margin-top: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #7439db;
+}
+
+.link-button  {
+  border: none;
+  background: none;
+  color: #7439db;
+  text-decoration: underline;
+  margin-top: 5vh;
 }

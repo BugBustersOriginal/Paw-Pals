@@ -7,13 +7,13 @@ import { Map } from './Components/Map/Map.jsx';
 import FriendTileList from './Components/MessageList/FriendTileList.jsx';
 import FriendTile from './Components/MessageList/FriendTile.jsx';
 import Login from './Components/Login-Register/Login.jsx';
-import Register from './Components/Login-Register/Login.jsx';
+import Register from './Components/Login-Register/Register.jsx';
 
 export function App()  {
   const navigate = useNavigate();
 
   function handleDevClick (e) {
-    console.log(e.target.innerText);
+    console.log((e.target.innerText).toLowerCase());
 
     if(e.target.innerText === 'Login') {
       navigate("/");
@@ -25,19 +25,22 @@ export function App()  {
   }
 
   return (
-    <div>
+    <div className="App">
       <h1>Hello World!</h1>
       <h5>DEV BUTTONS</h5>
-      <button onClick={(e) => handleDevClick(e)}>Login</button>
-      <button onClick={(e) => handleDevClick(e)}>Register</button>
-      <button onClick={(e) => handleDevClick(e)}>FriendTile</button>
-      <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
-      <button onClick={(e) => handleDevClick(e)}>Map</button>
-      <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
+      <div className="devButtons">
+        <button onClick={(e) => handleDevClick(e)}>Login</button>
+        <button onClick={(e) => handleDevClick(e)}>Register</button>
+        <button onClick={(e) => handleDevClick(e)}>FriendTile</button>
+        <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
+        <button onClick={(e) => handleDevClick(e)}>Map</button>
+        <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
+      </div>
 
       <Routes>
         <Route   path="/home"  element= {<FriendTileList />}  />
         <Route   path="/"  element= {<Login />}  />
+        <Route   path="/login"  element= {<Login />}  />
         <Route   path="/register"  element= {<Register />}  />
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
