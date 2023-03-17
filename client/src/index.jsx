@@ -1,6 +1,10 @@
-import React from "react";
+import React from 'react';
 import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+
+
 import { App } from './App.jsx';
+import { BrowserRouter } from 'react-router-dom';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -26,9 +30,17 @@ class ErrorBoundary extends React.Component {
       );
     }
 
-    return <App />;
+    return (
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    );
   }
 
 }
 
-ReactDOM.render(<ErrorBoundary />, document.getElementById('root'));
+const root = createRoot(document.getElementById("root"));
+
+root.render(<ErrorBoundary />);
+
+
