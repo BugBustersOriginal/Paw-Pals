@@ -111,6 +111,7 @@ io.on('connection', (socket) => {
   });
   // Handle getting the current conversation
   socket.on('get-conversation', async (conversationId, participants) => {
+    console.log(`conversationId is equal to ${conversationId}`);
     // Retrieve all messages associated with the conversation ID
     try {
       let conversation;
@@ -125,6 +126,7 @@ io.on('connection', (socket) => {
         if (!conversation) {
           throw new Error('Conversation not found');
         }
+        console.log(`conversation is equal to ${JSON.stringify(conversation)}`);
     }
     const messages = conversation.messages.filter((message) => {
       if ( message.type === 'image ') {
@@ -132,6 +134,7 @@ io.on('connection', (socket) => {
         const timeDifferenceInSec = Math.floor(timeDifference/1000);
         return timeDifferenceInSec <=60;
       }
+      return true
     })
     // Emit the messages back to the client
     socket.emit('conversation', messages);
@@ -161,8 +164,8 @@ io.on('connection', (socket) => {
       }
     })
   });
+})
 
 server.listen(3000, () => {
   console.log('listening on :'+ PORT);
 });
-})
