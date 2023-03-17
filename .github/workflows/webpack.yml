@@ -27,3 +27,4 @@ jobs:
         npm install
         npm run client-dev
         npm run server-dev
+        npm test
