@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import MessageWindow from './Components/MessageWindow/MessageWindow.jsx'
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Map } from './Components/Map/Map.jsx';
-import FriendTile from './Components/MessageList/FriendTile.jsx';
+// import MessageInfo from './Components/MessageList/MessageInfo.jsx';
 import FriendTileList from './Components/MessageList/FriendTileList.jsx';
+import FriendTile from './Components/MessageList/FriendTile.jsx';
 import Login from './Components/Login-Register/Login.jsx';
 import Register from './Components/Login-Register/Login.jsx';
 
