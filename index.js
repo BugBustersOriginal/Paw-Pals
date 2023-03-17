@@ -112,15 +112,19 @@ io.on('connection', (socket) => {
   // Handle getting the current conversation
   socket.on('get-conversation', async (conversationId, participants) => {
     // Retrieve all messages associated with the conversation ID
-    let conversation;
-    if(conversationId === null) {
-      conversation = new Conversation ({
+    try {
+      let conversation;
+      if(conversationId === null) {
+        conversation = new Conversation ({
         participants: [participants.userId, participants.friendId],
         messages:[]
       });
       await conversation.save();
     } else {
       conversation = await Conversation.findById(conversationId);
+        if (!conversation) {
+          throw new Error('Conversation not found');
+        }
     }
     const messages = conversation.messages.filter((message) => {
       if ( message.type === 'image ') {
@@ -131,14 +135,34 @@ io.on('connection', (socket) => {
     })
     // Emit the messages back to the client
     socket.emit('conversation', messages);
+    } catch (err) {
+      console.error('Error while getting notification', err);
+      socket.emit('conversation-error', err.message);
+    }
   });
+
+
 
    //Handle if user is on the message/friends list so that they can get notifications
   socket.on('get-notifications', async(userId) => {
+    const messageWatcher = Message.watch();
+    messageWatcher.on('change', async(change) => {
+      if (change.operationType === 'insert') {
+        try {
+          var conversation = Conversation.findById(change.fullDocument.conversationId);
+        if ( conversation.participants.includes(userId)) {
+          socket.emit('new-notification', change.fullDocument );
+        }
+        } catch (err) {
+          console.error('Error while sending notification', err);
+          socket.emit('conversation-error', err.message);
+        }
 
-  })
-});
+      }
+    })
+  });
 
 server.listen(3000, () => {
   console.log('listening on :'+ PORT);
 });
+})
