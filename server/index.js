@@ -5,6 +5,7 @@ const compression = require('compression');
 const app = express();
 const path = require('path');
 const PORT = process.env.PORT;
+const { getFriendList } = require('./controllers/getControllers.js');
 
 app.use(express.json());
 app.use(compression());
@@ -16,8 +17,10 @@ app.get('/', (req, res) => {
   res.send('ok');
 })
 
+app.get('/getFriendList', getFriendList);
+
 app.post('/searchFriend', (req, res) => {
-  console.log('this is the request: ', req.body.searchQuery);
+  console.log('search param: ', req.body.searchQuery);
 })
 
 app.listen(PORT, () => {

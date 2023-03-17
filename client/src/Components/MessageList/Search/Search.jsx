@@ -11,13 +11,14 @@ export function Search () {
     if (!search) {
       setTileStatus(false);
     }
-    //refactor when mongodb database is set up for searching
+    //refactor when mongodb database is set up for searching username
     if (search === 'tivo') {
       setTileStatus(true)
     }
     if (search !== 'tivo') {
       setTileStatus(false);
     }
+    /////////////
     setTimeout(() => {
       axios.post('/searchFriend', {searchQuery: search});
     }, 500);
@@ -33,17 +34,22 @@ export function Search () {
     console.log('username selected: ', username);
   }
 
+
+/// sample userInfo
   const userInfo = {
     thumbnailUrl: 'https://hs.sbcounty.gov/cn/Photo%20Gallery/_w/Sample%20Picture%20-%20Koala_jpg.jpg',
     userName: 'tivo',
     friend: false
   }
 
+
   return (
-    <div>
+    <div data-testid="search-component">
       <form>
-        <input type="text" name="searchQuery" onChange={submitSearch}/>
-        <input type="submit" name="search" onClick={submitSearch}/>
+        <label>
+          <input data-testid="search-input" type="text" name="searchQuery" onChange={submitSearch}/>
+          {/* <button data-testid="submit-button" type="submit" name="search" onClick={() => submitSearch}>Search</button> */}
+        </label>
       </form>
       {tileStatus ? <SearchTile userInfo={userInfo} handleSelection={handleSelection}/> : null}
     </div>

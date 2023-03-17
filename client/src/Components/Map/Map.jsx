@@ -1,47 +1,102 @@
-import React from 'react'
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import React, { useState, useEffect } from 'react'
+import { useMemo } from 'react'
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 
-
-const containerStyle = {
-  width: '400px',
-  height: '400px'
-};
-
-const center = {
-  lat: -3.745,
-  lng: -38.523
-};
 
 export function Map() {
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: ""  // publicly available API key
+
+  let user = {
+    name: 'Thomas',
+    location: {lat: 44, lng: -80},
+    profileImage: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485565/pngwing.com_1_ka3o33.png'
+  }
+
+  let friends = [
+    {
+      name: 'Andy',
+      location: {lat: 44, lng: -79.5},
+      profileImage: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485565/pngwing.com_4_hssthb.png'
+    },
+    {
+      name: 'Tony',
+      location: {lat: 44, lng: -79},
+      profileImage: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485700/pngwing.com_3_ja6dw9.png'
+    }
+  ]
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyB1le7LEHbnuufJ03zPAF2Mh1xlmszRo4U" // restricted key
+  });
+
+  const [state, setstate] = useState({
+    query: '',
+    list: []
   })
 
-  const [map, setMap] = React.useState(null)
+  const [screenCenter, setScreenCenter] = useState(user.location);
 
-  const onLoad = React.useCallback(function callback(map) {
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
+  const handleChange = (e) => {
+    const results = friends.filter(friend => {
+      if (e.target.value === "") return friends
+      return friend.name.toLowerCase().includes(e.target.value.toLowerCase())
+    })
+    setstate({
+      query: e.target.value,
+      list: results
+    })
+    setScreenCenter(state.list[0].location)
+  }
 
-    setMap(map)
-  }, [])
+  if (!isLoaded) return <div>Loading...</div>
+  return (
+    <>
+    <h1>Map</h1>
 
-  const onUnmount = React.useCallback(function callback(map) {
-    setMap(null)
-  }, [])
+    {/* search bar */}
+    <form>
+      <input type="search" value={state.query} onChange={handleChange} />
+    </form>
 
-  return isLoaded ? (
+    {/* search result */}
+      <ul>
+        {(state.query === '' ? "" : state.list.map(friend => {
+          return <li key={friend.name}>{friend.name}</li>
+        }))}
+      </ul>
+
+      <MapView screenCenter={screenCenter} user={user} friends={friends}/>
+    </>
+  )
+}
+
+function MapView({ user, friends, screenCenter }) {
+
+  return (
+    <>
       <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
+      zoom={10}
+      center={screenCenter}
+      mapContainerClassName="map-container"
       >
-        { /* Child components, such as markers, info windows, etc. */ }
-        <></>
+
+        {/* generate user's location */}
+        <Marker
+          position={user.location}
+          icon={{
+            url: user.profileImage
+          }}
+        />
+
+        {/* generate friends' location */}
+        {friends.map((friend, idx) =>
+          <Marker key={idx}
+          position={friend.location}
+          icon={{
+            url: friend.profileImage
+          }}
+        />
+        )}
       </GoogleMap>
-  ) : <></>
+    </>
+  );
 }
