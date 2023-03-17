@@ -47,7 +47,7 @@ export function Search () {
     <div data-testid="search-component">
       <form>
         <label>
-          <input data-testid="search-input" type="text" name="searchQuery" onChange={() => submitSearch}/>
+          <input data-testid="search-input" type="text" name="searchQuery" onChange={submitSearch}/>
           {/* <button data-testid="submit-button" type="submit" name="search" onClick={() => submitSearch}>Search</button> */}
         </label>
       </form>
