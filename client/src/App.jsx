@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import MessageWindow from './Components/MessageWindow/MessageWindow.jsx'
 import { Map } from './Components/Map/Map.jsx';
@@ -44,5 +44,6 @@ export class App extends Component {
       }
 
   }
+
 }
 
