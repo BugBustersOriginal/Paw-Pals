@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {SearchTile} from './SearchTile.jsx';
 
-export function Search () {
+export function Search (props) {
 
   const [search, setSearch] = useState('');
   const [tileStatus, setTileStatus] = useState(false)
+  let userId = props.userId;
 
   useEffect(() => {
     if (!search) {
@@ -31,7 +32,12 @@ export function Search () {
   }
 
   const handleSelection = (username) => {
-    console.log('username selected: ', username);
+    let selectionObj = {
+      userId: userId,
+      selectedUser: username
+    }
+    // console.log('selectionObj: ', selectionObj);
+    axios.post('/sendFriendRequest', selectionObj);
   }
 
 
@@ -47,7 +53,7 @@ export function Search () {
     <div data-testid="search-component">
       <form>
         <label>
-          <input data-testid="search-input" type="text" name="searchQuery" onChange={submitSearch}/>
+          <input data-testid="search-input" type="text" name="searchQuery" placeholder="Search Friend" onChange={submitSearch}/>
           {/* <button data-testid="submit-button" type="submit" name="search" onClick={() => submitSearch}>Search</button> */}
         </label>
       </form>

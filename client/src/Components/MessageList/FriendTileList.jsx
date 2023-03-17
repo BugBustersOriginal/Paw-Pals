@@ -4,7 +4,7 @@ import MessageInfo from './MessageInfo.jsx';
 import ProfileInfo from './ProfileInfo.jsx';
 import FriendTile from './FriendTile.jsx';
 
-const FriendTileList = () => {
+const FriendTileList = (props) => {
   //will receive {profileInfo}, {mostRecentMessages} as props
 
   let profileInfo = [
@@ -72,7 +72,7 @@ const FriendTileList = () => {
 
   return (
     <div>
-      <Search />
+      <Search userId={props.userId}/>
       FriendTileList
 
       {/* <FriendProfileInfo

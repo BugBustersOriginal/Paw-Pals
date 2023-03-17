@@ -5,7 +5,8 @@ const compression = require('compression');
 const app = express();
 const path = require('path');
 const PORT = process.env.PORT;
-const { getFriendList } = require('./controllers/getControllers.js');
+const getControllers = require('./controllers/getControllers.js');
+const postControllers = require('./controllers/postControllers.js');
 
 app.use(express.json());
 app.use(compression());
@@ -21,11 +22,13 @@ app.get('/*', (req, res) => {
   });
 })
 
-app.get('/getFriendList', getFriendList);
+app.get('/getFriendList', getControllers.getFriendList);
 
 app.post('/searchFriend', (req, res) => {
   console.log('search param: ', req.body.searchQuery);
 })
+
+app.post('/sendFriendRequest', postControllers.sendFriendRequest);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
