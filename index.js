@@ -7,7 +7,7 @@ const { Server } = require("socket.io");
 const path = require('path');
 const PORT = process.env.PORT;
 const cors = require('cors');
-const {Conversation, Message} = require('./db/index.js');
+const {Conversation, Message, FriendList} = require('./db/index.js');
 const {setPhotoExpiration,sendMessage}=('./db/helperFunctions.js')
 
 
@@ -78,6 +78,21 @@ app.get("/conversations/:userId", async (req, res) => {
   }
 });
 
+app.get("/friendList", async (req, res) => {
+  console.log('checking friendList')
+  let userId = req.body.userId;
+  console.log('this is the userId: ', userId);
+  try {
+    const friendList = await FriendList.find({
+      userId: { $elemMatch: { $eq: userId } }
+    });
+    res.status(200).send(JSON.stringify(friendList));
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+});
+
 io.on('connection', (socket) => {
   console.log('a user connected');
    // Handle new message
@@ -107,6 +122,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3000, () => {
+server.listen(PORT, () => {
   console.log('listening on :'+ PORT);
 });
