@@ -52,6 +52,7 @@ export default function Message(props) {
             onChange={handleChange}
             onKeyDown={handleKeyDown}
          />
+         <input type="file" accept="image/*" />
     </div>
   )
 }
