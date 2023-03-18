@@ -10,6 +10,23 @@ const cors = require('cors');
 const {Conversation, Message, FriendList} = require('./db/index.js');
 const {setPhotoExpiration,sendMessage}=('./db/helperFunctions.js')
 
+/***** helper functions for debugging socker rooms */
+
+function getRoomsByUser(id){
+  let usersRooms = [];
+  let rooms = io.sockets.adapter.rooms;
+
+  for(let room in rooms){
+      if(rooms.hasOwnProperty(room)){
+          let sockets = rooms[room].sockets;
+          if(id in sockets)
+              usersRooms.push(room);
+      }
+  }
+
+  return usersRooms;
+}
+/********************************************** */
 
 app.use(express.json());
 const io = new Server(server, {
@@ -99,25 +116,34 @@ app.get("/friendList", async (req, res) => {
   }
 });
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   console.log('a user connected');
    // Handle new messages when user is in chat room
    socket.on('new-message', async (data) => {
-    // Save message to database
-    const message = await Message.create(data);
-    const conversation = await Conversation.findOneAndUpdate(
-      {_id:data.conversationId},
-      {$push: {messages:message}},
-      {new:true} // returns back the conversation after adding new message
-    )
-
+    try {
+      const message = await Message.create(data);
+      const conversation = await Conversation.findOneAndUpdate(
+        {_id:data.conversationId},
+        {$push: {messages:message}},
+        {new:true} // returns back the conversation after adding new message
+      )
     // Broadcast message to all users in the conversation room
-    socket.to(data.conversationId).emit('new-message', message);
+    const roomNames = Object.keys(io.sockets.adapter.rooms).filter(roomId => !io.sockets.adapter.rooms[roomId].sockets[roomId]);
+      io.to(data.conversationId).emit('new-message', message);
+    } catch (err) {
+      console.error(`error while sending new-message ${err}`)
+    }
+
+
   });
 
   // Handle user joining conversation
-  socket.on('join-conversation', (conversationId) => {
-    socket.join(conversationId);
+  socket.on('join-conversation', async (conversationId) => {
+    try {
+      await socket.join(conversationId)
+    } catch(err) {
+      console.error(`error while joining a socket room ${error}`)
+    }
   });
 
   // Handle user leaving conversation
@@ -141,7 +167,7 @@ io.on('connection', (socket) => {
         if (!conversation) {
           throw new Error('Conversation not found');
         }
-        console.log(`conversation is equal to ${JSON.stringify(conversation)}`);
+        //console.log(`conversation is equal to ${JSON.stringify(conversation)}`);
     }
     const messages = conversation.messages.filter((message) => {
       if ( message.type === 'image ') {
