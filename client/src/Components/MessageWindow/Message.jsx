@@ -13,27 +13,23 @@ export default function Message(props) {
   const [message, setMessage] = useState('');
   const handleChange = (event) => {
     setMessage(event.target.value)
-
-}
+  }
   const handleKeyDown =  (event) => {
     if (event.key === 'Enter') {
-      console.log(event.target.value)
       setNewMessage({...newMessage,content:event.target.value})
     }
   };
   useEffect(() => {
-    console.log(`sender inside message is equal to :${props.sender}`);
     setNewMessage(prevNewMessage => ({
       ...prevNewMessage,
       sender: props.sender
     }));
-  },[props.sender])
+    },[props.sender]);
+
   useEffect(()=>{
-    console.log(`new message is equal to ${JSON.stringify(newMessage)}`);
     if(newMessage.content){
       socket.emit('new-message', newMessage);
     }
-
   },[newMessage]);
   return (
     <div className = 'user_input'>
