@@ -10,7 +10,7 @@ const { getFriendList } = require('./controllers/getControllers.js');
 app.use(express.json());
 // app.use(compression());
 
-const DIST_DIR = path.join(__dirname, '../client/dist/bundle.js');
+const DIST_DIR = path.join(__dirname, '../client/dist');
 app.use(express.static(DIST_DIR));
 
 app.get('/', (req, res) => {
