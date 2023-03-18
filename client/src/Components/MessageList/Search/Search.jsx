@@ -62,7 +62,7 @@ export function Search (props) {
           <input data-testid="search-input" type="text" name="searchQuery" placeholder="Search Friend" onChange={submitSearch}/>
         </label>
       </form>
-      {tileStatus ? <SearchTile userInfo={userInfo} handleSelection={handleSelection}/> : null}
+      {tileStatus ? <SearchTile userId={userId} friendInfo={userInfo} handleSelection={handleSelection}/> : null}
     </div>
   )
 }

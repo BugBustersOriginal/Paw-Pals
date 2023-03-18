@@ -6,9 +6,9 @@ export function SearchTile (props) {
 
   return (
     <div>
-      {props.userInfo.friend ?
-      <SelectFriend userInfo={props.userInfo} handleSelection={props.handleSelection}/> :
-      <FriendRequest userInfo={props.userInfo} handleSelection={props.handleSelection}/>}
+      {props.friendInfo.friend ?
+      <SelectFriend userId={props.userId} friendInfo={props.friendInfo} handleSelection={props.handleSelection}/> :
+      <FriendRequest userId={props.userId} friendInfo={props.friendInfo} handleSelection={props.handleSelection}/>}
     </div>
   )
 
