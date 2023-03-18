@@ -5,7 +5,8 @@ module.exports = {
       bundle: path.join(__dirname, '/client/src/index.jsx')},
    output: {
       path: path.join(__dirname, '/client/dist'),
-      filename: 'bundle.js'
+      filename: 'bundle.js',
+      publicPath: '/',
    },
    plugins: [
    ],
