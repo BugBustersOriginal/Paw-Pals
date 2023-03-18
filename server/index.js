@@ -22,7 +22,10 @@ app.get('/*', (req, res) => {
   });
 })
 
-app.get('/getFriendList', getControllers.getFriendList);
+// app.get('/getFriendList', getControllers.getFriendList);
+// app.get('/friendList', (req, res) => {
+//   console.log('getFriendList route');
+// });
 
 app.post('/searchFriend', (req, res) => {
   console.log('search param: ', req.body.searchQuery);
