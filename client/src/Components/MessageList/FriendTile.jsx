@@ -1,8 +1,8 @@
 import React from 'react';
 
 const FriendTile = (props) => {
-  console.log(props, 'line 4 FriendTile')
-  console.log(props)
+  // console.log(props, 'line 4 FriendTile')
+  // console.log(props)
 
   return (
     <div>
