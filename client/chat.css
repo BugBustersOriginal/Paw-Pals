@@ -123,3 +123,7 @@ button[type="submit"]  {
   text-decoration: underline;
   margin-top: 5vh;
 }
+
+.forgot {
+  margin-top: .5rem;
+}
