@@ -9,7 +9,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(compression());
 
-const DIST_DIR = path.join(__dirname, '../client/dist');
+const DIST_DIR = path.join(__dirname, '/../client/dist');
 app.use(express.static(DIST_DIR));
 
 app.get('/', (req, res) => {
