@@ -26,7 +26,8 @@ export class App extends Component {
   render() {
     if(this.state.chatView){
       return (
-          <MessageWindow/>
+        <div></div>
+          // <MessageWindow/>
       )}
     else{
       return (
@@ -35,9 +36,9 @@ export class App extends Component {
           <button onClick={() => {this.chatBtn()}}>
           Chat Window
         </button>
-          <FriendTile />
+          {/* <FriendTile />
           <FriendTileList />
-          {/* <Map/> */}
+          <Map/> */}
         </div>
       )
 
