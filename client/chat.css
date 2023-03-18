@@ -51,14 +51,22 @@
 
 .msg_box{
   position: relative;
-  top: 75%;
+  /*top: 75%;*/
   border: 2px solid #111010;
   background-color: #f9f9f9;
   border-radius: 5px;
-  padding: 5px;
+  padding: 10px;
   width: 90%;
-  height: 5%;
+  height: auto;
   transition: 0.3s all;
+  display:block;
+  overflow-wrap: break-word;
+}
+
+.message-container {
+  padding-top: 20px;
+  overflow-y: scroll;
+  height:400px;
 }
 
 /*Login and Register*/
