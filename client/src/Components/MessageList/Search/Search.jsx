@@ -37,7 +37,13 @@ export function Search (props) {
       selectedUser: username
     }
     // console.log('selectionObj: ', selectionObj);
-    axios.post('/sendFriendRequest', selectionObj);
+    axios.post('/sendFriendRequest', selectionObj)
+    .then((result) => {
+      console.log('successful friendRequest');
+    })
+    .catch((err) => {
+      console.error(err);
+    })
   }
 
 
@@ -54,7 +60,6 @@ export function Search (props) {
       <form>
         <label>
           <input data-testid="search-input" type="text" name="searchQuery" placeholder="Search Friend" onChange={submitSearch}/>
-          {/* <button data-testid="submit-button" type="submit" name="search" onClick={() => submitSearch}>Search</button> */}
         </label>
       </form>
       {tileStatus ? <SearchTile userInfo={userInfo} handleSelection={handleSelection}/> : null}
