@@ -14,7 +14,7 @@ const {setPhotoExpiration,sendMessage}=('./db/helperFunctions.js')
 app.use(express.json());
 const io = new Server(server, {
   cors :{
-    origin : 'http://localhost:1234',
+    origin : 'http://localhost:3033',
     methods:['GET','POST','PUT']
   }
 })
@@ -82,11 +82,17 @@ io.on('connection', (socket) => {
   console.log('a user connected');
    // Handle new message
    socket.on('new-message', async (data) => {
+    if(data !== ''){
+      console.log("data", data)
     // Save message to database
-    const message = await Message.create(data);
+    // const message = await Message.create(data);
 
-    // Broadcast message to all users in the conversation
-    socket.to(data.conversationId).emit('new-message', message);
+    // // Broadcast message to all users in the conversation
+    // socket.to(data.conversationId).emit('new-message', message);
+    }
+
+
+
   });
 
   // Handle user joining conversation
