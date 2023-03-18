@@ -9,7 +9,7 @@ export function FriendRequest (props) {
     //make an axios call to send a friend request
     let selectionObj = {
       userId: props.userId,
-      selectedUser: props.friendInfo.userName
+      selectedUser: props.friendInfo.userId
     }
 
     console.log('selectionObj: ', selectionObj);
@@ -29,7 +29,7 @@ export function FriendRequest (props) {
       <img className="friend-request-icon" src="https://cdn-icons-png.flaticon.com/512/3602/3602500.png"/> :
       <img className="friend-request-icon" src="https://cdn-icons-png.flaticon.com/512/4458/4458569.png" onClick={handleFriendRequest}/>}
       <img className="user-photo-thumbnail" src={props.friendInfo.thumbnailUrl}/>
-      <p>@{props.friendInfo.userName}</p>
+      <p>@{props.friendInfo.userId}</p>
     </div>
   )
 }

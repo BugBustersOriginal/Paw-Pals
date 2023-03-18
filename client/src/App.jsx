@@ -25,7 +25,7 @@ export function App()  {
   }
 
   //sample userId data to pass down to other components
-  let userId = '1234';
+  let userId = 'testUser';
 
   return (
     <div className="App">

@@ -27,9 +27,7 @@ app.get('/*', (req, res) => {
 //   console.log('getFriendList route');
 // });
 
-app.post('/searchFriend', (req, res) => {
-  console.log('search param: ', req.body.searchQuery);
-})
+app.post('/searchFriend', getControllers.getFriendList);
 
 app.post('/sendFriendRequest', postControllers.sendFriendRequest);
 

@@ -5,23 +5,34 @@ import {SearchTile} from './SearchTile.jsx';
 export function Search (props) {
 
   const [search, setSearch] = useState('');
-  const [tileStatus, setTileStatus] = useState(false)
+  // const [tileStatus, setTileStatus] = useState(false)
+  const [searchResult, setSearchResult] = useState({});
+
+
   let userId = props.userId;
 
   useEffect(() => {
-    if (!search) {
-      setTileStatus(false);
-    }
-    //refactor when mongodb database is set up for searching username
-    if (search === 'tivo') {
-      setTileStatus(true)
-    }
-    if (search !== 'tivo') {
-      setTileStatus(false);
-    }
+    // if (!search) {
+    //   setTileStatus(false);
+    // }
+    // //refactor when mongodb database is set up for searching username
+    // if (search === 'tivo') {
+    //   setTileStatus(true)
+    // }
+    // if (search !== 'tivo') {
+    //   setTileStatus(false);
+    // }
     /////////////
     setTimeout(() => {
-      axios.post('/searchFriend', {searchQuery: search});
+      axios.post('/searchFriend', {searchQuery: search})
+      .then((result) => {
+        let searchResult = result.data;
+        // console.log('search result: ', searchResult);
+        setSearchResult(searchResult);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
     }, 500);
   }, [search])
 
@@ -31,28 +42,15 @@ export function Search (props) {
     // after sucessful search, change tileStatus to true
   }
 
-  const handleSelection = (username) => {
-    let selectionObj = {
-      userId: userId,
-      selectedUser: username
-    }
-    // console.log('selectionObj: ', selectionObj);
-    axios.post('/sendFriendRequest', selectionObj)
-    .then((result) => {
-      console.log('successful friendRequest');
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-  }
+
 
 
 /// sample userInfo
-  const userInfo = {
-    thumbnailUrl: 'https://hs.sbcounty.gov/cn/Photo%20Gallery/_w/Sample%20Picture%20-%20Koala_jpg.jpg',
-    userName: 'tivo',
-    friend: false
-  }
+  // const userInfo = {
+  //   thumbnailUrl: 'https://hs.sbcounty.gov/cn/Photo%20Gallery/_w/Sample%20Picture%20-%20Koala_jpg.jpg',
+  //   userName: 'tivo',
+  //   friendList: ["superman","shadow","batman"]
+  // }
 
 
   return (
@@ -62,7 +60,7 @@ export function Search (props) {
           <input data-testid="search-input" type="text" name="searchQuery" placeholder="Search Friend" onChange={submitSearch}/>
         </label>
       </form>
-      {tileStatus ? <SearchTile userId={userId} friendInfo={userInfo} handleSelection={handleSelection}/> : null}
+      {searchResult ? <SearchTile searchResult={searchResult} userId={userId} /> : null}
     </div>
   )
 }
