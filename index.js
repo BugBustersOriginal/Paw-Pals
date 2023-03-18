@@ -78,20 +78,35 @@ app.get("/conversations/:userId", async (req, res) => {
   }
 });
 
-app.get("/friendList", async (req, res) => {
-  console.log('checking friendList')
-  let userId = req.body.userId;
-  console.log('this is the userId: ', userId);
+// app.get("/friendList", async (req, res) => {
+//   console.log('checking friendList')
+//   let userId = req.body.userId;
+//   console.log('this is the userId: ', userId);
+//   try {
+//     const friendList = await FriendList.find({
+//       userId: { $elemMatch: { $eq: userId } }
+//     });
+//     res.status(200).send(JSON.stringify(friendList));
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send("Server error");
+//   }
+// });
+
+app.post('/friendRequest', async (req, res) => {
+  let friendId = req.body.data.friendRequestObj.selectedUser;
+  let userId = req.body.data.friendRequestObj.userId;
+  let filter = {userId: friendId};
+  let update = {$push: { requests: {friendId: userId}  }};
+  console.log('got friendRequest in server: ', req.body.data.friendRequestObj);
   try {
-    const friendList = await FriendList.find({
-      userId: { $elemMatch: { $eq: userId } }
-    });
-    res.status(200).send(JSON.stringify(friendList));
+    const friend = await FriendList.updateOne(filter, update)
+    res.json(friend);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server error");
+    res.status(500).send(err);
   }
-});
+})
 
 io.on('connection', (socket) => {
   console.log('a user connected');
