@@ -26,7 +26,7 @@ export default function MessageWindow(props) {
     // prevents memory leaks, this function is executed when the component unmounts
     return () => {
       socket.off("get-conversation");
-      socker.off('conversation')
+      socket.off('conversation')
 
     }
   },[])
