@@ -5,7 +5,7 @@ import "../../../../client/chat.css";
 export default function MessageBox(props) {
 
   useEffect(() => {
-    console.log(props.content)
+    //console.log(props.content)
   },[])
 
 

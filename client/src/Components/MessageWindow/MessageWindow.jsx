@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {socket} from '../../socket.js'
 import "../../../../client/chat.css"
 import Message from '../MessageWindow/Message.jsx'
@@ -12,32 +12,31 @@ export default function MessageWindow(props) {
   const [mappedMessages, setMappedMessages] = useState([]);
   const [sender, setSender] = useState(1);
   const senderInputRef = useRef(null);
-  const messageContainerRef = useRef(null);
 
   useEffect(() => {
     socket.emit("join-conversation", conversationID);
-    socket.emit('get-conversation', conversationID);
     socket.on('conversation', (data) => {
       setConversation([...data]);
-    })
+    });
+    socket.emit('get-conversation', conversationID);
     socket.on('new-message', (data) => {
-      setMappedMessages(prevMessages => [
-        ...prevMessages,
-        <MessageBox key={data._id} sender={data.sender} content={data.content} />
-      ]);
-    })
+      setConversation(prevConversation => [...prevConversation, data]);
+    });
     // prevents memory leaks, this function is executed when the component unmounts
     return () => {
       socket.off("get-conversation");
-      socket.off('new-message');
+      socker.off('conversation')
+
     }
-  },[mappedMessages]) // change to props.conversationID
+  },[])
+
   useEffect(()=> {
+    console.log(`i'm setting the new message!`)
     if(conversation.length !== 0) {
-      const newMappedMessages = conversation.map((message) => {
+      const mappedMessages = conversation.map((message) => {
         return <MessageBox key={message._id} sender={message.sender} content={message.content} />;
       });
-      setMappedMessages(newMappedMessages);
+      setMappedMessages(mappedMessages);
     }
   },[conversation, sender])
 
