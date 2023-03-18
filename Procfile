@@ -1,1 +1,1 @@
-web: node server/index.js
+web: webpack --mode development --watch"
