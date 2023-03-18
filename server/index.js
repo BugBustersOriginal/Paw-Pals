@@ -6,7 +6,7 @@ const app = express();
 const path = require('path');
 const PORT = process.env.PORT;
 
-app.use(express.json());
+// app.use(express.json());
 // app.use(compression());
 
 const DIST_DIR = path.join(__dirname, '../client/dist');
