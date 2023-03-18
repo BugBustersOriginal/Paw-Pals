@@ -5,6 +5,7 @@ const compression = require('compression');
 const app = express();
 const path = require('path');
 const PORT = process.env.PORT;
+const { getFriendList } = require('./controllers/getControllers.js');
 
 app.use(express.json());
 app.use(compression());
@@ -12,9 +13,15 @@ app.use(compression());
 const DIST_DIR = path.join(__dirname, '../client/dist');
 app.use(express.static(DIST_DIR));
 
-app.get('/', (req, res) => {
-  res.send('ok');
+app.get('/*', (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, '../client/dist/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
 })
+
+app.get('/getFriendList', getFriendList);
 
 app.post('/searchFriend', (req, res) => {
   console.log('search param: ', req.body.searchQuery);

@@ -21,6 +21,28 @@
   margin: 1em .5em 1em .5em;
 }
 
+.friend-tile-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border: 1px solid;
+  border-color: black;
+  background-color: rgb(190, 187, 187);
+}
+
+.friend-tile-username {
+
+}
+
+.friend-tile-datestamp {
+
+
+}
+
+.friend-tile-message {
+
+}
+
 .arrow {
   margin-left: 10em;
   border: solid black;
