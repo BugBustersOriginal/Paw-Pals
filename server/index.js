@@ -8,7 +8,7 @@ const PORT = process.env.PORT;
 const { getFriendList } = require('./controllers/getControllers.js');
 
 app.use(express.json());
-app.use(compression());
+// app.use(compression());
 
 const DIST_DIR = path.join(__dirname, '../client/dist');
 app.use(express.static(DIST_DIR));
