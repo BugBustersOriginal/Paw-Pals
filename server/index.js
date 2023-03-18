@@ -10,10 +10,10 @@ const { getFriendList } = require('./controllers/getControllers.js');
 app.use(express.json());
 // app.use(compression());
 
-const DIST_DIR = path.join(__dirname, '../client/dist');
+const DIST_DIR = path.join(__dirname, '../client/dist/bundle.js');
 app.use(express.static(DIST_DIR));
 
-app.get('/*', (req, res) => {
+app.get('/', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../client/dist/index.html'), function(err) {
     if (err) {
       res.status(500).send(err);
