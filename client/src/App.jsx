@@ -17,7 +17,7 @@ export function App()  {
 
     if(e.target.innerText === 'Login') {
       navigate("/");
-    } else if (e.target.innerText === 'FriendTileList') {
+    } else if (e.target.innerText === 'FriendList') {
       navigate("/home");
     } else {
       navigate(`/${(e.target.innerText).toLowerCase()}`);
