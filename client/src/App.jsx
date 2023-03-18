@@ -34,7 +34,7 @@ export function App()  {
       <div className="devButtons">
         <button onClick={(e) => handleDevClick(e)}>Login</button>
         <button onClick={(e) => handleDevClick(e)}>Register</button>
-        <button onClick={(e) => handleDevClick(e)}>FriendTile</button>
+        {/* <button onClick={(e) => handleDevClick(e)}>FriendTile</button> */}
         <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
         <button onClick={(e) => handleDevClick(e)}>Map</button>
         <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>

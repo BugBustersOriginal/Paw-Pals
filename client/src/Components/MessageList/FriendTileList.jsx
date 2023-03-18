@@ -89,11 +89,11 @@ const FriendTileList = (props) => {
         imageNotificationStatus = {messages.imageNotificationStatus}
         /> */}
 
-      {profileInfo.map( (profileObj, index) => <ProfileInfo
+      {/* {profileInfo.map( (profileObj, index) => <ProfileInfo
       key={index}
       profileIcon = {profileObj.profileIcon}
       username = {profileObj.username}
-      />)}
+      />)} */}
 
       {mostRecentMessages.map( (messageObj, index) => <MessageInfo
       key = {index}
