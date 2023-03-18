@@ -5,18 +5,26 @@ function Login() {
 
   const navigate = useNavigate();
 
-  function handleLogin () {
+  function handleSubmit () {
     navigate("/home");
   };
 
+  function handleClick () {
+    navigate("/register");
+  };
+
   return(
-    <form>
-      <label for="username">username</label>
-      <input type="text" placeholder="username" id="username" name="username" />
-      <label for="password">password</label>
-      <input type="password" placeholder="password" id="password" name="password" />
-      <button onClick={handleLogin} >Log In</button>
-    </form>
+    <div className="auth-form-container">
+      <h2>Log In</h2>
+      <form className="login-form" onSubmit={handleSubmit} >
+        <label htmlFor="username">Username</label>
+        <input type="text" placeholder="Username" id="username" name="username" />
+        <label htmlFor="password">Password</label>
+        <input type="password" placeholder="Password" id="password" name="password" />
+        <button type="submit">Log In</button>
+      </form>
+      <button className="link-button" onClick={handleClick} >Don't have an account? Register here</button>
+    </div>
   );
 }
 
