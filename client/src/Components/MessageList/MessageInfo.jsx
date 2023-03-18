@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 //import axios from 'axios'; //I don't think I will need this since props provided from message chat history
 
 const MessageInfo = (props) => {
-  console.log(props, 'line 5 FriendTile')
+  // console.log(props, 'line 5 FriendTile')
   /**
    * note: the state will change based on the message chat history so will need props from message chat history component
    * questions:
@@ -23,16 +23,16 @@ const MessageInfo = (props) => {
   // }
 
   return (
-    <div className="friend-tile">
-      <li>
-        <ul>{props.profileIcon}</ul>
-        <ul>username: {props.username}</ul>
-        <ul>{props.datestamp}</ul>
-        <ul>message: {props.message}</ul>
-        <ul>{props.image}</ul>
-        <ul>message notification: {props.messageNotificationStatus}</ul>
-        <ul>image notification: {props.imageNotificationStatus}</ul>
-      </li>
+    <div className="friend-tile-container">
+
+        <div>{props.profileIcon}</div>
+        <div className="friend-tile-username">username: {props.username}</div>
+        <div className="friend-tile-datestamp">{props.datestamp}</div>
+        <div>message: {props.message}</div>
+        <div>{props.image}</div>
+        {/* <div>message notification: {props.messageNotificationStatus}</div>
+        <div>image notification: {props.imageNotificationStatus}</div> */}
+
 
     </div>
   )
