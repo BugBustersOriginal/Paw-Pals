@@ -36,6 +36,10 @@ export function App()  {
     }
   }
 
+  //sample userId data to pass down to other components
+  let userId = 'testUser';
+
+
 
   useEffect(() => {
     hideLogoNav(location.pathname);
@@ -55,7 +59,7 @@ export function App()  {
       </div>
 
       <Routes>
-        <Route   path="/home"  element= {<FriendTileList />}  />
+        <Route   path="/home"  element= {<FriendTileList userId={userId}/>}  />
         <Route   path="/"  element= {<Login />}  />
         <Route   path="/login"  element= {<Login />}  />
         <Route   path="/register"  element= {<Register />}  />
