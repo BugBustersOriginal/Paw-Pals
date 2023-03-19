@@ -14,10 +14,10 @@ export function App()  {
   const navigate = useNavigate();
   const location = useLocation();
   let history = createBrowserHistory();
-  let hide = false;
+  const [hide, setHidden] = useState(false);
 
   function handleDevClick (e) {
-    if(e.target.innerText === 'Login') {
+    if(e.target.innerText === 'Logout') {
       navigate("/");
     } else if (e.target.innerText === 'FriendTileList') {
       navigate("/home");
@@ -29,26 +29,25 @@ export function App()  {
   }
 
   function hideLogoNav (pathname) {
-    console.log(pathname === '/');
-    if(pathname === '/') {
-      hide = true;
+    if(['/', '/login', '/register'].includes(pathname)) {
+      setHidden(false);
+    } else {
+      setHidden(true);
     }
   }
 
 
-
   useEffect(() => {
-    console.log(hide);
     hideLogoNav(location.pathname);
   }, [location]);
 
+
   return (
-    <div className="App">
-      <img className="logo" src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
-      <h4 >Navigation</h4>
-      <div className="devButtons" >
-        <button onClick={(e) => handleDevClick(e)}>Login</button>
-        <button onClick={(e) => handleDevClick(e)}>Register</button>
+    <div className="App" onClick={() => hideLogoNav(location.pathname)}>
+      <img hidden={hide} className="logo" src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
+      <h4 hidden={!hide}>Navigation</h4>
+      <div className="devButtons" hidden={!hide}>
+        <button onClick={(e) => handleDevClick(e)}>Logout</button>
         {/*<img src="./fluffyDog.webp" alt="fluffy doggy"><button onClick={(e) => handleDevClick(e)}>FriendTile</button> */}
         <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
         <button onClick={(e) => handleDevClick(e)}>Map</button>
