@@ -19,6 +19,18 @@ export default function Message(props) {
       setNewMessage({...newMessage,content:event.target.value})
     }
   };
+
+  const handleNewMessage = async () => {
+    try {
+      if (newMessage.content) {
+        await socket.emit('new-message', newMessage);
+        setMessage('');
+      }
+    } catch (err) {
+      console.error(`errors while emitting new-message ${err}`);
+    }
+  }
+
   useEffect(() => {
     setNewMessage(prevNewMessage => ({
       ...prevNewMessage,
@@ -28,7 +40,7 @@ export default function Message(props) {
 
   useEffect(()=>{
     if(newMessage.content){
-      socket.emit('new-message', newMessage);
+      handleNewMessage()
     }
   },[newMessage]);
   return (
@@ -40,6 +52,7 @@ export default function Message(props) {
             onChange={handleChange}
             onKeyDown={handleKeyDown}
          />
+         <input type="file" accept="image/*" />
     </div>
   )
 }

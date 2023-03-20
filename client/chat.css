@@ -29,11 +29,18 @@
   row-gap: 50px;
   margin: auto;
   border: 2px solid #dedede;
-  background-color: #f1f1f1;
+  background-color: rgb(252,255,178);
   border-radius: 5px;
   padding: 10px;
   width: 95%;
   height: 95%;
+  text-align:center;
+}
+
+/*logo*/
+
+.logo {
+  height: 20vh;
 }
 
 .write_message {
@@ -61,6 +68,7 @@
   transition: 0.3s all;
   display:block;
   overflow-wrap: break-word;
+  display:inline-block
 }
 
 .message-container {
@@ -114,4 +122,8 @@ button[type="submit"]  {
   color: #7439db;
   text-decoration: underline;
   margin-top: 5vh;
+}
+
+.forgot {
+  margin-top: .5rem;
 }
