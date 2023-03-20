@@ -37,6 +37,12 @@
   text-align:center;
 }
 
+/*logo*/
+
+.logo {
+  height: 20vh;
+}
+
 .write_message {
   position: relative;
   top: 75%;
@@ -116,4 +122,8 @@ button[type="submit"]  {
   color: #7439db;
   text-decoration: underline;
   margin-top: 5vh;
+}
+
+.forgot {
+  margin-top: .5rem;
 }
