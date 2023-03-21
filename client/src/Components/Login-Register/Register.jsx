@@ -24,7 +24,9 @@ function Register() {
       { headers: {
         "Access-Control-Allow-Origin": true
       }});
+      //for testing
       console.log(guest.data.reminder);
+
       if (guest.data.alert == undefined) {
         //render login page
         navigate(guest.data.url);
