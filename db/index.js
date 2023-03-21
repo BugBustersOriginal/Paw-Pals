@@ -43,7 +43,8 @@ let friendListSchema = new mongoose.Schema({
   userId: String,
   thumbnailUrl: String,
   friends: [String],
-  requests: []
+  incomingRequests: [],
+  sentRequest: []
 })
 
 let Message = mongoose.model('Messages', messagesSchema);

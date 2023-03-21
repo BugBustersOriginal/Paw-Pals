@@ -111,7 +111,8 @@ app.post('/friendRequest', async (req, res) => {
   let friendId = req.body.data.friendRequestObj.selectedUser;
   let userId = req.body.data.friendRequestObj.userId;
   let filter = {userId: friendId};
-  let update = {$push: { requests: {friendId: userId}  }};
+  let update = {$push: { incomingRequests: {friendId: userId}  }};
+  // let pendingRequest = {$push: {}}
   // console.log('got friendRequest in server: ', req.body.data.friendRequestObj);
   try {
     const friend = await FriendList.updateOne(filter, update)
