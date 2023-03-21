@@ -31,6 +31,8 @@ app.post('/searchFriend', getControllers.getFriendList);
 
 app.post('/sendFriendRequest', postControllers.sendFriendRequest);
 
+app.post('/conversations/:userId', getControllers.getConversations);
+
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 })
