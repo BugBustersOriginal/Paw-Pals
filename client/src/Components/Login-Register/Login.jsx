@@ -23,6 +23,7 @@ function Login() {
         <input type="password" placeholder="Password" id="password" name="password" />
         <button type="submit">Log In</button>
       </form>
+      <button className="link-button forgot">Forgot Password</button>
       <button className="link-button" onClick={handleClick} >Don't have an account? Register here</button>
     </div>
   );
