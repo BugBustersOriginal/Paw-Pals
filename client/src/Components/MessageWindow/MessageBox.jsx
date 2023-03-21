@@ -5,9 +5,9 @@ import "../../../../client/chat.css";
 export default function MessageBox(props) {
 
   return (
-    <div class ="msg_box">
-      <div class = 'username'>{props.sender}</div>
-      <div class = 'content'>{props.content}</div>
+    <div className ="msg_box">
+      <div className = 'username'>{props.sender}</div>
+      <div className = 'content'>{props.content}</div>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import "../../../../client/chat.css";
 import {socket} from '../../socket.js'
+import axios from 'axios'
 
 export default function Message(props) {
   const [newMessage, setNewMessage] = useState({
@@ -11,6 +12,7 @@ export default function Message(props) {
     test:true
   });
   const [message, setMessage] = useState('');
+  const [img, setImg] = useState('')
   const handleChange = (event) => {
     setMessage(event.target.value)
   }
@@ -31,6 +33,18 @@ export default function Message(props) {
     }
   }
 
+  const handleNewImg = (event) =>{
+    setImg(URL.createObjectURL(event.target.files[0]))
+  }
+
+  const handleSendImg = () =>{
+    console.log(img)
+    axios.post("http://127.0.0.1:3000/uploads").then((result) =>{
+      console.log(result)
+    })
+    setImg('')
+  }
+
   useEffect(() => {
     setNewMessage(prevNewMessage => ({
       ...prevNewMessage,
@@ -45,14 +59,33 @@ export default function Message(props) {
   },[newMessage]);
   return (
     <div className = 'user_input'>
+      <div>
        <textarea
-            class = "write_message"
+            className = "write_message"
             type="text"
             value={message}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
          />
-         <input type="file" accept="image/*" />
+        {img !== ''?
+        <div>
+            <img src={img}/>
+            <button onClick={
+              ()=>{
+                handleSendImg()
+              }
+            }>send snap</button>
+        </div>
+        : null}
+        </div>
+         <input
+          type="file"
+          accept="image/*"
+          onChange={
+            (event)=>{
+            handleNewImg(event)
+          }}
+          />
     </div>
   )
 }

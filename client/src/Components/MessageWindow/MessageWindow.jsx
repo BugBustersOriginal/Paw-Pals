@@ -18,6 +18,7 @@ export default function MessageWindow(props) {
     socket.emit("join-conversation", conversationID);
     socket.emit('get-conversation', conversationID);
     socket.on('conversation', (data) => {
+      console.log(data)
       setConversation([...data]);
     });
     socket.on('new-message', (data) => {
@@ -32,7 +33,7 @@ export default function MessageWindow(props) {
   },[])
 
   useEffect(()=> {
-    //console.log(`i'm setting the new message!`)
+    console.log(`i'm setting the new message!`)
     if(conversation.length !== 0) {
       const mappedMessages = conversation.map((message) => {
         return <MessageBox key={message._id} sender={message.sender} content={message.content} />;
@@ -59,7 +60,7 @@ export default function MessageWindow(props) {
   }
 
   return (
-  <div class = "window">
+  <div className = "window">
     Current User Id : {sender}
     <form> <input name ='userID' type = 'text' ref= {senderInputRef} /> <button onClick ={changeSender}>change user</button> </form>
     <div className="message-container" ref={messageContainerRef}>
