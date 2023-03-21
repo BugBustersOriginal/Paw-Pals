@@ -23,7 +23,7 @@ function Login() {
       const guest = await axios.post('http://127.0.0.1:8080/login', inputs,
       { withCredentials: true });
       //for testing
-      console.log(guest);
+      console.log(guest.data);
       if (guest.data.alert == undefined) {
         //render login page
         navigate(guest.data.url);
