@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import FriendTileList from '../MessageList/FriendTileList.jsx'
 
 function Register() {
 
@@ -31,6 +32,7 @@ function Register() {
         <button type="submit">Create Account</button>
       </form>
       <button className="link-button" onClick={handleClick} >Already have an account? Log in here</button>
+      <FriendTileList username={'MATestUser'} />
     </div>
   );
 }
