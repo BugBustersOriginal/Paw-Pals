@@ -10,6 +10,7 @@ export function SearchTile (props) {
   let userId = props.userId
   let userFriends = props.userFriends;
 
+
   useEffect(() => {
     if (userFriends.length) {
       if (userFriends.indexOf(friendInfo.userId) !== -1) {
@@ -27,7 +28,7 @@ export function SearchTile (props) {
     <div>
       {isFriend ?
       <SelectFriend userId={props.userId} friendInfo={friendInfo} handleSelection={props.handleSelection}/> :
-      <FriendRequest userId={props.userId} friendInfo={friendInfo} handleSelection={props.handleSelection}/>}
+      <FriendRequest userId={props.userId} friendInfo={friendInfo} pendingRequests={props.pendingRequests} handleSelection={props.handleSelection}/>}
     </div>
   )
 

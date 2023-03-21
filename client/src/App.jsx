@@ -18,6 +18,7 @@ export function App()  {
   const [hide, setHidden] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [userFriends, setUserFriends] = useState([]);
+  const [pendingRequests, setPendingRequests] = useState([]);
 
   function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
@@ -52,6 +53,7 @@ export function App()  {
       let userInfo = result.data;
       setUserInfo(userInfo);
       setUserFriends(userInfo.friends);
+      setPendingRequests(userInfo.sentRequest);
     })
     .catch((err) => {
       console.error(err);
@@ -75,7 +77,7 @@ export function App()  {
       </div>
 
       <Routes>
-        <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends}/>}  />
+        <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
         <Route   path="/"  element= {<Login />}  />
         <Route   path="/login"  element= {<Login />}  />
         <Route   path="/register"  element= {<Register />}  />
