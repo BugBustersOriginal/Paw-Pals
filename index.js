@@ -110,12 +110,14 @@ app.get("/friendList", async (req, res) => {
 app.post('/friendRequest', async (req, res) => {
   let friendId = req.body.data.friendRequestObj.selectedUser;
   let userId = req.body.data.friendRequestObj.userId;
-  let filter = {userId: friendId};
+  let friendFilter = {userId: friendId};
   let update = {$push: { incomingRequests: {friendId: userId}  }};
-  // let pendingRequest = {$push: {}}
+  let pendingRequest = {$push: {sentRequest: {friendId: friendId}}};
+  let userFilter = {userId: userId};
   // console.log('got friendRequest in server: ', req.body.data.friendRequestObj);
   try {
-    const friend = await FriendList.updateOne(filter, update)
+    const friend = await FriendList.updateOne(friendFilter, update)
+    const pending = await FriendList.updateOne(userFilter, pendingRequest)
     res.status(201).send();
   } catch (err) {
     console.error(err);
