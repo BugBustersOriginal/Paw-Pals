@@ -42,10 +42,10 @@ exports.getConversations = (req, res) => {
         }],
       messages: [{
         content: 'hi',
-        timestamp: '10am'
+        createdAt: '10am'
       }, {
         content: 'hello',
-        timestamp: '11am'
+        createdAt: '11am'
       }]
     },
     {
@@ -61,10 +61,10 @@ exports.getConversations = (req, res) => {
         }],
       messages: [{
         content: 'how are you',
-        timestamp: '1 pm'
+        createdAt: '1 pm'
       }, {
         content: 'fine',
-        timestamp: '2 pm'
+        createdAt: '2 pm'
       }]
     },
 

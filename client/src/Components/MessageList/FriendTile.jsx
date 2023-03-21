@@ -15,7 +15,7 @@ const FriendTile = (props) => {
         <div className="friend-tile-username">{otherParticipant.username}</div>
         <div>{otherParticipant.profileIcon}</div>
         <div>{latestMessage.content}</div>
-        <div className="friend-time-timestamp">{latestMessage.timestamp}</div>
+        <div className="friend-time-timestamp">{latestMessage.createdAt}</div>
     </div>
   )
 }
