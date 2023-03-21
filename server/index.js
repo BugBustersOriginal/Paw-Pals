@@ -14,6 +14,8 @@ app.use(compression());
 const DIST_DIR = path.join(__dirname, '../client/dist');
 app.use(express.static(DIST_DIR));
 
+app.get('/getUserInfo', getControllers.getUserInfo);
+
 app.get('/*', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../client/dist/index.html'), function(err) {
     if (err) {
@@ -22,12 +24,7 @@ app.get('/*', (req, res) => {
   });
 })
 
-// app.get('/getFriendList', getControllers.getFriendList);
-// app.get('/friendList', (req, res) => {
-//   console.log('getFriendList route');
-// });
-
-app.post('/searchFriend', getControllers.getFriendList);
+app.post('/searchFriend', postControllers.getFriendList);
 
 app.post('/sendFriendRequest', postControllers.sendFriendRequest);
 

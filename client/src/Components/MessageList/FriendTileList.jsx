@@ -72,7 +72,7 @@ const FriendTileList = (props) => {
 
   return (
     <div>
-      <Search userId={props.userId}/>
+      <Search userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId}/>
       FriendTileList
 
       {/* <FriendProfileInfo

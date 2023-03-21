@@ -8,29 +8,39 @@ export function SearchTile (props) {
 
   let friendInfo = props.searchResult;
   let userId = props.userId
-  console.log('current user: ', userId)
-  console.log('friend info: ', friendInfo)
+  let userFriends = props.userFriends;
 
-  // console.log(friendInfo.friendList.indexOf(userId));
-  if (friendInfo.friendList) {
-    console.log('friend?', friendInfo.friendList.indexOf(userId));
+  // console.log('userFriends search tile: ', userFriends);
+  // console.log('indexOf: ', userFriends.indexOf(userId));
+  // console.log('friend info: ', friendInfo);
+      // console.log('friend indexOf: ', friendList.indexOf(friendInfo.userId));
+
+  const checkFriendStatus = (friendList) => {
+    if (friendList.length) {
+      // if (friendList.indexOf(friendInfo.userId) === 1) {
+      //   setIsFriend(true);
+      // } else {
+      //   setIsFriend(false);
+      // }
+      // console.log('friend indexOf: ', friendList.indexOf(friendInfo.userId));
+    }
+
+    // console.log('friend: ', friendInfo);
   }
 
-  // if (props.friendInfo.friendList.length) {
-  //   if (props.friendInfo.friendList.indexOf(userId)) {
-  //     console.log('is friend');
-  //   }
-  // }
-
-  // if (props.friendList) {
-  //   console.log('find result', friendList.indexOf(userId));
-  //   // if (friendList.indexOf(userId)) {
-  //   //   setIsFriend(true);
-  //   // }
-  // }
-
-
-
+  useEffect(() => {
+    // checkFriendStatus(userFriends);
+    if (userFriends.length) {
+      if (userFriends.indexOf(friendInfo.userId) !== -1) {
+        console.log('is friends');
+        setIsFriend(true);
+      } else {
+        console.log('is not friends');
+        setIsFriend(false);
+      }
+      // console.log('friend indexOf: ', friendList.indexOf(friendInfo.userId));
+    }
+  },[friendInfo])
 
   return (
     <div>

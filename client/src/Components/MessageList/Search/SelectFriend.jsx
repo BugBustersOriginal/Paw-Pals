@@ -11,10 +11,10 @@ export function SelectFriend (props) {
   }
 
   return (
-    <div class="select-friend-tile" data-testid="search-tile">
+    <div className="select-friend-tile" data-testid="search-tile">
       <input type="checkbox" name="select" value="true" onClick={handleClick}/>
-      <img class="user-photo-thumbnail" src={props.friendInfo.thumbnailUrl}/>
-      <p>@{props.userInfo.userName}</p>
+      <img className="user-photo-thumbnail" src={props.friendInfo.thumbnailUrl}/>
+      <p>@{props.friendInfo.userId}</p>
       {arrow ? <span class="arrow right" onClick={() => props.handleSelection(props.friendInfo.userId)}></span> : null}
     </div>
   )

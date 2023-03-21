@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import MessageWindow from './Components/MessageWindow/MessageWindow.jsx'
 import { Route, Routes, useNavigate, useLocation, withRouter } from 'react-router-dom';
 import { createBrowserHistory } from "history";
@@ -15,6 +16,8 @@ export function App()  {
   const location = useLocation();
   let history = createBrowserHistory();
   const [hide, setHidden] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+  const [userFriends, setUserFriends] = useState([]);
 
   function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
@@ -42,6 +45,19 @@ export function App()  {
 
 
   useEffect(() => {
+    // axios call to get userInfo from MongoDB
+    axios.get('/getUserInfo', {params: {userId: userId} })
+    .then((result) => {
+      // console.log('got userInfo: ', result.data);
+      let userInfo = result.data;
+      setUserInfo(userInfo);
+      setUserFriends(userInfo.friends);
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+
+
     hideLogoNav(location.pathname);
   }, [location]);
 
@@ -59,7 +75,7 @@ export function App()  {
       </div>
 
       <Routes>
-        <Route   path="/home"  element= {<FriendTileList userId={userId}/>}  />
+        <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends}/>}  />
         <Route   path="/"  element= {<Login />}  />
         <Route   path="/login"  element= {<Login />}  />
         <Route   path="/register"  element= {<Register />}  />
