@@ -10,26 +10,7 @@ export function SearchTile (props) {
   let userId = props.userId
   let userFriends = props.userFriends;
 
-  // console.log('userFriends search tile: ', userFriends);
-  // console.log('indexOf: ', userFriends.indexOf(userId));
-  // console.log('friend info: ', friendInfo);
-      // console.log('friend indexOf: ', friendList.indexOf(friendInfo.userId));
-
-  const checkFriendStatus = (friendList) => {
-    if (friendList.length) {
-      // if (friendList.indexOf(friendInfo.userId) === 1) {
-      //   setIsFriend(true);
-      // } else {
-      //   setIsFriend(false);
-      // }
-      // console.log('friend indexOf: ', friendList.indexOf(friendInfo.userId));
-    }
-
-    // console.log('friend: ', friendInfo);
-  }
-
   useEffect(() => {
-    // checkFriendStatus(userFriends);
     if (userFriends.length) {
       if (userFriends.indexOf(friendInfo.userId) !== -1) {
         console.log('is friends');
@@ -38,7 +19,7 @@ export function SearchTile (props) {
         console.log('is not friends');
         setIsFriend(false);
       }
-      // console.log('friend indexOf: ', friendList.indexOf(friendInfo.userId));
+
     }
   },[friendInfo])
 
