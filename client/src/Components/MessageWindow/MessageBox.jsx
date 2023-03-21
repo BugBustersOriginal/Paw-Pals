@@ -12,11 +12,12 @@ export default function MessageBox(props) {
   })
 
   return (
-    <div className ={`msg_box${isSender? '.sent':''}`}>
+    <div className ={`msg_box${isSender? ' sent':''}`}>
+      <div>
+      <div className={`line${isSender? ' sent':''}`}></div>
       <div className = 'username'>{isSender? 'me': props.sender}</div>
-      <div className= {`line${isSender? '.sent':''}`}></div>
-      <div className= {`line.sent`}></div>
       <div className = 'content'>{props.content}</div>
+      </div>
     </div>
   )
 }
