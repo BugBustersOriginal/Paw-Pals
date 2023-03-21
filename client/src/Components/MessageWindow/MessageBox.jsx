@@ -4,10 +4,19 @@ import "../../../../client/chat.css";
 
 export default function MessageBox(props) {
 
+  const [isSender, setIsSender] =useState(false)
+
+  useEffect (() => {
+    setIsSender(props.sender.toString() === props.currentUser.toString())
+    console.log(`props.sender is equal to ${props.sender} while props.currentUser is equal to ${props.currentUser} checking truth is ${props.sender === props.currentUser}`)
+  })
+
   return (
-    <div class ="msg_box">
-      <div class = 'username'>{props.sender}</div>
-      <div class = 'content'>{props.content}</div>
+    <div className ={`msg_box${isSender? '.sent':''}`}>
+      <div className = 'username'>{isSender? 'me': props.sender}</div>
+      <div className= {`line${isSender? '.sent':''}`}></div>
+      <div className= {`line.sent`}></div>
+      <div className = 'content'>{props.content}</div>
     </div>
   )
 }

@@ -35,7 +35,8 @@ export default function MessageWindow(props) {
     //console.log(`i'm setting the new message!`)
     if(conversation.length !== 0) {
       const mappedMessages = conversation.map((message) => {
-        return <MessageBox key={message._id} sender={message.sender} content={message.content} />;
+        console.log(`message inside useeffect is equal to ${message}`);
+        return <MessageBox key={message._id} sender={message.sender} content={message.content} currentUser ={sender}/>;
       });
       setMappedMessages(mappedMessages);
     }

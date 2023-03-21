@@ -25,6 +25,14 @@
   padding-bottom: 0.5rem;
 }
 
+
+
+/*logo*/
+
+.logo {
+  height: 20vh;
+}
+/* Message Window */
 .window {
   row-gap: 50px;
   margin: auto;
@@ -36,13 +44,6 @@
   height: 95%;
   text-align:center;
 }
-
-/*logo*/
-
-.logo {
-  height: 20vh;
-}
-
 .write_message {
   position: relative;
   top: 75%;
@@ -57,19 +58,64 @@
 }
 
 .msg_box{
-  position: relative;
+  /* position: relative; */
   /*top: 75%;*/
-  border: 2px solid #111010;
-  background-color: #f9f9f9;
-  border-radius: 5px;
+  /* border: 2px solid #111010; */
+  /* background-color: #f9f9f9; */
+  /* border-radius: 5px;
   padding: 10px;
   width: 90%;
   height: auto;
   transition: 0.3s all;
   display:block;
   overflow-wrap: break-word;
-  display:inline-block
+  display:inline-block;
+  border-top-right-radius: 20px;
+  text-align: left; */
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  margin-bottom: 10px;
 }
+
+.sent {
+  align-items: flex-end;
+}
+
+.username {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 5px;
+}
+
+.line {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 10px 10px 10px;
+}
+
+.line.sent {
+  border-color: transparent transparent #007aff transparent;
+}
+
+.line:not(.sent) {
+  border-color: transparent transparent #d80000 transparent;
+}
+
+.content {
+  /* background-color: #e7e7e7; */
+  color: #000;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+.content.sent {
+  background-color: #007aff;
+  color: #fff;
+}
+
 
 .message-container {
   padding-top: 20px;
