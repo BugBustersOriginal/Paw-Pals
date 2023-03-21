@@ -5,6 +5,7 @@ import MessageWindow from './Components/MessageWindow/MessageWindow.jsx'
 import { Route, Routes, useNavigate, useLocation, withRouter } from 'react-router-dom';
 import { createBrowserHistory } from "history";
 import { Map } from './Components/Map/Map.jsx';
+import  { Notifications }  from './Components/Notifications/Notifications.jsx';
 // import MessageInfo from './Components/MessageList/MessageInfo.jsx';
 import FriendTileList from './Components/MessageList/FriendTileList.jsx';
 import FriendTile from './Components/MessageList/FriendTile.jsx';
@@ -19,6 +20,7 @@ export function App()  {
   const [userInfo, setUserInfo] = useState(null);
   const [userFriends, setUserFriends] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
+  const [incomingRequests, setIncomingRequests] = useState([]);
 
   function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
@@ -49,11 +51,11 @@ export function App()  {
     // axios call to get userInfo from MongoDB
     axios.get('/getUserInfo', {params: {userId: userId} })
     .then((result) => {
-      // console.log('got userInfo: ', result.data);
       let userInfo = result.data;
       setUserInfo(userInfo);
       setUserFriends(userInfo.friends);
       setPendingRequests(userInfo.sentRequest);
+      setIncomingRequests(userInfo.incomingRequests);
     })
     .catch((err) => {
       console.error(err);
@@ -74,6 +76,7 @@ export function App()  {
         <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
         <button onClick={(e) => handleDevClick(e)}>Map</button>
         <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
+        <button onClick={(e) => handleDevClick(e)}>Notifications</button>
       </div>
 
       <Routes>
@@ -84,6 +87,7 @@ export function App()  {
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow />}  />
+        <Route   path="/notifications" element={<Notifications incomingRequests={incomingRequests} />} />
       </Routes>
 
       {/*

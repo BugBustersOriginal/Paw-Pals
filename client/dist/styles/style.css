@@ -17,6 +17,16 @@
   width: 60%;
 }
 
+.notification-tile {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid;
+  border-color: black;
+  padding: .5em;
+}
+
 .friend-request-tile > img, .select-friend-tile > img {
   margin: 1em .5em 1em .5em;
 }
