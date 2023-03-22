@@ -20,7 +20,7 @@ function Register() {
   const handleSubmit = async () => {
     event.preventDefault();
     try {
-      const guest = await axios.post('http://127.0.0.1:8080/signup', inputs);
+      const guest = await axios.post('/signup', inputs);
       //for testing
       console.log(guest.data.reminder);
 

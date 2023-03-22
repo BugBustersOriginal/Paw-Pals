@@ -39,21 +39,7 @@ const postSignUp = async (req, res) => {
   }
 };
 
-const getLogIn = (req, res) => {
-  if (req.session.userId ) {
-    res.send({
-      'reminder':`hello, userId=${req.session.userId}`,
-      'url':`/home?userId=${userId}`
-  })
-  } else {
-    //render login page
-    res.send({
-      'reminder':'should render login page',
-      'url':'/login'
-    })
 
-  }
-};
 
 const postLogIn = async (req, res) => {
   //check users first login or has session in request
@@ -96,7 +82,7 @@ const postLogIn = async (req, res) => {
           //render to app main page
           res.send({
             'reminder': 'seesion set success, render app main page',
-            'url':`/home?userId=${userId}`
+            'url':'/home'
           })
         } else {
           //user exist, password not correct, redirect to login page
@@ -111,7 +97,7 @@ const postLogIn = async (req, res) => {
   } else {
     res.send({
       'reminder':'exist user, render app main page',
-      'url':`/home?userId=${req.session.userId}`
+      'url':'/home'
     })
   }
 };
@@ -126,5 +112,5 @@ const getLogOut = async(req, res) => {
   });
 
 };
-module.exports = {postSignUp, getLogIn, postLogIn, getLogOut};
+module.exports = {postSignUp, postLogIn, getLogOut};
 

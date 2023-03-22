@@ -8,7 +8,7 @@ const path = require('path');
 const PORT = process.env.PORT;
 const getControllers = require('./controllers/getControllers.js');
 const postControllers = require('./controllers/postControllers.js');
-const {postSignUp, getLogIn, postLogIn, getLogOut} = require('./controllers/index.js');
+const {postSignUp, postLogIn, getLogOut} = require('./controllers/index.js');
 const pgPool = require('../database/index.js');
 app.use(express.json());
 app.use(compression());
@@ -20,25 +20,56 @@ app.use(session({
     pool: pgPool,
     tableName: 'session',
   }),
-  secret: process.env.FOO_COOKIE_SECRET,
+  secret: 'pawpal',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge:  5* 60 * 1000, httpOnly: false }
+  cookie: { maxAge:  5* 60 * 1000,httpOnly: false}
   })
 );
+
 const reRoute = (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../client/dist/index.html'), function(err) {
-  if (err) {
-    res.status(500).send(err);
-  }})
-}
-app.get('/login', reRoute);
-app.get('/register', reRoute);
+    if (err) {
+      res.status(500).send(err);
+    }})
+};
 app.get('/', reRoute);
-app.get('/home*', reRoute);
-app.get('/map*', reRoute);
-app.get('/friendtile*', reRoute);
-app.get('/messagewindow*', reRoute);
+app.get('/register', reRoute);
+
+/*******add getAuth middleware, made auth first ***************************************/
+const getAuth = (req, res, next) => {
+  if (req.url === '/login') {
+    if(req.session.userId) {
+      res.redirect('/home');
+    } else {
+      next();
+    }
+  } else {
+    if(req.session.userId) {
+      next();
+    } else {
+      res.redirect('/login');
+    }
+  }
+};
+app.get('/login', getAuth, reRoute);
+app.get('/home', getAuth, reRoute);
+app.get('/map',getAuth, reRoute);
+app.get('/friendtile',getAuth, reRoute);
+app.get('/messagewindow', getAuth, reRoute);
+
+
+/*************for every page own testing, comment out getAuth middleware and comment in the part below *********************************/
+
+// app.get('/login', reRoute);
+// app.get('/home', reRoute);
+// app.get('/map',reRoute);
+// app.get('/friendtile',reRoute);
+// app.get('/messagewindow', reRoute);
+
+/**********************************/
+
+
 
 // app.get('/getFriendList', getControllers.getFriendList);
 // app.get('/friendList', (req, res) => {
@@ -55,6 +86,7 @@ app.post('/conversations/:userId', getControllers.getConversations);
 app.post('/signup', postSignUp);
 app.post('/login',postLogIn);
 app.get('/logout', getLogOut);
+// app.get('/auth', getAuth);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
