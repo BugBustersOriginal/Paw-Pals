@@ -10,6 +10,23 @@ const cors = require('cors');
 const {Conversation, Message, FriendList} = require('./db/index.js');
 
 
+/***** helper functions for debugging socker rooms */
+
+function getRoomsByUser(id){
+  let usersRooms = [];
+  let rooms = io.sockets.adapter.rooms;
+
+  for(let room in rooms){
+      if(rooms.hasOwnProperty(room)){
+          let sockets = rooms[room].sockets;
+          if(id in sockets)
+              usersRooms.push(room);
+      }
+  }
+
+  return usersRooms;
+}
+/********************************************** */
 
 app.use(express.json());
 const io = new Server(server, {
@@ -23,6 +40,10 @@ app.get('/', (req, res) => {
   res.send("connected");
 });
 
+// front end needs to make a newconversation if the conversation has not happened before
+app.post("/newConversation", async (req,res) => {
+
+})
 app.post("/openedImage/:id", async (req, res) => {
   const imageId = req.params.id;
   try {
@@ -72,11 +93,13 @@ app.get('/conversation/:id', async (req, res) => {
 
 // messageslist will use this route to get all conversations?
 app.get("/conversations/:userId", async (req, res) => {
+  console.log(req.params.userId);
   const userId = req.params.userId;
   try {
     const conversations = await Conversation.find({
       participants: { $elemMatch: { $eq: userId } }
     });
+    console.log(conversations);
     res.json(conversations);
   } catch (err) {
     console.error(err);
@@ -85,24 +108,54 @@ app.get("/conversations/:userId", async (req, res) => {
 });
 
 app.get("/friendList", async (req, res) => {
-  console.log('checking friendList')
   let userId = req.body.userId;
-  console.log('this is the userId: ', userId);
+  // console.log('checking friendList', userId);
   try {
-    const friendList = await FriendList.find({
-      userId: { $elemMatch: { $eq: userId } }
-    });
-    res.status(200).send(JSON.stringify(friendList));
+    const friend = await FriendList.find({userId})
+    // console.log('got friend: ', friend[0]);
+    res.status(200).send(friend[0])
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server error");
+    res.status(500).send(err);
   }
 });
 
-io.on('connection', (socket) => {
+// [
+//   {
+//     _id: new ObjectId("64160b46cc57fa46efca1bed"),
+//     userId: 'tivo',
+//     friends: [ 'superman', 'shadow', 'batman' ],
+//     requests: [
+//       [Object], [Object],
+//       [Object], [Object],
+//       [Object], [Object],
+//       [Object], [Object],
+//       [Object], [Object]
+//     ],
+//     __v: 0
+//   }
+// ]
+
+app.post('/friendRequest', async (req, res) => {
+  let friendId = req.body.data.friendRequestObj.selectedUser;
+  let userId = req.body.data.friendRequestObj.userId;
+  let filter = {userId: friendId};
+  let update = {$push: { requests: {friendId: userId}  }};
+  // console.log('got friendRequest in server: ', req.body.data.friendRequestObj);
+  try {
+    const friend = await FriendList.updateOne(filter, update)
+    res.status(201).send();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+});
+
+io.on('connection', async (socket) => {
   console.log('a user connected');
-   // Handle new message
+   // Handle new messages when user is in chat room
    socket.on('new-message', async (data) => {
+<<<<<<< HEAD
     if(data !== ''){
       console.log("data", data)
       try {
@@ -127,11 +180,16 @@ io.on('connection', (socket) => {
 
 
 
+
   });
 
   // Handle user joining conversation
-  socket.on('join-conversation', (conversationId) => {
-    socket.join(conversationId);
+  socket.on('join-conversation', async (conversationId) => {
+    try {
+      await socket.join(conversationId)
+    } catch(err) {
+      console.error(`error while joining a socket room ${error}`)
+    }
   });
 
   // Handle user leaving conversation
@@ -139,13 +197,61 @@ io.on('connection', (socket) => {
     socket.leave(conversationId);
   });
   // Handle getting the current conversation
-  socket.on('get-conversation', async (conversationId) => {
+  socket.on('get-conversation', async (conversationId, participants) => {
+    console.log(`conversationId is equal to ${conversationId}`);
     // Retrieve all messages associated with the conversation ID
-    const messages = await Conversation.find({_id:conversationId});
+    try {
+      let conversation;
+      if(conversationId === null) {
+        conversation = new Conversation ({
+        participants: [participants.userId, participants.friendId],
+        messages:[]
+      });
+      await conversation.save();
+    } else {
+      conversation = await Conversation.findById(conversationId);
+        if (!conversation) {
+          throw new Error('Conversation not found');
+        }
+        //console.log(`conversation is equal to ${JSON.stringify(conversation)}`);
+    }
+    const messages = conversation.messages.filter((message) => {
+      if ( message.type === 'image ') {
+        const timeDifference = Math.abs(new Date() - message.openedAt);
+        const timeDifferenceInSec = Math.floor(timeDifference/1000);
+        return timeDifferenceInSec <=60;
+      }
+      return true
+    })
     // Emit the messages back to the client
     socket.emit('conversation', messages);
+    } catch (err) {
+      console.error('Error while getting notification', err);
+      socket.emit('conversation-error', err.message);
+    }
   });
-});
+
+
+
+   //Handle if user is on the message/friends list so that they can get notifications
+  socket.on('get-notifications', async(userId) => {
+    const messageWatcher = Message.watch();
+    messageWatcher.on('change', async(change) => {
+      if (change.operationType === 'insert') {
+        try {
+          var conversation = Conversation.findById(change.fullDocument.conversationId);
+        if ( conversation.participants.includes(userId)) {
+          socket.emit('new-notification', change.fullDocument );
+        }
+        } catch (err) {
+          console.error('Error while sending notification', err);
+          socket.emit('conversation-error', err.message);
+        }
+
+      }
+    })
+  });
+})
 
 server.listen(PORT, () => {
   console.log('listening on :'+ PORT);

@@ -34,14 +34,16 @@ let messagesSchema = new mongoose.Schema({
 // });
 
 let conversationsSchema = new mongoose.Schema({
- participiants : [String], // will be an array of 2 user ids?
+ participants : [String], // will be an array of 2 user ids?
  messages:[messagesSchema]
 })
 
 
 let friendListSchema = new mongoose.Schema({
   userId: String,
+  thumbnailUrl: String,
   friends: [String],
+  requests: []
 })
 
 let Message = mongoose.model('Messages', messagesSchema);
