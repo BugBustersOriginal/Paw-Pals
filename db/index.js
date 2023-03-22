@@ -42,7 +42,9 @@ let conversationsSchema = new mongoose.Schema({
 let friendListSchema = new mongoose.Schema({
   userId: String,
   thumbnailUrl: String,
+  location: String,
   friends: [String],
+  conversations: [],
   incomingRequests: [],
   sentRequest: []
 })

@@ -108,11 +108,11 @@ app.get("/friendList", async (req, res) => {
 // ]
 
 app.post('/friendRequest', async (req, res) => {
-  let friendId = req.body.data.friendRequestObj.selectedUser;
-  let userId = req.body.data.friendRequestObj.userId;
+  let friendId = req.body.data.selectedUser;
+  let userId = req.body.data.userId;
   let friendFilter = {userId: friendId};
-  let update = {$push: { incomingRequests: {friendId: userId}  }};
-  let pendingRequest = {$push: {sentRequest: {friendId: friendId}}};
+  let update = {$push: { incomingRequests: userId  }};
+  let pendingRequest = {$push: {sentRequest: friendId}};
   let userFilter = {userId: userId};
   // console.log('got friendRequest in server: ', req.body.data.friendRequestObj);
   try {
@@ -120,6 +120,27 @@ app.post('/friendRequest', async (req, res) => {
     const pending = await FriendList.updateOne(userFilter, pendingRequest)
     res.status(201).send();
   } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+})
+
+app.post('/acceptRequest', async (req, res) => {
+  console.log('accept friend request server', req.body.data);
+  let userId = req.body.data.userId;
+  let friendId = req.body.data.friendId;
+  let friendFilter = {userId: friendId};
+  let userFilter = {userId: userId};
+  let update = {$push: {friends: userId}};
+  let updateUserFriends = {$push: {friends: friendId}}
+  try {
+    const accept = await FriendList.updateOne(friendFilter, update)
+    const removeFriendRequest = await FriendList.updateOne(friendFilter, {$pull: {incomingRequests: userId}})
+    const userUpdate = await FriendList.updateOne(userFilter, updateUserFriends)
+    const removeSentRequest = await FriendList.updateOne(userFilter, {$pull: {sentRequests: friendId}})
+    console.log('mongodb accept updated')
+    res.status(201).send();
+  } catch(err) {
     console.error(err);
     res.status(500).send(err);
   }
