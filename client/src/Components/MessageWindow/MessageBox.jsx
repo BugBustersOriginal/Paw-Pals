@@ -43,40 +43,29 @@ export default function MessageBox(props) {
 
 
 
+  useEffect (() => {
+    // if(props.sender !== null) {
+    //   setIsSender(props.sender.toString() === props.currentUser.toString())
+    // }
+    console.log (`props.sender is equal to ${props.sender}`)
+   })
+
   const [isSender, setIsSender] =useState(false)
 
-  useEffect (() => {
-    setIsSender(props.sender.toString() === props.currentUser.toString())
-    console.log(`props.sender is equal to ${props.sender} while props.currentUser is equal to ${props.currentUser} checking truth is ${props.sender === props.currentUser}`)
-  })
-
-  const [isSender, setIsSender] =useState(false)
-
-  useEffect (() => {
-    setIsSender(props.sender.toString() === props.currentUser.toString())
-    console.log(`props.sender is equal to ${props.sender} while props.currentUser is equal to ${props.currentUser} checking truth is ${props.sender === props.currentUser}`)
-  })
 
   return (
-<<<<<<< HEAD
     <div className ={`msg_box${isSender? ' sent':''}`}>
       <div>
       <div className={`line${isSender? ' sent':''}`}></div>
       <div className = 'username'>{isSender? 'me': props.sender}</div>
-      <div className = 'content'>{props.content}</div>
-      </div>
-=======
-    <div className ="msg_box">
-      <div className = 'username'>{props.sender}</div>
+      {/* <div className = 'content'>{props.content}</div> */}
       <div className = 'content'>{
          url!==''? (img === false ?
          <button onClick={()=>{showSnap()}} >
          show snap
        </button> : <img src= {url.url}/>) : content}
+       </div>
+       </div>
       </div>
-
-
->>>>>>> main
-    </div>
   )
 }

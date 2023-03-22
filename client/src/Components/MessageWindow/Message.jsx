@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import "../../../../client/chat.css";
 import {socket} from '../../socket.js'
 import axios from 'axios'
-import Select from 'react-select';
 
 export default function Message(props) {
   const [newMessage, setNewMessage] = useState({
