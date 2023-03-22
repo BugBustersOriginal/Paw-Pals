@@ -5,7 +5,7 @@ let list = [
   userId: 'batman',
   thumbnailUrl: 'https://pbs.twimg.com/profile_images/874661809139073025/X8yzIhNy_400x400.jpg',
   location: '',
-  friends: ['tivo', 'banjo', 'testUser'],
+  friends: ['tivo', 'banjo'],
   conversations: [],
   incomingRequests: [],
   sentRequest: []
@@ -17,7 +17,7 @@ let list = [
     friends: ['superman', 'shadow', 'batman'],
     conversations: [],
     incomingRequests: [],
-    sentRequest: []
+    sentRequest: ['tivo']
   },
   {
     userId: 'tivo',
@@ -32,9 +32,9 @@ let list = [
     userId: 'testUser',
     thumbnailUrl: 'https://imageresizer.static9.net.au/ZuCFmFVjgVHj8tZFteTBLNpsp8A=/400x0/https%3A%2F%2Fprod.static9.net.au%2Ffs%2F1a7a67fa-48e3-40e3-a041-546fe6c1426f',
     location: '',
-    friends: ['superman', 'banjo', 'batman'],
+    friends: ['superman'],
     conversations: [],
-    incomingRequests: [],
+    incomingRequests: ['banjo', 'batman'],
     sentRequest: []
   }
 ]

@@ -137,7 +137,7 @@ app.post('/acceptRequest', async (req, res) => {
     const accept = await FriendList.updateOne(friendFilter, update)
     const removeFriendRequest = await FriendList.updateOne(friendFilter, {$pull: {incomingRequests: userId}})
     const userUpdate = await FriendList.updateOne(userFilter, updateUserFriends)
-    const removeSentRequest = await FriendList.updateOne(userFilter, {$pull: {sentRequests: friendId}})
+    const removeSentRequest = await FriendList.updateOne(userFilter, {$pull: {incomingRequests: friendId}})
     // console.log('mongodb accept updated')
     res.status(201).send();
   } catch(err) {
