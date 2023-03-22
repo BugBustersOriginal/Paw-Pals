@@ -8,13 +8,24 @@ const path = require('path');
 const PORT = process.env.PORT;
 const getControllers = require('./controllers/getControllers.js');
 const postControllers = require('./controllers/postControllers.js');
-
+const {postSignUp, getLogIn, postLogIn, getLogOut} = require('./controllers/index.js');
+const pgPool = require('../database/index.js');
 app.use(express.json());
 app.use(compression());
-
+app.use(express.urlencoded({ extended: true }));
 const DIST_DIR = path.join(__dirname, '../client/dist');
 app.use(express.static(DIST_DIR));
-
+app.use(session({
+  store: new pgSession({
+    pool: pgPool,
+    tableName: 'session',
+  }),
+  secret: process.env.FOO_COOKIE_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge:  5* 60 * 1000, httpOnly: false }
+  })
+);
 const reRoute = (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../client/dist/index.html'), function(err) {
   if (err) {
@@ -39,6 +50,11 @@ app.post('/searchFriend', getControllers.getFriendList);
 app.post('/sendFriendRequest', postControllers.sendFriendRequest);
 
 app.post('/conversations/:userId', getControllers.getConversations);
+
+
+app.post('/signup', postSignUp);
+app.post('/login',postLogIn);
+app.get('/logout', getLogOut);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
