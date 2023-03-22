@@ -179,7 +179,7 @@ io.on('connection', async (socket) => {
   console.log('a user connected');
    // Handle new messages when user is in chat room
    socket.on('new-message', async (data) => {
-<<<<<<< HEAD
+
     if(data !== ''){
       console.log("data", data)
       try {
