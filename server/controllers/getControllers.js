@@ -21,16 +21,29 @@ exports.getUserInfo =  (req, res) => {
 
 exports.getFriendList = (req, res) => {
   // console.log('friendList controller userId: ', req.body.searchQuery);
-  let searchFriend = req.body.searchQuery;
-  axios.get(`${process.env.MONGODB_SERVER}/friendList`, { data: { userId: searchFriend } })
-    .then((result) => {
-      console.log('got friend info: ', result.data);
-      let friendInfo = result.data;
-      res.status(200).send(friendInfo);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+  // let searchFriend = req.body.searchQuery;
+  // let userId = req.params.userId;
+  // axios.get(`${process.env.MONGODB_SERVER}/friendList/${userId}`)
+  //   .then((result) => {
+  //     console.log('got friend info: ', result.data);
+  //     let friendInfo = result.data;
+  //     res.status(200).send(friendInfo);
+  //   })
+  //   .catch((err) => {
+  //     res.status(500).send(err);
+  //   });
+
+  return ({
+    userId: 'batman',
+    thumbnailUrl: 'https://pbs.twimg.com/profile_images/874661809139073025/X8yzIhNy_400x400.jpg',
+    location: '',
+    friends: ['tivo', 'banjo'],
+    conversations: [],
+    incomingRequests: [],
+    sentRequest: []
+    }).friends.map( (friendName) => ({
+      friendName: friendName
+    }))
 
 
 }

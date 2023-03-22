@@ -20,19 +20,19 @@ const FriendTile = ( {chat, userId} ) => {
   let last = chat.messages.length-1
   const latestMessage = chat.messages[last]
 
-  // return (
-  //   <div className="friend-tile-container">
-  //       <div className="friend-tile-username">{friend}</div>
-  //   </div>
-  // )
   return (
     <div className="friend-tile-container">
-        <div className="friend-tile-username">{otherParticipant.username}</div>
-        <div>{otherParticipant.profileIcon}</div>
-        <div onClick={handleClick}>{latestMessage.content}</div>
-        <div className="friend-time-timestamp">{latestMessage.createdAt}</div>
+        <div className="friend-tile-username">{friend.friendName}</div>
     </div>
   )
+  // return (
+  //   <div className="friend-tile-container">
+  //       <div className="friend-tile-username">{otherParticipant.username}</div>
+  //       <div>{otherParticipant.profileIcon}</div>
+  //       <div onClick={handleClick}>{latestMessage.content}</div>
+  //       <div className="friend-time-timestamp">{latestMessage.createdAt}</div>
+  //   </div>
+  // )
 }
 
 export default FriendTile;

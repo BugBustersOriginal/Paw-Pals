@@ -39,39 +39,40 @@ app.get('/', reRoute);
 app.get('/register', reRoute);
 
 /*******add getAuth middleware, made auth first ***************************************/
-const getAuth = (req, res, next) => {
-  if (req.url === '/login') {
-    if(req.session.userId) {
-      res.redirect('/home');
-    } else {
-      next();
-    }
-  } else {
-    if(req.session.userId) {
-      next();
-    } else {
-      res.redirect('/login');
-    }
-  }
-};
-app.get('/login', getAuth, reRoute);
-app.get('/home', getAuth, reRoute);
-app.get('/map',getAuth, reRoute);
-app.get('/friendtile',getAuth, reRoute);
-app.get('/messagewindow', getAuth, reRoute);
+// const getAuth = (req, res, next) => {
+//   if (req.url === '/login') {
+//     if(req.session.userId) {
+//       res.redirect('/home');
+//     } else {
+//       next();
+//     }
+//   } else {
+//     if(req.session.userId) {
+//       next();
+//     } else {
+//       res.redirect('/login');
+//     }
+//   }
+// };
+// app.get('/login', getAuth, reRoute);
+// app.get('/home', getAuth, reRoute);
+// app.get('/map',getAuth, reRoute);
+// app.get('/friendtile',getAuth, reRoute);
+// app.get('/messagewindow', getAuth, reRoute);
 
 
 /*************for every page own testing, comment out getAuth middleware and comment in the part below *********************************/
 
-// app.get('/login', reRoute);
-// app.get('/home', reRoute);
-// app.get('/map',reRoute);
-// app.get('/friendtile',reRoute);
-// app.get('/messagewindow', reRoute);
+app.get('/login', reRoute);
+app.get('/home', reRoute);
+app.get('/map',reRoute);
+app.get('/friendtile',reRoute);
+app.get('/messagewindow', reRoute);
 
 /**********************************/
 
 
+app.get('/friendList/:userId', getControllers.getFriendList);
 
 app.post('/searchFriend', postControllers.getFriendList);
 
@@ -84,7 +85,7 @@ app.post('/signup', postSignUp);
 app.post('/login',postLogIn);
 app.get('/logout', getLogOut);
 // app.get('/auth', getAuth);
-app.post('/retrieveFriends', getControllers.getFriendList);
+
 
 app.post('/acceptRequest', postControllers.acceptRequest);
 
