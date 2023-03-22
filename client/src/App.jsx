@@ -25,18 +25,23 @@ export function App()  {
   async function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
       try {
-        const guest = await axios.get('http://127.0.0.1:8080/logout',
-        { headers: {
-          "Access-Control-Allow-Origin": true
-        }});
+        const guest = await axios.get('/logout');
+
         //for testing
-        console.log(guest.data);
+        console.log(guest.data.reminder);
+
         navigate("/login");
       } catch (err) {
         console.log(err)
       }
     } else if (e.target.innerText === 'FriendTileList') {
-      navigate("/home");
+      // const guest = await axios.get('/auth');
+
+      //for testing
+      // console.log(guest.data.reminder);
+
+      navigate('/home');
+
     } else {
       navigate(`/${(e.target.innerText).toLowerCase()}`);
     }
