@@ -23,7 +23,7 @@ app.use(session({
   secret: 'pawpal',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge:  5* 60 * 1000,httpOnly: false}
+  cookie: { maxAge:  5* 60 * 1000}
   })
 );
 
@@ -83,7 +83,7 @@ app.post('/conversations/:userId', getControllers.getConversations);
 app.post('/signup', postSignUp);
 app.post('/login',postLogIn);
 app.get('/logout', getLogOut);
-// app.get('/auth', getAuth);
+
 app.post('/retrieveFriends', getControllers.getFriendList);
 
 app.post('/acceptRequest', postControllers.acceptRequest);
