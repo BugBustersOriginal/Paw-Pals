@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/Pawpals', { useNewUrlParser: true })
+mongoose.connect('mongodb://127.0.0.1/Pawpals', { useNewUrlParser: true })
   .then(() => {
     //mongoose.connection.db.dropDatabase()
     console.log('Connected to MongoDB');
@@ -34,7 +34,7 @@ let messagesSchema = new mongoose.Schema({
 // });
 
 let conversationsSchema = new mongoose.Schema({
- participiants : [String], // will be an array of 2 user ids?
+ participants : [String], // will be an array of 2 user ids?
  messages:[messagesSchema]
 })
 
