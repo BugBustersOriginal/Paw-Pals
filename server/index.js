@@ -27,6 +27,8 @@ app.use(session({
   })
 );
 
+app.get('/getUserInfo', getControllers.getUserInfo);
+
 const reRoute = (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../client/dist/index.html'), function(err) {
     if (err) {
@@ -71,12 +73,7 @@ app.get('/messagewindow', getAuth, reRoute);
 
 
 
-// app.get('/getFriendList', getControllers.getFriendList);
-// app.get('/friendList', (req, res) => {
-//   console.log('getFriendList route');
-// });
-
-app.post('/searchFriend', getControllers.getFriendList);
+app.post('/searchFriend', postControllers.getFriendList);
 
 app.post('/sendFriendRequest', postControllers.sendFriendRequest);
 
@@ -87,6 +84,9 @@ app.post('/signup', postSignUp);
 app.post('/login',postLogIn);
 app.get('/logout', getLogOut);
 // app.get('/auth', getAuth);
+app.post('/retrieveFriends', getControllers.getFriendList);
+
+app.post('/acceptRequest', postControllers.acceptRequest);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
