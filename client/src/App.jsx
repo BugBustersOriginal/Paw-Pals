@@ -46,8 +46,10 @@ export function App()  {
     }
   }
 
-  //sample userId data to pass down to other components
+  //sample userId data to pass down to other components (useState)
   let userId = 'testUser';
+  let profileIcon = 'profileIcon';
+  let userName = '@testUserName'
 
 
 
@@ -75,7 +77,7 @@ export function App()  {
         <Route   path="/register"  element= {<Register />}  />
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
-        <Route   path="/messagewindow"  element= {<MessageWindow />}  />
+        <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
       </Routes>
 
       {/*
