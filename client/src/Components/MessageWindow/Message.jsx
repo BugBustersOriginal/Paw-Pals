@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import "../../../../client/chat.css";
 import {socket} from '../../socket.js'
 import axios from 'axios'
+import Select from 'react-select';
 
 export default function Message(props) {
   const [newMessage, setNewMessage] = useState({
@@ -12,7 +13,8 @@ export default function Message(props) {
     test:true
   });
   const [message, setMessage] = useState('');
-  const [img, setImg] = useState('')
+  const [img, setImg] = useState('');
+  const [time, settime] = useState('');
   const handleChange = (event) => {
     setMessage(event.target.value)
   }
@@ -34,14 +36,24 @@ export default function Message(props) {
   }
 
   const handleNewImg = (event) =>{
-    setImg(URL.createObjectURL(event.target.files[0]))
+    setImg(event.target.files[0])
   }
 
   const handleSendImg = () =>{
-    console.log(img)
-    axios.post("http://127.0.0.1:3000/uploads").then((result) =>{
-      console.log(result)
-    })
+
+      let fileImage = new FormData;
+      let IMGBB_API = 'f930789c2a22d062cb0f89a54f461c77';
+      fileImage.append("image", img);
+      fileImage.append('key', IMGBB_API);
+      return axios({
+        method: 'post',
+        url: 'https://api.imgbb.com/1/upload',
+        data: fileImage
+      })
+        .then ((res) => {
+          setNewMessage({...newMessage,content:"<img>"+res.data.data.image.url+"</img>"})
+          return res;
+        })
     setImg('')
   }
 
@@ -57,6 +69,12 @@ export default function Message(props) {
       handleNewMessage()
     }
   },[newMessage]);
+
+  const setTime=(e)=>{
+    console.log(e.target.value)
+    settime({time:e.target.value})
+  }
+
   return (
     <div className = 'user_input'>
       <div>
@@ -70,11 +88,7 @@ export default function Message(props) {
         {img !== ''?
         <div>
             <img src={img}/>
-            <button onClick={
-              ()=>{
-                handleSendImg()
-              }
-            }>send snap</button>
+            <button onClick={()=>{handleSendImg()}}>send snap</button>
         </div>
         : null}
         </div>
@@ -86,6 +100,11 @@ export default function Message(props) {
             handleNewImg(event)
           }}
           />
+         <select onChange={(e)=>{setTime(e)}}>
+          <option value={2000}>2 seconds</option>
+          <option value={30000}>30 seconds</option>
+          <option value={60000}>60 seconds</option>
+         </select>
     </div>
   )
 }

@@ -34,10 +34,13 @@ export default function MessageWindow(props) {
 
   useEffect(()=> {
     console.log(`i'm setting the new message!`)
+    // console.log(JSON.stringify(conversation))
     if(conversation.length !== 0) {
       const mappedMessages = conversation.map((message) => {
+        // console.log(JSON.stringify(message))
         return <MessageBox key={message._id} sender={message.sender} content={message.content} />;
       });
+      // console.log("mapped msgs", JSON.stringify(mappedMessages))
       setMappedMessages(mappedMessages);
     }
   },[conversation, sender])
