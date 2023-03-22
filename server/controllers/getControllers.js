@@ -21,9 +21,9 @@ exports.getConversations = (req, res) => {
   // let userId = req.params.userId;
   // axios.get(`${process.env.MONGODB_SERVER}/conversations/${userId}`)
   // .then((result) => {
-  //   console.log('got conversations info: ', result.data);
-  //   let conversationsInfo = result.data;
-  //   res.status(200).send(conversationsInfo);
+  //   console.log('friends list: ', result.data);
+  //   let friendsList = result.data;
+  //   res.status(200).send(friendsList);
   // })
   // .catch((err) => {
   //   res.status(500).send(err);
