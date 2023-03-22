@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import MessageWindow from './Components/MessageWindow/MessageWindow.jsx'
 import { Route, Routes, useNavigate, useLocation, withRouter } from 'react-router-dom';
 import { createBrowserHistory } from "history";
 import { Map } from './Components/Map/Map.jsx';
+import  { Notifications }  from './Components/Notifications/Notifications.jsx';
 // import MessageInfo from './Components/MessageList/MessageInfo.jsx';
 import FriendTileList from './Components/MessageList/FriendTileList.jsx';
 import FriendTile from './Components/MessageList/FriendTile.jsx';
 import Login from './Components/Login-Register/Login.jsx';
 import Register from './Components/Login-Register/Register.jsx';
-import axios from 'axios';
+
 export function App()  {
   const navigate = useNavigate();
   const location = useLocation();
   let history = createBrowserHistory();
   const [hide, setHidden] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+  const [userFriends, setUserFriends] = useState([]);
+  const [pendingRequests, setPendingRequests] = useState([]);
+  const [incomingRequests, setIncomingRequests] = useState([]);
 
   async function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
@@ -54,6 +60,20 @@ export function App()  {
 
 
   useEffect(() => {
+    // axios call to get userInfo from MongoDB
+    axios.get('/getUserInfo', {params: {userId: userId} })
+    .then((result) => {
+      let userInfo = result.data;
+      setUserInfo(userInfo);
+      setUserFriends(userInfo.friends);
+      setPendingRequests(userInfo.sentRequest);
+      setIncomingRequests(userInfo.incomingRequests);
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+
+
     hideLogoNav(location.pathname);
   }, [location]);
 
@@ -68,16 +88,18 @@ export function App()  {
         <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
         <button onClick={(e) => handleDevClick(e)}>Map</button>
         <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
+        <button onClick={(e) => handleDevClick(e)}>Notifications</button>
       </div>
 
       <Routes>
-        <Route   path="/home"  element= {<FriendTileList userId={userId}/>}  />
+      <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
         {/* <Route   path="/"  element= {<Login />}  /> */}
         <Route   path="/login"  element= {<Login />}  />
         <Route   path="/register"  element= {<Register />}  />
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
+        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} />} />
       </Routes>
 
       {/*
