@@ -28,6 +28,8 @@ app.post('/searchFriend', postControllers.getFriendList);
 
 app.post('/sendFriendRequest', postControllers.sendFriendRequest);
 
+app.post('/acceptRequest', postControllers.acceptRequest);
+
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 })

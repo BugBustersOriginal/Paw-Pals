@@ -87,7 +87,7 @@ export function App()  {
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow />}  />
-        <Route   path="/notifications" element={<Notifications incomingRequests={incomingRequests} />} />
+        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} />} />
       </Routes>
 
       {/*

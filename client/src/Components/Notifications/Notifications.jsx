@@ -3,14 +3,12 @@ import axios from 'axios';
 import { NotificationTile } from './NotificationTile.jsx';
 
 export function Notifications (props) {
-// console.log("🚀 ~ file: Notifications.jsx:4 ~ Notifications ~ props:", props.incomingRequests)
-
+// console.log("🚀 ~ file: Notifications.jsx:4 ~ Notifications ~ props:", props.userId)
+const userId = props.userId;
 let incomingRequests = props.incomingRequests;
+console.log("🚀 ~ file: Notifications.jsx:9 ~ Notifications ~ incomingRequests:", incomingRequests)
 const [friendData, setFriendData] = useState([])
-// let friendData = [];
-let dummyData = [{
-userId: "batman",
-thumbnailUrl: "https://pbs.twimg.com/profile_images/874661809139073025/X8yzIhNy_400x400.jpg"}]
+
 
 const getFriendInfo = (list) => {
   list.forEach( async (name) => {
@@ -27,10 +25,29 @@ const getFriendInfo = (list) => {
   });
 }
 
+const acceptRequest = (friendName) => {
+  // console.log('accepting friend request', friendName);
+  let acceptObj = {
+    userId: userId,
+    friendId: friendName
+  }
+  axios.post('/acceptRequest', acceptObj)
+  .then(() => {
+    console.log('accepted friend request');
+    // const newFriendData = friendData.filter((friend) => friend !== friendName);
+    // setFriendData(newFriendData);
+
+    //need to figure out why state isn't automatically refreshing
+    window.location.reload(false);
+  })
+  .catch((err) => {
+    console.error(err);
+  })
+
+}
+
 useEffect(() => {
-
   getFriendInfo(incomingRequests);
-
 },[incomingRequests]);
 
 
@@ -38,7 +55,7 @@ useEffect(() => {
     <div>
       {friendData?.map((friend, index) => {
         return (
-            <NotificationTile key={index} userId={friend.userId} thumbnailUrl={friend.thumbnailUrl}/>
+            <NotificationTile key={index} userId={friend.userId} thumbnailUrl={friend.thumbnailUrl} acceptRequest={acceptRequest} />
           )
       })}
     </div>
