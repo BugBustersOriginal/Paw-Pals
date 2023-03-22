@@ -12,6 +12,7 @@ const {Conversation, Message, FriendList} = require('./db/index.js');
 
 /***** helper functions for debugging socker rooms */
 
+
 function getRoomsByUser(id){
   let usersRooms = [];
   let rooms = io.sockets.adapter.rooms;
@@ -31,7 +32,7 @@ function getRoomsByUser(id){
 app.use(express.json());
 const io = new Server(server, {
   cors :{
-    origin : 'http://localhost:1234',
+    origin : ['http://localhost:1234','http://localhost:3000'],
     methods:['GET','POST','PUT']
   }
 })
