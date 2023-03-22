@@ -18,7 +18,7 @@ export default function MessageWindow(props) {
     socket.emit("join-conversation", conversationID);
     socket.emit('get-conversation', conversationID);
     socket.on('conversation', (data) => {
-      console.log(data)
+      //console.log(data)
       setConversation([...data]);
     });
     socket.on('new-message', (data) => {
@@ -33,12 +33,12 @@ export default function MessageWindow(props) {
   },[])
 
   useEffect(()=> {
-    console.log(`i'm setting the new message!`)
+    //console.log(`i'm setting the new message!`)
     // console.log(JSON.stringify(conversation))
     if(conversation.length !== 0) {
       const mappedMessages = conversation.map((message) => {
         // console.log(JSON.stringify(message))
-        return <MessageBox key={message._id} sender={message.sender} content={message.content} />;
+        return <MessageBox key={message._id} sender={message.sender} content={message.content} currentUser = {sender} />;
       });
       // console.log("mapped msgs", JSON.stringify(mappedMessages))
       setMappedMessages(mappedMessages);
@@ -57,7 +57,7 @@ export default function MessageWindow(props) {
 
   const changeSender = (event) => {
     event.preventDefault()
-    console.log(`sender is ${senderInputRef.current.value}`);
+   //console.log(`sender is ${senderInputRef.current.value}`);
     let newSender = Number(senderInputRef.current.value);
     setSender(prevSender => newSender);
   }

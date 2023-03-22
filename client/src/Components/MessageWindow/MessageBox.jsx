@@ -6,14 +6,15 @@ import "../../../../client/chat.css";
 export default function MessageBox(props) {
   const [img, setimg]  = useState(false);
   const [url, seturl]  = useState('');
-  const[content, setcontent] = useState(props.content)
+  const[content, setcontent] = useState(props.content);
+  const [isSender, setIsSender] =useState(false);
   var str =''
   if(props.content && url === ''){
     if(props.content[0]=== '<' && props.content[1] === 'i'&& props.content[2] ==="m"){
       for(var i = 5; i<props.content.length - 6 ; i++){
         str = str + props.content[i]
       }
-
+      console.log(`str is equal to ${str}`);
       seturl({
         url:str
       })
@@ -44,13 +45,14 @@ export default function MessageBox(props) {
 
 
   useEffect (() => {
-    // if(props.sender !== null) {
-    //   setIsSender(props.sender.toString() === props.currentUser.toString())
-    // }
-    console.log (`props.sender is equal to ${props.sender}`)
+    console.log (`props.sender is equal to ${props.sender} and  ${props.currentUser}`)
+    if(props.sender !== undefined && props.currentUser !== undefined) {
+      setIsSender(props.sender.toString() === props.currentUser.toString())
+    }
+
    })
 
-  const [isSender, setIsSender] =useState(false)
+
 
 
   return (
