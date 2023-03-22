@@ -9,16 +9,26 @@ import FriendTileList from './Components/MessageList/FriendTileList.jsx';
 import FriendTile from './Components/MessageList/FriendTile.jsx';
 import Login from './Components/Login-Register/Login.jsx';
 import Register from './Components/Login-Register/Register.jsx';
-
+import axios from 'axios';
 export function App()  {
   const navigate = useNavigate();
   const location = useLocation();
   let history = createBrowserHistory();
   const [hide, setHidden] = useState(false);
 
-  function handleDevClick (e) {
+  async function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
-      navigate("/");
+      try {
+        const guest = await axios.get('http://127.0.0.1:8080/logout',
+        { headers: {
+          "Access-Control-Allow-Origin": true
+        }});
+        //for testing
+        console.log(guest.data);
+        navigate("/login");
+      } catch (err) {
+        console.log(err)
+      }
     } else if (e.target.innerText === 'FriendTileList') {
       navigate("/home");
     } else {
@@ -60,7 +70,7 @@ export function App()  {
 
       <Routes>
         <Route   path="/home"  element= {<FriendTileList userId={userId}/>}  />
-        <Route   path="/"  element= {<Login />}  />
+        {/* <Route   path="/"  element= {<Login />}  /> */}
         <Route   path="/login"  element= {<Login />}  />
         <Route   path="/register"  element= {<Register />}  />
         <Route   path="/map"  element= {<Map />}  />
