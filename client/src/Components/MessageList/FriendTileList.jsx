@@ -5,13 +5,11 @@ import axios from 'axios'
 
 const FriendTileList = ( {userId} ) => {
   //will receive userId from App.jsx
-  // console.log(props, 'line 8 FriendTileList')
-  console.log(userId, 'line 9 userID from FriendTileList')
-  // const userName = userId
 
   const [chats, setChats] = useState([])
+  // const [friends, setFriends] = useState([])
 
-  //will use userId to retrieve chats from message server
+  // will use userId to retrieve chats from message server
   useEffect(() => {
     axios.post('/conversations/' + userId)
       .then((res) => {
@@ -20,12 +18,28 @@ const FriendTileList = ( {userId} ) => {
       })
   }, [])
 
+  //will use userId to retrieve friends from message server
+  // useEffect( () => {
+  //   axios.post('/searchFriend' + userId)
+  //   .then( (res) => {
+  //     console.log(res.data, 'line 24 FriendTileList')
+  //     setFriends(res.data)
+  //   })
+  // }, [])
+
   return (
     <div>
       <Search userId={userId} />
       {chats.map((chat) => <FriendTile chat={chat} userId={userId}/>)}
     </div>
   )
+
+  // return (
+  //   <div>
+  //     <Search userId={userId} />
+  //     {friends.map((friend) => <FriendTile friend={friend} userId={userId}/>)}
+  //   </div>
+  // )
 }
 
 export default FriendTileList;
