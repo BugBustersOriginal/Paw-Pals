@@ -20,8 +20,7 @@ function Login() {
   const handleSubmit = async() => {
     event.preventDefault();
     try {
-      const guest = await axios.post('http://127.0.0.1:8080/login', inputs,
-      { withCredentials: true });
+      const guest = await axios.post('/login', inputs);
       //for testing
       console.log(guest.data);
       if (guest.data.alert == undefined) {
@@ -39,7 +38,7 @@ function Login() {
     } catch (err) {
       console.log(err);
     }
-    // navigate("/home");
+
   };
 
   function handleClick () {
