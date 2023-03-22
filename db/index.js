@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/Pawpals', { useNewUrlParser: true })
+mongoose.connect('mongodb://127.0.0.1/Pawpals', { useNewUrlParser: true })
   .then(() => {
     //mongoose.connection.db.dropDatabase()
     console.log('Connected to MongoDB');

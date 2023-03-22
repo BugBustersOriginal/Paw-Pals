@@ -8,7 +8,7 @@ const path = require('path');
 const PORT = process.env.PORT;
 const cors = require('cors');
 const {Conversation, Message, FriendList} = require('./db/index.js');
-const {setPhotoExpiration,sendMessage}=('./db/helperFunctions.js')
+
 
 /***** helper functions for debugging socker rooms */
 
@@ -67,6 +67,12 @@ app.post("/openedImage/:id", async (req, res) => {
     res.status(500).send({ error: 'An error occurred while updating an viewed Image' });
   }
 });
+
+
+
+
+
+
 
 
 // use to get the whole conversation when a chat is open
@@ -149,19 +155,30 @@ io.on('connection', async (socket) => {
   console.log('a user connected');
    // Handle new messages when user is in chat room
    socket.on('new-message', async (data) => {
-    try {
-      const message = await Message.create(data);
-      const conversation = await Conversation.findOneAndUpdate(
-        {_id:data.conversationId},
-        {$push: {messages:message}},
-        {new:true} // returns back the conversation after adding new message
-      )
-    // Broadcast message to all users in the conversation room
-    const roomNames = Object.keys(io.sockets.adapter.rooms).filter(roomId => !io.sockets.adapter.rooms[roomId].sockets[roomId]);
-      io.to(data.conversationId).emit('new-message', message);
-    } catch (err) {
-      console.error(`error while sending new-message ${err}`)
+<<<<<<< HEAD
+    if(data !== ''){
+      console.log("data", data)
+      try {
+        const message = await Message.create(data);
+        const conversation = await Conversation.findOneAndUpdate(
+          {_id:data.conversationId},
+          {$push: {messages:message}},
+          {new:true} // returns back the conversation after adding new message
+        )
+      // Broadcast message to all users in the conversation room
+      const roomNames = Object.keys(io.sockets.adapter.rooms).filter(roomId => !io.sockets.adapter.rooms[roomId].sockets[roomId]);
+        io.to(data.conversationId).emit('new-message', message);
+      } catch (err) {
+        console.error(`error while sending new-message ${err}`)
+      }
+    // Save message to database
+    const message = await Message.create(data);
+
+    // // Broadcast message to all users in the conversation
+    socket.to(data.conversationId).emit('new-message', message);
     }
+
+
 
 
   });
