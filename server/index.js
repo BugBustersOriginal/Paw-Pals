@@ -1,5 +1,6 @@
 require('dotenv').config();
-
+const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
 const express = require('express');
 const compression = require('compression');
 const app = express();
