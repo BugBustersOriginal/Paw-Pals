@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { useMemo } from 'react'
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import axios from 'axios';
+
 
 
 export function Map() {
 
   let user = {
-    name: 'Thomas',
+    userId: 'Thomas',
     location: {lat: 44, lng: -80},
-    profileImage: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485565/pngwing.com_1_ka3o33.png'
+    thumbnailUrl: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485565/pngwing.com_1_ka3o33.png'
   }
 
   let friends = [
     {
-      name: 'Andy',
+      userId: 'Andy',
       location: {lat: 44, lng: -79.5},
-      profileImage: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485565/pngwing.com_4_hssthb.png'
+      thumbnailUrl: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485565/pngwing.com_4_hssthb.png'
     },
     {
-      name: 'Tony',
+      userId: 'Tony',
       location: {lat: 44, lng: -79},
-      profileImage: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485700/pngwing.com_3_ja6dw9.png'
+      thumbnailUrl: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485700/pngwing.com_3_ja6dw9.png'
     }
   ]
 
@@ -38,7 +40,7 @@ export function Map() {
   const handleChange = (e) => {
     const results = friends.filter(friend => {
       if (e.target.value === "") return friends
-      return friend.name.toLowerCase().includes(e.target.value.toLowerCase())
+      return friend.userId.toLowerCase().includes(e.target.value.toLowerCase())
     })
     setstate({
       query: e.target.value,
@@ -60,7 +62,7 @@ export function Map() {
     {/* search result */}
       <ul>
         {(state.query === '' ? "" : state.list.map(friend => {
-          return <li key={friend.name}>{friend.name}</li>
+          return <li key={friend.userId}>{friend.userId}</li>
         }))}
       </ul>
 
@@ -70,6 +72,8 @@ export function Map() {
 }
 
 function MapView({ user, friends, screenCenter, setScreenCenter }) {
+
+  const [selectedCenter, setSelectedCenter] = useState(null);
 
   return (
     <>
@@ -83,9 +87,13 @@ function MapView({ user, friends, screenCenter, setScreenCenter }) {
         <Marker
           position={user.location}
           icon={{
-            url: user.profileImage
+            url: user.thumbnailUrl
           }}
-          onClick={() => setScreenCenter(user.location)}
+          // label={user.userId}
+          onClick={() => {
+            setScreenCenter(user.location);
+            setSelectedCenter(user);
+          }}
         />
 
         {/* generate friends' location */}
@@ -93,11 +101,27 @@ function MapView({ user, friends, screenCenter, setScreenCenter }) {
           <Marker key={idx}
           position={friend.location}
           icon={{
-            url: friend.profileImage
+            url: friend.thumbnailUrl
           }}
-          onClick={() => setScreenCenter(friend.location)}
+          onClick={() => {
+            setScreenCenter(friend.location);
+            setSelectedCenter(friend);
+          }}
         />
         )}
+        {selectedCenter && (
+   <InfoWindow
+      onCloseClick={() => {
+         setSelectedCenter(null);
+      }}
+      position={{
+         lat: selectedCenter.location.lat,
+         lng: selectedCenter.location.lng
+      }}
+   >
+    <div>{selectedCenter.userId}</div>
+   </InfoWindow>
+)}
       </GoogleMap>
     </>
   );
