@@ -38,7 +38,7 @@ const acceptRequest = (friendName) => {
     // setFriendData(newFriendData);
 
     //need to figure out why state isn't automatically refreshing
-    window.location.reload(false);
+    // window.location.reload(false);
   })
   .catch((err) => {
     console.error(err);

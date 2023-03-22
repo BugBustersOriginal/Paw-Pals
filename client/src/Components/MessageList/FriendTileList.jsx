@@ -1,110 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search } from './Search/Search.jsx';
-import MessageInfo from './MessageInfo.jsx';
-import ProfileInfo from './ProfileInfo.jsx';
 import FriendTile from './FriendTile.jsx';
+import axios from 'axios'
 
-const FriendTileList = (props) => {
-  //will receive {profileInfo}, {mostRecentMessages} as props
+const FriendTileList = ( props, {userId} ) => {
+  //will receive userId from App.jsx
+  // console.log(props, 'line 8 FriendTileList')
+  console.log(userId, 'line 9 userID from FriendTileList')
+  // const userName = userId
 
-  let profileInfo = [
-    {profileIcon: 'profileIcon',
-    username: '@SnailLover'},
-    {profileIcon: 'profileIcon',
-    username: '@OnlyDogsAllowed'},
-    {profileIcon: 'profileIcon',
-    username: '@puppyHotel'},
-    {profileIcon: 'profileIcon',
-    username: '@catDad'},
-    {profileIcon: 'profileIcon',
-    username: '@wolfMom'}
-  ]
+  const [chats, setChats] = useState([])
 
-  let mostRecentMessages = [
-    {
-      username: '@SnailLover',
-    datestamp: 'datestamp',
-  message: 'my snails just keep having babies!',
-  image: 'imageURL',
-  messageNotificationStatus: 'false',
-  imageNotificationStatus: 'false'},
-  {
-    username: '@OnlyDogsAllowed',
-  datestamp: 'datestamp',
-  message: 'just adoped a rescue! Come visit!',
-  image: 'imageURL',
-  messageNotificationStatus: 'false',
-  imageNotificationStatus: 'false'},
-  {
-    username: '@puppyHotel',
-  datestamp: 'datestamp',
-  message: 'fostering puppies, come visit!',
-  image: 'imageURL',
-  messageNotificationStatus: 'false',
-  imageNotificationStatus: 'false'},
-  {
-    username: '@catDad',
-  datestamp: 'datestamp',
-  message: 'Henry is turning 15 -- having a party, come over',
-  image: 'imageURL',
-  messageNotificationStatus: 'false',
-  imageNotificationStatus: 'false'},
-  {
-    username: '@wolfMom',
-  datestamp: 'datestamp',
-  message: 'my dog just ate his toothbrush....',
-  image: 'imageURL',
-  messageNotificationStatus: 'false',
-  imageNotificationStatus: 'false'}
-  ]
-
-
-  // const profiles = profileInfo.map( (profileObj) => {
-  //   console.log(profileObj.profileIcon, 'line 61')
-  //   console.log(profileObj.username, 'line 62')
-  //   return <div>{profileObj}</div>
-  // })
-
-  // const messages = mostRecentMessages.map( (messageObj) => {
-  //   console.log(messageObj, 'line 67')
-  //   return <div>{messageObj}</div>
-  // })
+  //will use userId to retrieve chats from message server
+  useEffect(() => {
+    axios.post('/conversations/' + userId)
+      .then((res) => {
+        console.log(res.data, 'line 16 FriendTileList')
+        setChats(res.data)
+      })
+  }, [])
 
   return (
     <div>
-      <Search userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId} pendingRequests={props.pendingRequests}/>
-      FriendTileList
-
-      {/* <FriendProfileInfo
-        profileIcon = {profiles.profileObj.profileIcon}
-        username = {profiles.profileObj.username}
-        /> */}
-
-      {/* <FriendTile
-        username = {messages.username}
-        datestamp = {messages.datestamp}
-        message = {messages.message}
-        image = {messages.image}
-        messageNotificationStatus = {messages.messageNotificationStatus}
-        imageNotificationStatus = {messages.imageNotificationStatus}
-        /> */}
-
-      {/* {profileInfo.map( (profileObj, index) => <ProfileInfo
-      key={index}
-      profileIcon = {profileObj.profileIcon}
-      username = {profileObj.username}
-      />)} */}
-
-      {mostRecentMessages.map( (messageObj, index) => <MessageInfo
-      key = {index}
-      // profileIcon = {messageObj.profileIcon}
-      username = {messageObj.username}
-      datestamp = {messageObj.datestamp}
-      message = {messageObj.message}
-      image = {messageObj.image}
-      messageNotificationStatus = {messageObj.messageNotificationStatus}
-      imageNotificationStatus = {messageObj.imageNotificationStatus}
-       />)}
+      <Search userId={userId} userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId} pendingRequests={props.pendingRequests} />
+      {chats.map((chat) => <FriendTile chat={chat} userId={userId}/>)}
     </div>
   )
 }

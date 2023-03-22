@@ -22,9 +22,19 @@ export function App()  {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
 
-  function handleDevClick (e) {
+  async function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
-      navigate("/");
+      try {
+        const guest = await axios.get('http://127.0.0.1:8080/logout',
+        { headers: {
+          "Access-Control-Allow-Origin": true
+        }});
+        //for testing
+        console.log(guest.data);
+        navigate("/login");
+      } catch (err) {
+        console.log(err)
+      }
     } else if (e.target.innerText === 'FriendTileList') {
       navigate("/home");
     } else {
@@ -42,8 +52,10 @@ export function App()  {
     }
   }
 
-  //sample userId data to pass down to other components
+  //sample userId data to pass down to other components (useState)
   let userId = 'testUser';
+  let profileIcon = 'profileIcon';
+  let userName = '@testUserName'
 
 
 
@@ -80,13 +92,13 @@ export function App()  {
       </div>
 
       <Routes>
-        <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
-        <Route   path="/"  element= {<Login />}  />
+      <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
+        {/* <Route   path="/"  element= {<Login />}  /> */}
         <Route   path="/login"  element= {<Login />}  />
         <Route   path="/register"  element= {<Register />}  />
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
-        <Route   path="/messagewindow"  element= {<MessageWindow />}  />
+        <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
         <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} />} />
       </Routes>
 
