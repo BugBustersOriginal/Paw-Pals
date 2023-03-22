@@ -69,13 +69,7 @@ app.post("/openedImage/:id", async (req, res) => {
 });
 
 
-
-
-
-
-
-
-// use to get the whole conversation when a chat is open
+/// use to get the whole conversation when a chat is open
 app.get('/conversation/:id', async (req, res) => {
   try {
     const conversationId = req.params.id;
