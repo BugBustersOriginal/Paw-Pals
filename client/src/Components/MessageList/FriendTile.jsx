@@ -1,17 +1,22 @@
 import React from 'react';
 
-const FriendTile = (props) => {
-  // console.log(props, 'line 4 FriendTile')
-  // console.log(props)
+const FriendTile = ( {chat, userId} ) => {
+  console.log(chat, 'line 4 chat from FriendTile')
+  console.log(userId, 'line 5 userId from FriendTile')
+
+  const otherParticipant = chat.participants.find((e) => {
+    return e.userId !== userId;
+  })
+
+  let last = chat.messages.length-1
+  const latestMessage = chat.messages[last]
 
   return (
-    <div>
-      <li>
-        <ul>{props.profileIcon}</ul>
-        <ul>{props.username}</ul>
-        <ul>{props.message}</ul>
-      </li>
-
+    <div className="friend-tile-container">
+        <div className="friend-tile-username">{otherParticipant.username}</div>
+        <div>{otherParticipant.profileIcon}</div>
+        <div>{latestMessage.content}</div>
+        <div className="friend-time-timestamp">{latestMessage.createdAt}</div>
     </div>
   )
 }
