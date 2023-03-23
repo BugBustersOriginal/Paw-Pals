@@ -37,13 +37,13 @@ export function App()  {
     } else if (e.target.innerText === 'FriendTileList') {
       //for testing
 
-      console.log('home has userId',userRealId)
+      console.log('home has userId',userRealId.userId)
 
       navigate('/home');
 
     } else {
       //for testing
-      console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId);
+      console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId.userId);
 
       navigate(`/${(e.target.innerText).toLowerCase()}`);
     }
@@ -60,7 +60,9 @@ export function App()  {
   }
   //set userId into state
   const handleUserLogin = (data) => {
-    setUseRealId(data);
+       let {address1, address2, city, state, country, zipcode} = data;
+       let userFromProsgres = {userId: data.username, thumbnailUrl: data.avator_url, address1, address2, city, state, country, zipcode};
+       setUseRealId(userFromProsgres);
   };
   //sample userId data to pass down to other components (useState)
   let userId = 'superman';
@@ -75,6 +77,7 @@ export function App()  {
      .then((result) => {
         let authUserId = result.data;
         if (authUserId !== '') {
+
           setUserRealId({userId: authUserId});
         }
       })

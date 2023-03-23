@@ -68,7 +68,7 @@ const postLogIn = async (req, res) => {
         if (compareHash(req.body.password, passwordHashed, salt)) {
           //password correct, assign a new session and save sessionid into cookie
           let userId = findUser.id;
-          let username = findUser.username;
+          let {username, avatar_url, address1, address2, city, state, country, zipcode} = findUser;
           req.session.userId = userId;
           // Wait for the session data to be saved to the database
           await new Promise((resolve, reject) => {
@@ -83,7 +83,7 @@ const postLogIn = async (req, res) => {
           //render to app main page
           res.send({
             'reminder': 'seesion set success, render app main page',
-            'userId': `${username}`,
+            'user': {username, avatar_url, address1, address2, city, state, country, zipcode},
             'url':'/home'
           })
         } else {
