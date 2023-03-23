@@ -115,6 +115,29 @@ app.get("/friendList", async (req, res) => {
   }
 });
 
+app.get("/getUserInfo", async (req, res) => {
+  let userId = req.body.userId;
+  try {
+    const user = await FriendList.find({userId})
+    if (user.length === 0) {
+      const newUser = new FriendList({
+        userId: userId,
+        thumbnailUrl: '',
+        friends: [],
+        conversations: [],
+        incomingRequests: [],
+        sentRequest: []
+      });
+      newUser.save();
+      res.status(200).send();
+    }
+    res.status(200).send(user[0])
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+})
+
 // [
 //   {
 //     _id: new ObjectId("64160b46cc57fa46efca1bed"),
