@@ -10,6 +10,7 @@ console.log("🚀 ~ file: Notifications.jsx:9 ~ Notifications ~ incomingRequests
 const [friendData, setFriendData] = useState([])
 
 
+
 const getFriendInfo = (list) => {
   list.forEach( async (name) => {
     try {
@@ -17,7 +18,7 @@ const getFriendInfo = (list) => {
       // friendData.push(result.data);
       // console.log("🚀 ~ file: Notifications.jsx:17 ~ incomingRequests.forEach ~ friendData:", friendData)
       let friendInfo = result.data;
-      setFriendData([...friendData, friendInfo]);
+      setFriendData(prevState => [...prevState, friendInfo]);
     }
     catch (err) {
       console.error(err);

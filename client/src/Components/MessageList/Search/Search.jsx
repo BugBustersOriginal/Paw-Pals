@@ -48,7 +48,6 @@ export function Search (props) {
           <input data-testid="search-input" type="text" name="searchQuery" placeholder="Search Friend" onChange={submitSearch}/>
         </label>
       </form>
-      {/* {loading? <p>loading...</p> : <SearchTile searchResult={searchResult} userId={userId} userFriends={props.userFriends} userInfo={props.userInfo} pendingRequests={props.pendingRequests} handleSelection={handleSelection}/> } */}
       {searchResult ? <SearchTile searchResult={searchResult} userId={userId} userFriends={props.userFriends} userInfo={props.userInfo} pendingRequests={props.pendingRequests} handleSelection={handleSelection}/> : null }
     </div>
   )
