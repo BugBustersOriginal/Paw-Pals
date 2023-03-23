@@ -32,7 +32,7 @@ exports.acceptRequest = (req, res) => {
 }
 
 exports.getFriendList =  (req, res) => {
-  // console.log('friendList controller userId: ', req.body.searchQuery);
+  console.log('friendList controller userId: ', req.body.searchQuery);
   let searchFriend = req.body.searchQuery;
     axios.get(`${process.env.MONGODB_SERVER}/friendList`, { data: { userId: searchFriend} })
     .then((result) => {
