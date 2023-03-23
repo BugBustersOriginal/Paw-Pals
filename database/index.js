@@ -3,11 +3,11 @@ const { Pool } = require('pg');
 const uuid = require('pg-uuid');
 
 const pool = new Pool({
-user: 'vaan',
-host: 'localhost',
-database: 'postgres',
-password: '',
-port: 5432
+  user: 'tivo',
+  host: 'localhost',
+  database: 'postgres',
+  password: '',
+  port: 5432
 });
 
 (async () => {
