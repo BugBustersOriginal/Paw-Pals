@@ -75,7 +75,7 @@ const postLogIn = async (req, res) => {
               if (err) {
                 reject(err);
               } else {
-                resolve(console.log(`set session success, userId=${userId}, userName=${username}`));
+                resolve(console.log(`set session success, userId=${userId}`));
               }
             });
           });

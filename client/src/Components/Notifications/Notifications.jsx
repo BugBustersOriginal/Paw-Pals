@@ -17,7 +17,7 @@ const getFriendInfo = (list) => {
       // friendData.push(result.data);
       // console.log("🚀 ~ file: Notifications.jsx:17 ~ incomingRequests.forEach ~ friendData:", friendData)
       let friendInfo = result.data;
-      setFriendData(prevState => [...prevState, friendInfo]);
+      setFriendData([...friendData, friendInfo]);
     }
     catch (err) {
       console.error(err);
@@ -53,6 +53,7 @@ useEffect(() => {
 
   return (
     <div>
+      <h4>Notifications</h4>
       {friendData?.map((friend, index) => {
         return (
             <NotificationTile key={index} userId={friend.userId} thumbnailUrl={friend.thumbnailUrl} acceptRequest={acceptRequest} />

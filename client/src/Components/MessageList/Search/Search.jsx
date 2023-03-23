@@ -5,8 +5,8 @@ import {SearchTile} from './SearchTile.jsx';
 export function Search (props) {
 
   const [search, setSearch] = useState('');
-  // const [tileStatus, setTileStatus] = useState(false)
-  const [searchResult, setSearchResult] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [searchResult, setSearchResult] = useState(null);
 
 
   let userId = props.userId;
@@ -22,6 +22,7 @@ export function Search (props) {
         let searchResult = result.data;
         // console.log('search result: ', searchResult);
         setSearchResult(searchResult);
+        setLoading(false);
       })
       .catch((err) => {
         console.error(err);
@@ -47,7 +48,8 @@ export function Search (props) {
           <input data-testid="search-input" type="text" name="searchQuery" placeholder="Search Friend" onChange={submitSearch}/>
         </label>
       </form>
-      {searchResult ? <SearchTile searchResult={searchResult} userId={userId} userFriends={props.userFriends} userInfo={props.userInfo} pendingRequests={props.pendingRequests} handleSelection={handleSelection}/> : null}
+      {/* {loading? <p>loading...</p> : <SearchTile searchResult={searchResult} userId={userId} userFriends={props.userFriends} userInfo={props.userInfo} pendingRequests={props.pendingRequests} handleSelection={handleSelection}/> } */}
+      {searchResult ? <SearchTile searchResult={searchResult} userId={userId} userFriends={props.userFriends} userInfo={props.userInfo} pendingRequests={props.pendingRequests} handleSelection={handleSelection}/> : null }
     </div>
   )
 }
