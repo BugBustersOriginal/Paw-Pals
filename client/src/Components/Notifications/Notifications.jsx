@@ -10,6 +10,7 @@ console.log("🚀 ~ file: Notifications.jsx:9 ~ Notifications ~ incomingRequests
 const [friendData, setFriendData] = useState([])
 
 
+
 const getFriendInfo = (list) => {
   list.forEach( async (name) => {
     try {
@@ -53,6 +54,7 @@ useEffect(() => {
 
   return (
     <div>
+      <h4>Notifications</h4>
       {friendData?.map((friend, index) => {
         return (
             <NotificationTile key={index} userId={friend.userId} thumbnailUrl={friend.thumbnailUrl} acceptRequest={acceptRequest} />

@@ -7,7 +7,7 @@ exports.getUserInfo =  (req, res) => {
 
     // console.log('friendList controller userId: ', req.body.searchQuery);
     let userId = req.query.userId;
-      axios.get(`${process.env.MONGODB_SERVER}/friendList`, { data: { userId: userId} })
+      axios.get(`${process.env.MONGODB_SERVER}/getUserInfo`, { data: { userId: userId} })
       .then((result) => {
         // console.log('got user info: ', result.data);
         let userInfo = result.data;
