@@ -40,8 +40,10 @@ app.get('/register', reRoute);
 
 /*******add getAuth middleware, made auth first ***************************************/
 const getAuth = (req, res, next) => {
+
   if (req.url === '/login') {
     if(req.session.userId) {
+      console.log(1111,req.session.userId)
       res.redirect('/home');
     } else {
       next();
@@ -59,7 +61,7 @@ app.get('/home', getAuth, reRoute);
 app.get('/map',getAuth, reRoute);
 app.get('/friendtile',getAuth, reRoute);
 app.get('/messagewindow', getAuth, reRoute);
-
+app.get('/notifications',getAuth,reRoute);
 
 /*************for every page own testing, comment out getAuth middleware and comment in the part below *********************************/
 
@@ -68,7 +70,7 @@ app.get('/messagewindow', getAuth, reRoute);
 // app.get('/map',reRoute);
 // app.get('/friendtile',reRoute);
 // app.get('/messagewindow', reRoute);
-
+// app.get('/notifications',reRoute);
 /**********************************/
 
 
