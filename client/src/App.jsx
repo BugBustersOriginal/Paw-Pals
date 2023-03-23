@@ -68,6 +68,15 @@ export function App()  {
 
 
   useEffect(() => {
+    //user use cookie login to any app's page
+    axios.get('/authUser')
+     .then((result) => {
+        let authUserId = result.data;
+        if (authUserId !== '') {
+          setUserRealId({userId: authUserId});
+        }
+      })
+    // all mongodb fetch data should wrapped into .then(), means: first getAuthUser, then get data from mongodb
     // axios call to get userInfo from MongoDB
     axios.get('/getUserInfo', {params: {userId: userId} })
     .then((result) => {

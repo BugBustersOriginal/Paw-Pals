@@ -27,7 +27,7 @@ app.use(session({
   })
 );
 
-app.get('/getUserInfo', getControllers.getUserInfo);
+// app.get('/getUserInfo', getControllers.getUserInfo);
 
 const reRoute = (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../client/dist/index.html'), function(err) {
@@ -37,19 +37,20 @@ const reRoute = (req, res) => {
 };
 app.get('/', reRoute);
 app.get('/register', reRoute);
-
 /*******add getAuth middleware, made auth first ***************************************/
+let authUserId = '';
 const getAuth = (req, res, next) => {
 
   if (req.url === '/login') {
     if(req.session.userId) {
-      console.log(1111,req.session.userId)
+      authUserId = req.session.userId;
       res.redirect('/home');
     } else {
       next();
     }
   } else {
     if(req.session.userId) {
+      authUserId = req.session.userId;
       next();
     } else {
       res.redirect('/login');
@@ -62,7 +63,9 @@ app.get('/map',getAuth, reRoute);
 app.get('/friendtile',getAuth, reRoute);
 app.get('/messagewindow', getAuth, reRoute);
 app.get('/notifications',getAuth,reRoute);
-
+app.get('/authUser', (req, res) =>  {
+  res.send(authUserId)
+})
 /*************for every page own testing, comment out getAuth middleware and comment in the part below *********************************/
 
 // app.get('/login', reRoute);
