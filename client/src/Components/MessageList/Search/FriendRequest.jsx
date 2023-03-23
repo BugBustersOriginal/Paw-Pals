@@ -8,7 +8,7 @@ console.log("🚀 ~ file: FriendRequest.jsx:5 ~ FriendRequest ~ sentRequest:", p
   let pendingRequests = props.pendingRequests;
 
   useEffect(() => {
-    if (pendingRequests.length) {
+    if (pendingRequests) {
       if(pendingRequests.indexOf(props.friendInfo.userId) !== -1) {
         setRequestSent(true);
       }
