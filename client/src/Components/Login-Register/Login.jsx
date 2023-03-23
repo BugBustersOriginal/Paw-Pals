@@ -55,6 +55,7 @@ function Login() {
         <input type="password" placeholder="Password" id="password" name="password" onChange={handleInputChange} value={inputs.password|| ''}/>
         <button type="submit">Log In</button>
       </form>
+      <button>Gmail Account Login</button>
       <button className="link-button forgot">Forgot Password</button>
       <button className="link-button" onClick={handleClick} >Don't have an account? Register here</button>
       {/* if username exist, alert user to change a new username */}
