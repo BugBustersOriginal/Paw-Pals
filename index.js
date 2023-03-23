@@ -115,6 +115,7 @@ app.get("/friendList", async (req, res) => {
   }
 });
 
+//API for getting userInfo and creating new model if new user does not exist
 app.get("/getUserInfo", async (req, res) => {
   let userId = req.body.userId;
   try {
