@@ -6,31 +6,53 @@ import MessageBox from '../MessageWindow/MessageBox.jsx'
 
 
 export default function MessageWindow(props) {
-  const [conversationID, setConversationID] = useState('6173c3d2a87a173a1b6f60e6'); // messageID should tell us who the two users are
+  const [conversationID, setConversationID] = useState(props.conversationID||''); // messageID should tell us who the two users are
   const [conversation, setConversation] = useState([]);
   const [message, setMessage]  = useState('');
   const [mappedMessages, setMappedMessages] = useState([]);
   const [sender, setSender] = useState(1);
   const senderInputRef = useRef(null);
   const messageContainerRef= useRef(null);
+  const [participants, setParticipants] = useState([1,2]);
+
+  const setConversationWithLogging = (newConversation) => {
+    console.log("setConversation called with:", newConversation);
+    setConversation(newConversation);
+  }
 
   useEffect(() => {
-    socket.emit("join-conversation", conversationID);
+    if(!conversationID) {
+      console.log(`setting conversationID!`)
+      socket.on('new-conversation', (data) => {
+        console.log(`got new conversationId! ${data.conversationId}`)
+        if(!conversationID) {
+          console.log(`setting conversationID`);
+          setConversationID(data.conversationId);
+        }
+
+      });
+    }
+  },[])
+  useEffect(() => {
+    socket.off('new-message'); // remove previous event listener
+    socket.emit("join-conversation", conversationID, participants);
     socket.emit('get-conversation', conversationID);
     socket.on('conversation', (data) => {
-      //console.log(data)
+      console.log(`got new conversation!`)
       setConversation([...data]);
     });
     socket.on('new-message', (data) => {
-      setConversation(prevConversation => [...prevConversation, data]);
+      console.log(`got newMessage!`)
+       setConversationWithLogging(prevConversation => [...prevConversation, data]);
     });
+    //initializeSocketEvents()
     // prevents memory leaks, this function is executed when the component unmounts
     return () => {
       socket.off("get-conversation");
       socket.off('conversation')
 
     }
-  },[])
+  },[conversationID])
 
   useEffect(()=> {
     //console.log(`i'm setting the new message!`)

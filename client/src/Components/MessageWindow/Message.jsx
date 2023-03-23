@@ -7,9 +7,11 @@ export default function Message(props) {
   const [newMessage, setNewMessage] = useState({
     sender:props.sender,
     content:'',
-    type:'text',
+    type:'text', // change to image if sending image
+    image:'',
+    participants: ['1','2'], // need to change this in the future once mary ann finishes their service
+    expirationTime: '',
     conversationId:props.conversationID,
-    test:true
   });
   const [message, setMessage] = useState('');
   const [img, setImg] = useState('');
@@ -61,9 +63,10 @@ export default function Message(props) {
   useEffect(() => {
     setNewMessage(prevNewMessage => ({
       ...prevNewMessage,
-      sender: props.sender
+      sender: props.sender,
+      conversationId: props.conversationID
     }));
-    },[props.sender]);
+    },[props.sender, props.conversationID]);
 
   useEffect(()=>{
     if(newMessage.content){
