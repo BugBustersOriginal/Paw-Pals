@@ -54,20 +54,20 @@ const getAuth = (req, res, next) => {
     }
   }
 };
-app.get('/login', getAuth, reRoute);
-app.get('/home', getAuth, reRoute);
-app.get('/map',getAuth, reRoute);
-app.get('/friendtile',getAuth, reRoute);
-app.get('/messagewindow', getAuth, reRoute);
+// app.get('/login', getAuth, reRoute);
+// app.get('/home', getAuth, reRoute);
+// app.get('/map',getAuth, reRoute);
+// app.get('/friendtile',getAuth, reRoute);
+// app.get('/messagewindow', getAuth, reRoute);
 
 
 /*************for every page own testing, comment out getAuth middleware and comment in the part below *********************************/
 
-// app.get('/login', reRoute);
-// app.get('/home', reRoute);
-// app.get('/map',reRoute);
-// app.get('/friendtile',reRoute);
-// app.get('/messagewindow', reRoute);
+app.get('/login', reRoute);
+app.get('/home', reRoute);
+app.get('/map',reRoute);
+app.get('/friendtile',reRoute);
+app.get('/messagewindow', reRoute);
 
 /**********************************/
 

@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 const uuid = require('pg-uuid');
 
 const pool = new Pool({
-user: 'vaan',
+user: 'MaryAnn',
 host: 'localhost',
 database: 'postgres',
 password: '',
