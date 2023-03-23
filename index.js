@@ -12,6 +12,7 @@ const {Conversation, Message, FriendList} = require('./db/index.js');
 
 /***** helper functions for debugging socker rooms */
 
+
 function getRoomsByUser(id){
   let usersRooms = [];
   let rooms = io.sockets.adapter.rooms;
@@ -31,7 +32,7 @@ function getRoomsByUser(id){
 app.use(express.json());
 const io = new Server(server, {
   cors :{
-    origin : 'http://localhost:1234',
+    origin : ['http://localhost:1234','http://localhost:3000'],
     methods:['GET','POST','PUT']
   }
 })
@@ -113,6 +114,30 @@ app.get("/friendList", async (req, res) => {
     res.status(500).send(err);
   }
 });
+
+//API for getting userInfo and creating new model if new user does not exist
+app.get("/getUserInfo", async (req, res) => {
+  let userId = req.body.userId;
+  try {
+    const user = await FriendList.find({userId})
+    if (user.length === 0) {
+      const newUser = new FriendList({
+        userId: userId,
+        thumbnailUrl: '',
+        friends: [],
+        conversations: [],
+        incomingRequests: [],
+        sentRequest: []
+      });
+      newUser.save();
+      res.status(200).send();
+    }
+    res.status(200).send(user[0])
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+})
 
 // [
 //   {
