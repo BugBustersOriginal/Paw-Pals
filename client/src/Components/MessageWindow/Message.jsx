@@ -39,7 +39,6 @@ export default function Message(props) {
   }
 
   const handleSendImg = () =>{
-
       let fileImage = new FormData;
       let IMGBB_API = 'f930789c2a22d062cb0f89a54f461c77';
       fileImage.append("image", img);
@@ -95,9 +94,8 @@ export default function Message(props) {
           type="file"
           accept="image/*"
           onChange={
-            (event)=>{
-            handleNewImg(event)
-          }}
+            handleNewImg
+          }
           />
          <select onChange={(e)=>{setTime(e)}}>
           <option value={2000}>2 seconds</option>

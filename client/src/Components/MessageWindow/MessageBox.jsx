@@ -42,8 +42,6 @@ export default function MessageBox(props) {
     });
   }
 
-
-
   useEffect (() => {
     console.log (`props.sender is equal to ${props.sender} and  ${props.currentUser}`)
     if(props.sender !== undefined && props.currentUser !== undefined) {
@@ -51,9 +49,6 @@ export default function MessageBox(props) {
     }
 
    })
-
-
-
 
   return (
     <div className ={`msg_box${isSender? ' sent':''}`}>
@@ -65,7 +60,8 @@ export default function MessageBox(props) {
          url!==''? (img === false ?
          <button onClick={()=>{showSnap()}} >
          show snap
-       </button> : <img src= {url.url}/>) : content}
+       </button> : <img src= {url.url}/>) : content
+      }
        </div>
        </div>
       </div>
