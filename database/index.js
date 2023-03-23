@@ -3,10 +3,10 @@ const { Pool } = require('pg');
 const uuid = require('pg-uuid');
 
 const pool = new Pool({
-  user: 'tivo',
+  user: process.env.POSTGRES_USER,
   host: 'localhost',
   database: 'postgres',
-  password: '',
+  password: process.env.POSTGRES_PASSSWORD,
   port: 5432
 });
 
