@@ -2,8 +2,8 @@ const {createUser, getUser, getUserById, updatePassward} = require('../model')
 const {compareHash} = require('../lib/hashUtils.js')
 
 const postSignUp = async (req, res) => {
-  // if photo is undefined, give a default photo
-  if (req.body.photo === undefined) {
+  // if photo is undefined, give a default photo  || req.body.photo === ''
+  if (req.body.photo === undefined ) {
     req.body.photo = 'https://as2.ftcdn.net/v2/jpg/03/03/62/45/1000_F_303624505_u0bFT1Rnoj8CMUSs8wMCwoKlnWlh5Jiq.jpg';
   }
   // check request has both username and password
@@ -68,6 +68,7 @@ const postLogIn = async (req, res) => {
         if (compareHash(req.body.password, passwordHashed, salt)) {
           //password correct, assign a new session and save sessionid into cookie
           let userId = findUser.id;
+          let username = findUser.username;
           req.session.userId = userId;
           // Wait for the session data to be saved to the database
           await new Promise((resolve, reject) => {
@@ -75,14 +76,14 @@ const postLogIn = async (req, res) => {
               if (err) {
                 reject(err);
               } else {
-                resolve(console.log(`set session success, userId=${userId}`));
+                resolve(console.log(`set session success, userId=${username}`));
               }
             });
           });
           //render to app main page
           res.send({
             'reminder': 'seesion set success, render app main page',
-            'userId': `${userId}`,
+            'userId': `${username}`,
             'url':'/home'
           })
         } else {

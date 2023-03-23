@@ -76,7 +76,7 @@ app.get('/authUser', (req, res) =>  {
 // app.get('/notifications',reRoute);
 /**********************************/
 
-app.get('/randomPhoto',getRandomPhoto )
+app.get('/randomPhoto', getRandomPhoto);
 
 app.post('/searchFriend', postControllers.getFriendList);
 

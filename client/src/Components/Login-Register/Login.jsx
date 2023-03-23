@@ -29,7 +29,7 @@ function Login({handleUserLogin}) {
         if (guest.data.url === '/home') {
           handleUserLogin({userId: guest.data.userId});
           //for testing
-          console.log('login set userId success', {userId: guest.data.userId})
+          console.log('login set userId success', {userId: guest.data.username})
 
         }
 

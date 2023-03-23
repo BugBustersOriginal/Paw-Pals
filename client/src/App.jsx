@@ -21,7 +21,7 @@ export function App()  {
   const [userFriends, setUserFriends] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
-  const [userRealId, setUserRealId] = useState({});
+  const [userRealId, setUseRealId] = useState({});
 
   async function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
@@ -42,7 +42,9 @@ export function App()  {
       navigate('/home');
 
     } else {
-      console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId)
+      //for testing
+      console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId);
+
       navigate(`/${(e.target.innerText).toLowerCase()}`);
     }
 
@@ -57,8 +59,8 @@ export function App()  {
     }
   }
   //set userId into state
-  const handleUserLogin = ({userId}) => {
-    setUserRealId({userId});
+  const handleUserLogin = (data) => {
+    setUseRealId(data);
   };
   //sample userId data to pass down to other components (useState)
   let userId = 'superman';

@@ -14,7 +14,7 @@ const getRandomPhoto = (req, res) => {
   })
   .catch(error => {
     //console.log(error);
-    res.send(undefined)
+    res.send('')
   });
 
 }

@@ -42,11 +42,14 @@ function Register() {
   function handleClick () {
     navigate("/login");
   };
-  useEffect(async () => {
-    const randomPhoto = await axios.get('/randomPhoto');
-    console.log('random Photo', randomPhoto)
-    setInput({...inputs, photo: randomPhoto.data});
-  })
+  useEffect( () => {
+    axios.get('/randomPhoto')
+      .then(result => {
+        let randomPhoto = result.data;
+        // console.log('randomPhoto', result.data);
+        setInput({...inputs, photo: randomPhoto});
+      })
+  }, [])
   return(
     <div className="auth-form-container">
       <h2>Register</h2>
