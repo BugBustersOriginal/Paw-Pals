@@ -9,6 +9,7 @@ const PORT = process.env.PORT;
 const getControllers = require('./controllers/getControllers.js');
 const postControllers = require('./controllers/postControllers.js');
 const {postSignUp, postLogIn, getLogOut} = require('./controllers/index.js');
+const {getRandomPhoto} = require('./lib/randomPhoto.js')
 const pgPool = require('../database/index.js');
 app.use(express.json());
 app.use(compression());
@@ -75,7 +76,7 @@ app.get('/authUser', (req, res) =>  {
 // app.get('/notifications',reRoute);
 /**********************************/
 
-
+app.get('/randomPhoto',getRandomPhoto )
 
 app.post('/searchFriend', postControllers.getFriendList);
 
