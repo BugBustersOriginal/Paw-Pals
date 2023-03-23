@@ -75,13 +75,14 @@ const postLogIn = async (req, res) => {
               if (err) {
                 reject(err);
               } else {
-                resolve(console.log(`set session success, userId=${userId}`));
+                resolve(console.log(`set session success, userId=${userId}, userName=${username}`));
               }
             });
           });
           //render to app main page
           res.send({
             'reminder': 'seesion set success, render app main page',
+            'userId': `${username}`,
             'url':'/home'
           })
         } else {
