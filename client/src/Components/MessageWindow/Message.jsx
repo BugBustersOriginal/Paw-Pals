@@ -35,6 +35,7 @@ export default function Message(props) {
   }
 
   const handleNewImg = (event) =>{
+    event.preventDefault()
     setImg(event.target.files[0])
   }
 
@@ -49,7 +50,9 @@ export default function Message(props) {
         data: fileImage
       })
         .then ((res) => {
-          setNewMessage({...newMessage,content:"<img>"+res.data.data.image.url+"</img>"})
+          console.log(`res from image upload is equal to ${res.data.data.image.url}`)
+          // setNewMessage({...newMessage,content:"<img>"+res.data.data.image.url+"</img>"})
+          setNewMessage({...newMessage,content:res.data.data.image.url, type:'image'})
           return res;
         })
     setImg('')
@@ -93,10 +96,8 @@ export default function Message(props) {
          <input
           type="file"
           accept="image/*"
-          onChange={
-            handleNewImg
-          }
-          />
+          onChange={handleNewImg}
+        />
          <select onChange={(e)=>{setTime(e)}}>
           <option value={2000}>2 seconds</option>
           <option value={30000}>30 seconds</option>

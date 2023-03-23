@@ -9,19 +9,23 @@ export default function MessageBox(props) {
   const[content, setcontent] = useState(props.content);
   const [isSender, setIsSender] =useState(false);
   var str =''
-  if(props.content && url === ''){
-    if(props.content[0]=== '<' && props.content[1] === 'i'&& props.content[2] ==="m"){
-      for(var i = 5; i<props.content.length - 6 ; i++){
-        str = str + props.content[i]
-      }
-      console.log(`str is equal to ${str}`);
-      seturl({
-        url:str
-      })
+  // if(props.content && url === ''){
+  //   if(props.content[0]=== '<' && props.content[1] === 'i'&& props.content[2] ==="m"){
+  //     for(var i = 5; i<props.content.length - 6 ; i++){
+  //       str = str + props.content[i]
+  //     }
+  //     console.log(`str is equal to ${str}`);
+  //     seturl({
+  //       url:str
+  //     })
 
-    }
+  //   }
+  // }
+  if(props.type === 'image' && url === '') {
+    seturl({
+      url:props.content
+    })
   }
-
   const showSnap = () =>{
     setimg({
       img: true
@@ -51,19 +55,20 @@ export default function MessageBox(props) {
    })
 
   return (
-    <div className ={`msg_box${isSender? ' sent':''}`}>
-      <div>
-      <div className={`line${isSender? ' sent':''}`}></div>
-      <div className = 'username'>{isSender? 'me': props.sender}</div>
-      {/* <div className = 'content'>{props.content}</div> */}
-      <div className = 'content'>{
-         url!==''? (img === false ?
-         <button onClick={()=>{showSnap()}} >
-         show snap
-       </button> : <img src= {url.url}/>) : content
-      }
-       </div>
-       </div>
+
+      <div className ={`msg_box${isSender? ' sent':''}`}>
+        <div>
+          <div className={`line${isSender? ' sent':''}`}></div>
+          <div className = 'username'>{isSender? 'me': props.sender}</div>
+          <div className = 'content'> {
+            url!==''? (img === false ?
+            <button onClick={()=>{showSnap()}} >
+              show snap
+            </button> : <img src= {url.url}/>) : content
+          }
+          </div>
+        </div>
       </div>
+
   )
 }

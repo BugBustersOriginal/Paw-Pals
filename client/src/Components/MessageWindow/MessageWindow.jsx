@@ -38,7 +38,7 @@ export default function MessageWindow(props) {
     if(conversation.length !== 0) {
       const mappedMessages = conversation.map((message) => {
         // console.log(JSON.stringify(message))
-        return <MessageBox key={message._id} sender={message.sender} content={message.content} currentUser = {sender} />;
+        return <MessageBox key={message._id} sender={message.sender} content={message.content} currentUser = {sender} type={message.type} />;
       });
       // console.log("mapped msgs", JSON.stringify(mappedMessages))
       setMappedMessages(mappedMessages);
