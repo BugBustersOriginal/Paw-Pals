@@ -58,7 +58,7 @@ export function App()  {
       setHidden(true);
     }
   }
-  //set userId into state
+  //set userInfo from postgres into state
   const handleUserLogin = (data) => {
        let {address1, address2, city, state, country, zipcode} = data;
        let userFromProsgres = {userId: data.username, thumbnailUrl: data.avator_url, address1, address2, city, state, country, zipcode};
@@ -75,12 +75,11 @@ export function App()  {
     //user use cookie login to any app's page
     axios.get('/authUser')
      .then((result) => {
-        let authUserId = result.data;
-        if (authUserId !== '') {
-
-          setUserRealId({userId: authUserId});
-        }
-      })
+        let authUser = result.data;
+        let {address1, address2, city, state, country, zipcode} = authUser;
+        let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avator_url, address1, address2, city, state, country, zipcode};
+        setUseRealId(userFromProsgres);
+        })
     // all mongodb fetch data should wrapped into .then(), means: first getAuthUser, then get data from mongodb
     // axios call to get userInfo from MongoDB
     axios.get('/getUserInfo', {params: {userId: userId} })

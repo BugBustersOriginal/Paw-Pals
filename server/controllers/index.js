@@ -114,5 +114,14 @@ const getLogOut = async(req, res) => {
   });
 
 };
-module.exports = {postSignUp, postLogIn, getLogOut};
+//cookie login
+const getAuthLogin = async (req, res) => {
+  if (req.session.userId) {
+    let id = req.session.userId;
+    let findUser = await getUserById({id});
+    let {username, avatar_url, address1, address2, city, state, country, zipcode} = findUser;
+    res.send({username, avatar_url, address1, address2, city, state, country, zipcode});
+  }
+}
+module.exports = {postSignUp, postLogIn, getLogOut, getAuthLogin};
 

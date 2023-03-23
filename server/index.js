@@ -8,7 +8,7 @@ const path = require('path');
 const PORT = process.env.PORT;
 const getControllers = require('./controllers/getControllers.js');
 const postControllers = require('./controllers/postControllers.js');
-const {postSignUp, postLogIn, getLogOut} = require('./controllers/index.js');
+const {postSignUp, postLogIn, getLogOut, getAuthLogin} = require('./controllers/index.js');
 const {getRandomPhoto} = require('./lib/randomPhoto.js')
 const pgPool = require('../database/index.js');
 app.use(express.json());
@@ -63,9 +63,7 @@ app.get('/map',getAuth, reRoute);
 app.get('/friendtile',getAuth, reRoute);
 app.get('/messagewindow', getAuth, reRoute);
 app.get('/notifications',getAuth,reRoute);
-app.get('/authUser', (req, res) =>  {
-  res.send(req.session.userId)
-})
+app.get('/authUser', getAuthLogin)
 /*************for every page own testing, comment out getAuth middleware and comment in the part below *********************************/
 
 // app.get('/login', reRoute);
