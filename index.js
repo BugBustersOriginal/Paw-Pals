@@ -164,6 +164,7 @@ io.on('connection', async (socket) => {
   console.log('a user connected');
    // Handle new messages when user is in chat room
    socket.on('new-message', async (data) => {
+    console.log(`got a new message!`)
     if(data !== ''){
       console.log("data", data)
       try {
@@ -174,17 +175,13 @@ io.on('connection', async (socket) => {
           {new:true} // returns back the conversation after adding new message
         )
       // Broadcast message to all users in the conversation room
-      console.log(`conversation after adding new message is equal to ${conversation}`);
-      const roomNames = Object.keys(io.sockets.adapter.rooms).filter(roomId => !io.sockets.adapter.rooms[roomId].sockets[roomId]);
         io.to(data.conversationId).emit('new-message', message);
       } catch (err) {
         console.error(`error while sending new-message ${err}`)
       }
-    // Save message to database
-    const message = await Message.create(data);
 
     // // Broadcast message to all users in the conversation
-    socket.to(data.conversationId).emit('new-message', message);
+    //socket.to(data.conversationId).emit('new-message', message);
     }
 
   });
