@@ -7,9 +7,11 @@ export default function Message(props) {
   const [newMessage, setNewMessage] = useState({
     sender:props.sender,
     content:'',
-    type:'text',
+    type:'text', // change to image if sending image
+    image:'',
+    participants: ['1','2'], // need to change this in the future once mary ann finishes their service
+    expirationTime: '',
     conversationId:props.conversationID,
-    test:true
   });
   const [message, setMessage] = useState('');
   const [img, setImg] = useState('');
@@ -35,11 +37,11 @@ export default function Message(props) {
   }
 
   const handleNewImg = (event) =>{
+    event.preventDefault()
     setImg(event.target.files[0])
   }
 
   const handleSendImg = () =>{
-
       let fileImage = new FormData;
       let IMGBB_API = 'f930789c2a22d062cb0f89a54f461c77';
       fileImage.append("image", img);
@@ -50,7 +52,9 @@ export default function Message(props) {
         data: fileImage
       })
         .then ((res) => {
-          setNewMessage({...newMessage,content:"<img>"+res.data.data.image.url+"</img>"})
+          console.log(`res from image upload is equal to ${res.data.data.image.url}`)
+          // setNewMessage({...newMessage,content:"<img>"+res.data.data.image.url+"</img>"})
+          setNewMessage({...newMessage,content:res.data.data.image.url, type:'image'})
           return res;
         })
     setImg('')
@@ -59,9 +63,10 @@ export default function Message(props) {
   useEffect(() => {
     setNewMessage(prevNewMessage => ({
       ...prevNewMessage,
-      sender: props.sender
+      sender: props.sender,
+      conversationId: props.conversationID
     }));
-    },[props.sender]);
+    },[props.sender, props.conversationID]);
 
   useEffect(()=>{
     if(newMessage.content){
@@ -94,11 +99,8 @@ export default function Message(props) {
          <input
           type="file"
           accept="image/*"
-          onChange={
-            (event)=>{
-            handleNewImg(event)
-          }}
-          />
+          onChange={handleNewImg}
+        />
          <select onChange={(e)=>{setTime(e)}}>
           <option value={2000}>2 seconds</option>
           <option value={30000}>30 seconds</option>
