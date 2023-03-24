@@ -28,11 +28,19 @@ const acceptRequest = (friendName) => {
     userId: userId,
     friendId: friendName
   }
+  // let index = incomingRequests.indexOf(friendName)
+  // let incomingRequests = incomingRequests.slice(index, 1)
   axios.post('/acceptRequest', acceptObj)
   .then(() => {
     console.log('accepted friend request');
+
+// code works but renders tile weird. Will fix later
     // getFriendInfo(incomingRequests);
     // props.rerender();
+    // let index = incomingRequests.indexOf(friendName);
+    // incomingRequests.splice(index, 1);
+    // console.log('incomingRequests: ', incomingRequests);
+    // getFriendInfo(incomingRequests);
   })
   .catch((err) => {
     console.error(err);

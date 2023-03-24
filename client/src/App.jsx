@@ -95,7 +95,7 @@ export function App()  {
         <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
         <button onClick={(e) => handleDevClick(e)}>Map</button>
         <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
-          <button onClick={(e) => handleDevClick(e)}>Notifications</button>
+        <button onClick={(e) => handleDevClick(e)}>Notifications</button>
           {incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
       </div>
 
