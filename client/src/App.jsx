@@ -43,7 +43,7 @@ export function App()  {
 
     } else {
       //for testing
-      console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId.userId);
+      console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId);
 
       navigate(`/${(e.target.innerText).toLowerCase()}`);
     }
@@ -60,9 +60,9 @@ export function App()  {
   }
   //set userInfo from postgres into state
   const handleUserLogin = (data) => {
-       console.log(11111, data)
        let {address1, address2, city, state, country, zipcode} = data;
-       let userFromProsgres = {userId: data.username, thumbnailUrl: data.avator_url, address1, address2, city, state, country, zipcode};
+       let userFromProsgres = {userId: data.username, thumbnailUrl: data.avatar_url, address1, address2, city, state, country, zipcode};
+       console.log('login path', userFromProsgres)
        setUseRealId(userFromProsgres);
   };
   //sample userId data to pass down to other components (useState)
@@ -77,9 +77,10 @@ export function App()  {
     axios.get('/authUser')
      .then((result) => {
        let authUser = result.data;
-       console.log(222, authUser)
+
         let {address1, address2, city, state, country, zipcode} = authUser;
-        let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avator_url, address1, address2, city, state, country, zipcode};
+        let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avatar_url, address1, address2, city, state, country, zipcode};
+        console.log('auth path', userFromProsgres);
         setUseRealId(userFromProsgres);
         })
     // all mongodb fetch data should wrapped into .then(), means: first getAuthUser, then get data from mongodb
