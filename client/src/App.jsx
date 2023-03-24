@@ -21,12 +21,12 @@ export function App()  {
   const [userFriends, setUserFriends] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
+  const [userRealId, setUserRealId] = useState({});
 
   async function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
       try {
         const guest = await axios.get('/logout');
-
         //for testing
         console.log(guest.data.reminder);
 
@@ -35,14 +35,14 @@ export function App()  {
         console.log(err)
       }
     } else if (e.target.innerText === 'FriendTileList') {
-      // const guest = await axios.get('/auth');
-
       //for testing
-      // console.log(guest.data.reminder);
+
+      console.log('home has userId',userRealId)
 
       navigate('/home');
 
     } else {
+      console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId)
       navigate(`/${(e.target.innerText).toLowerCase()}`);
     }
 
@@ -56,13 +56,17 @@ export function App()  {
       setHidden(true);
     }
   }
-
+  //set userId into state
+  const handleUserLogin = ({userId}) => {
+    setUserRealId({userId});
+  };
   //sample userId data to pass down to other components (useState)
   let userId = 'superman';
   let profileIcon = 'profileIcon';
   let userName = '@testUserName'
 
-  const getUserInfo = () => {
+
+  const getUserInfo = (user) => {
     axios.get('/getUserInfo', {params: {userId: userId} })
     .then((result) => {
       let userInfo = result.data;
@@ -77,9 +81,29 @@ export function App()  {
   }
 
 
+
   useEffect(() => {
 
-    getUserInfo();
+    axios.get('/authUser')
+    .then((result) => {
+        let authUserId = result.data;
+        if (authUserId !== '') {
+          setUserRealId({userId: authUserId});
+        }
+      })
+
+    // axios.get('/getUserInfo', {params: {userId: userId} })
+    // .then((result) => {
+    //   let userInfo = result.data;
+    //   setUserInfo(userInfo);
+    //   setUserFriends(userInfo.friends);
+    //   setPendingRequests(userInfo.sentRequest);
+    //   setIncomingRequests(userInfo.incomingRequests);
+    // })
+    // .catch((err) => {
+    //   console.error(err);
+    // })
+    getUserInfo(userId);
 
     hideLogoNav(location.pathname);
   }, [location]);
@@ -100,7 +124,7 @@ export function App()  {
       </div>
 
       <Routes>
-      <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests} />}  />
+      <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
         {/* <Route   path="/"  element= {<Login />}  /> */}
         <Route   path="/login"  element= {<Login />}  />
         <Route   path="/register"  element= {<Register />}  />
