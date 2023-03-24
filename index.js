@@ -21,6 +21,7 @@ const {Conversation, Message, FriendList} = require('./db/index.js');
 
 /***** helper functions for debugging socker rooms */
 
+
 function getRoomsByUser(id){
   let usersRooms = [];
   let rooms = io.sockets.adapter.rooms;
@@ -78,13 +79,7 @@ app.post("/openedImage/:id", async (req, res) => {
 });
 
 
-
-
-
-
-
-
-// use to get the whole conversation when a chat is open
+/// use to get the whole conversation when a chat is open
 app.get('/conversation/:id', async (req, res) => {
   try {
     const conversationId = req.params.id;
@@ -129,6 +124,30 @@ app.get("/friendList", async (req, res) => {
   }
 });
 
+//API for getting userInfo and creating new model if new user does not exist
+app.get("/getUserInfo", async (req, res) => {
+  let userId = req.body.userId;
+  try {
+    const user = await FriendList.find({userId})
+    if (user.length === 0) {
+      const newUser = new FriendList({
+        userId: userId,
+        thumbnailUrl: '',
+        friends: [],
+        conversations: [],
+        incomingRequests: [],
+        sentRequest: []
+      });
+      newUser.save();
+      res.status(200).send();
+    }
+    res.status(200).send(user[0])
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+})
+
 // [
 //   {
 //     _id: new ObjectId("64160b46cc57fa46efca1bed"),
@@ -146,13 +165,16 @@ app.get("/friendList", async (req, res) => {
 // ]
 
 app.post('/friendRequest', async (req, res) => {
-  let friendId = req.body.data.friendRequestObj.selectedUser;
-  let userId = req.body.data.friendRequestObj.userId;
-  let filter = {userId: friendId};
-  let update = {$push: { requests: {friendId: userId}  }};
+  let friendId = req.body.data.selectedUser;
+  let userId = req.body.data.userId;
+  let friendFilter = {userId: friendId};
+  let update = {$push: { incomingRequests: userId  }};
+  let pendingRequest = {$push: {sentRequest: friendId}};
+  let userFilter = {userId: userId};
   // console.log('got friendRequest in server: ', req.body.data.friendRequestObj);
   try {
-    const friend = await FriendList.updateOne(filter, update)
+    const friend = await FriendList.updateOne(friendFilter, update)
+    const pending = await FriendList.updateOne(userFilter, pendingRequest)
     res.status(201).send();
   } catch (err) {
     console.error(err);
@@ -160,11 +182,32 @@ app.post('/friendRequest', async (req, res) => {
   }
 });
 
+app.post('/acceptRequest', async (req, res) => {
+  console.log('accept friend request server', req.body.data);
+  let userId = req.body.data.userId;
+  let friendId = req.body.data.friendId;
+  let friendFilter = {userId: friendId};
+  let userFilter = {userId: userId};
+  let update = {$push: {friends: userId}};
+  let updateUserFriends = {$push: {friends: friendId}}
+  try {
+    const accept = await FriendList.updateOne(friendFilter, update)
+    const removeFriendRequest = await FriendList.updateOne(friendFilter, {$pull: {incomingRequests: userId}})
+    const userUpdate = await FriendList.updateOne(userFilter, updateUserFriends)
+    const removeSentRequest = await FriendList.updateOne(userFilter, {$pull: {incomingRequests: friendId}})
+    // console.log('mongodb accept updated')
+    res.status(201).send();
+  } catch(err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+})
+
 io.on('connection', async (socket) => {
   console.log('a user connected');
    // Handle new messages when user is in chat room
    socket.on('new-message', async (data) => {
-    console.log(`got a new message!`)
+
     if(data !== ''){
       console.log("data", data)
       try {
