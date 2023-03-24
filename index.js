@@ -221,6 +221,7 @@ io.on('connection', async (socket) => {
         return true
       })
       // Emit the messages back to the client
+      console.log('emitting convo back to frontend')
       socket.emit('conversation', messages);
     } catch(err) {
       console.error(`error while getting conversaion ${err}`);
