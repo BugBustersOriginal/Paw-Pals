@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 function Register() {
@@ -20,7 +20,8 @@ function Register() {
   const handleSubmit = async () => {
     event.preventDefault();
     try {
-      const guest = await axios.post('http://127.0.0.1:8080/signup', inputs);
+
+      const guest = await axios.post('/signup', inputs);
       //for testing
       console.log(guest.data.reminder);
 
@@ -41,7 +42,14 @@ function Register() {
   function handleClick () {
     navigate("/login");
   };
-
+  useEffect( () => {
+    axios.get('/randomPhoto')
+      .then(result => {
+        let randomPhoto = result.data;
+        // console.log('randomPhoto', result.data);
+        setInput({...inputs, photo: randomPhoto});
+      })
+  }, [])
   return(
     <div className="auth-form-container">
       <h2>Register</h2>
@@ -49,6 +57,7 @@ function Register() {
         <input type="text" placeholder="First Name" id="firstName" name="firstname" onChange={handleInputChange} value={inputs.firstname|| ''} required/>
         <input type="text" placeholder="Last Name" id="lastName" name="lastname" onChange={handleInputChange} value={inputs.lastname|| ''} required/>
         <input type="text" placeholder="Username" id="username" name="username" onChange={handleInputChange} value={inputs.username|| ''} required/>
+        <input type="email" placeholder="debrazhang09@gmail.com" id="gmail" name="gmail" onChange={handleInputChange} value={inputs.gmail|| ''} required/>
         <input type="text" placeholder="Address 1" id="address1" name="address1" onChange={handleInputChange} value={inputs.address1|| ''}/>
         <input type="text" placeholder="Address 2" id="address2" name="address2"onChange={handleInputChange} value={inputs.address2|| ''}/>
         <input type="text" placeholder="City" id="city" name="city" onChange={handleInputChange} value={inputs.city|| ''}/>
