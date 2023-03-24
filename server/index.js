@@ -38,41 +38,41 @@ const reRoute = (req, res) => {
 app.get('/', reRoute);
 app.get('/register', reRoute);
 /*******add getAuth middleware, made auth first ***************************************/
-const getAuth = (req, res, next) => {
+// const getAuth = (req, res, next) => {
 
-  if (req.url === '/login') {
-    if(req.session.userId) {
+//   if (req.url === '/login') {
+//     if(req.session.userId) {
 
-      res.redirect('/home');
-    } else {
-      next();
-    }
-  } else {
-    if(req.session.userId) {
+//       res.redirect('/home');
+//     } else {
+//       next();
+//     }
+//   } else {
+//     if(req.session.userId) {
 
-      next();
-    } else {
-      res.redirect('/login');
-    }
-  }
-};
-app.get('/login', getAuth, reRoute);
-app.get('/home', getAuth, reRoute);
-app.get('/map',getAuth, reRoute);
-app.get('/friendtile',getAuth, reRoute);
-app.get('/messagewindow', getAuth, reRoute);
-app.get('/notifications',getAuth,reRoute);
-app.get('/authUser', (req, res) =>  {
-  res.send(req.session.userId)
-})
+//       next();
+//     } else {
+//       res.redirect('/login');
+//     }
+//   }
+// };
+// app.get('/login', getAuth, reRoute);
+// app.get('/home', getAuth, reRoute);
+// app.get('/map',getAuth, reRoute);
+// app.get('/friendtile',getAuth, reRoute);
+// app.get('/messagewindow', getAuth, reRoute);
+// app.get('/notifications',getAuth,reRoute);
+// app.get('/authUser', (req, res) =>  {
+//   res.send(req.session.userId)
+// })
 /*************for every page own testing, comment out getAuth middleware and comment in the part below *********************************/
 
-// app.get('/login', reRoute);
-// app.get('/home', reRoute);
-// app.get('/map',reRoute);
-// app.get('/friendtile',reRoute);
-// app.get('/messagewindow', reRoute);
-// app.get('/notifications',reRoute);
+app.get('/login', reRoute);
+app.get('/home', reRoute);
+app.get('/map',reRoute);
+app.get('/friendtile',reRoute);
+app.get('/messagewindow', reRoute);
+app.get('/notifications',reRoute);
 /**********************************/
 
 
