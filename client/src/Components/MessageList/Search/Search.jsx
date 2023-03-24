@@ -5,30 +5,24 @@ import {SearchTile} from './SearchTile.jsx';
 export function Search (props) {
 
   const [search, setSearch] = useState('');
-  // const [tileStatus, setTileStatus] = useState(false)
-  const [searchResult, setSearchResult] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [searchResult, setSearchResult] = useState(null);
 
 
   let userId = props.userId;
+  let userInfo = props.userInfo;
+  let userFriends = props.userFriends;
+  // let pendingRequests = props.userInfo.sentRequest;
 
   useEffect(() => {
-    // if (!search) {
-    //   setTileStatus(false);
-    // }
-    // //refactor when mongodb database is set up for searching username
-    // if (search === 'tivo') {
-    //   setTileStatus(true)
-    // }
-    // if (search !== 'tivo') {
-    //   setTileStatus(false);
-    // }
-    /////////////
+
     setTimeout(() => {
       axios.post('/searchFriend', {searchQuery: search})
       .then((result) => {
         let searchResult = result.data;
         // console.log('search result: ', searchResult);
         setSearchResult(searchResult);
+        setLoading(false);
       })
       .catch((err) => {
         console.error(err);
@@ -42,15 +36,9 @@ export function Search (props) {
     // after sucessful search, change tileStatus to true
   }
 
-
-
-
-/// sample userInfo
-  // const userInfo = {
-  //   thumbnailUrl: 'https://hs.sbcounty.gov/cn/Photo%20Gallery/_w/Sample%20Picture%20-%20Koala_jpg.jpg',
-  //   userName: 'tivo',
-  //   friendList: ["superman","shadow","batman"]
-  // }
+  const handleSelection = (user) => {
+    console.log('open window for: ', user)
+  }
 
 
   return (
@@ -60,7 +48,7 @@ export function Search (props) {
           <input data-testid="search-input" type="text" name="searchQuery" placeholder="Search Friend" onChange={submitSearch}/>
         </label>
       </form>
-      {searchResult ? <SearchTile searchResult={searchResult} userId={userId} /> : null}
+      {searchResult ? <SearchTile searchResult={searchResult} userId={userId} userFriends={props.userFriends} userInfo={props.userInfo} pendingRequests={props.pendingRequests} handleSelection={handleSelection}/> : null }
     </div>
   )
 }

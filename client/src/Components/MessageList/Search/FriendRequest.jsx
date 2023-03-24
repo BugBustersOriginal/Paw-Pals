@@ -2,8 +2,18 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 
 export function FriendRequest (props) {
+console.log("🚀 ~ file: FriendRequest.jsx:5 ~ FriendRequest ~ sentRequest:", props.pendingRequests)
 
   const [requestSent, setRequestSent] = useState(false);
+  let pendingRequests = props.pendingRequests;
+
+  useEffect(() => {
+    if (pendingRequests) {
+      if(pendingRequests.indexOf(props.friendInfo.userId) !== -1) {
+        setRequestSent(true);
+      }
+    }
+  })
 
   const handleFriendRequest = (event) => {
     //make an axios call to send a friend request

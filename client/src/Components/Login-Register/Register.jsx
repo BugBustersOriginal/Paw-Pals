@@ -20,11 +20,10 @@ function Register() {
   const handleSubmit = async () => {
     event.preventDefault();
     try {
-      const guest = await axios.post('http://127.0.0.1:8080/signup', inputs,
-      { headers: {
-        "Access-Control-Allow-Origin": true
-      }});
+      const guest = await axios.post('/signup', inputs);
+      //for testing
       console.log(guest.data.reminder);
+
       if (guest.data.alert == undefined) {
         //render login page
         navigate(guest.data.url);
@@ -50,6 +49,7 @@ function Register() {
         <input type="text" placeholder="First Name" id="firstName" name="firstname" onChange={handleInputChange} value={inputs.firstname|| ''} required/>
         <input type="text" placeholder="Last Name" id="lastName" name="lastname" onChange={handleInputChange} value={inputs.lastname|| ''} required/>
         <input type="text" placeholder="Username" id="username" name="username" onChange={handleInputChange} value={inputs.username|| ''} required/>
+        <input type="email" placeholder="debrazhang09@gmail.com" id="gmail" name="google_id" onChange={handleInputChange} value={inputs.google_id|| ''} required/>
         <input type="text" placeholder="Address 1" id="address1" name="address1" onChange={handleInputChange} value={inputs.address1|| ''}/>
         <input type="text" placeholder="Address 2" id="address2" name="address2"onChange={handleInputChange} value={inputs.address2|| ''}/>
         <input type="text" placeholder="City" id="city" name="city" onChange={handleInputChange} value={inputs.city|| ''}/>

@@ -4,6 +4,7 @@
   height: 100%;
   background: rgb(252,255,178);
   background: radial-gradient(circle, rgba(252,255,178,1) 0%, rgb(249, 252, 154) 80%, rgb(255, 246, 149) 100%);
+  font-family: 'Helvetica Neue LT Std', sans-serif;
 }
 
 #root {
@@ -25,6 +26,14 @@
   padding-bottom: 0.5rem;
 }
 
+
+
+/*logo*/
+
+.logo {
+  height: 20vh;
+}
+/* Message Window */
 .window {
   row-gap: 50px;
   margin: auto;
@@ -34,15 +43,8 @@
   padding: 10px;
   width: 95%;
   height: 95%;
-  text-align:center;
+  text-align:left;
 }
-
-/*logo*/
-
-.logo {
-  height: 20vh;
-}
-
 .write_message {
   position: relative;
   top: 75%;
@@ -56,20 +58,54 @@
   resize: none;
 }
 
-.msg_box{
-  position: relative;
+.msg_box, .msg_box.sent{
+  /* position: relative; */
   /*top: 75%;*/
-  border: 2px solid #111010;
-  background-color: #f9f9f9;
-  border-radius: 5px;
+  /* border: 2px solid #111010; */
+  /* background-color: #f9f9f9; */
+  /* border-radius: 5px;
   padding: 10px;
   width: 90%;
   height: auto;
   transition: 0.3s all;
   display:block;
   overflow-wrap: break-word;
-  display:inline-block
+  display:inline-block;
+  border-top-right-radius: 20px;
+  text-align: left; */
+  /*display: flex;*/
+  flex-direction: row;
+  position: relative;
+  max-width: 80%;
+  margin-bottom: 10px;
+  height:80px;
+  padding-left:20px;
 }
+
+
+
+.username {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 5px;
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  width: 2px;
+  height: 100%;
+}
+
+.line.sent {
+  background-color: #d02323;
+}
+
+.line:not(.sent) {
+  background-color: #3a12ee;
+}
+
 
 .message-container {
   padding-top: 20px;
