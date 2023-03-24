@@ -179,9 +179,6 @@ io.on('connection', async (socket) => {
       } catch (err) {
         console.error(`error while sending new-message ${err}`)
       }
-
-    // // Broadcast message to all users in the conversation
-    //socket.to(data.conversationId).emit('new-message', message);
     }
 
   });
@@ -190,9 +187,7 @@ io.on('connection', async (socket) => {
   socket.on('join-conversation', async (conversationId, participants) => {
     try {
       if(!conversationId) {
-        console.log(`in here!`)
         const conversation = await Conversation.create({participants:[...participants]});
-        console.log(`new convrsation Id is equal to ${conversation}`);
         conversationId = conversation._id;
         await socket.emit('new-conversation', {conversationId: conversation._id});
       }
@@ -210,7 +205,6 @@ io.on('connection', async (socket) => {
   });
   // Handle getting the current conversation
   socket.on('get-conversation', async (conversationId, participants) => {
-      console.log(`phew phew ! conversationId is equal to ${conversationId}`);
       // Retrieve all messages associated with the conversation ID
       try {
         let conversation = await Conversation.findById(conversationId);
