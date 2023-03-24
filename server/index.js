@@ -8,7 +8,8 @@ const path = require('path');
 const PORT = process.env.PORT;
 const getControllers = require('./controllers/getControllers.js');
 const postControllers = require('./controllers/postControllers.js');
-const {postSignUp, postLogIn, getLogOut} = require('./controllers/index.js');
+const {postSignUp, postLogIn, getLogOut, getAuthLogin} = require('./controllers/index.js');
+const {getRandomPhoto} = require('./lib/randomPhoto.js')
 const pgPool = require('../database/index.js');
 app.use(express.json());
 app.use(compression());
@@ -23,7 +24,7 @@ app.use(session({
   secret: 'pawpal',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge:  5* 60 * 1000} //5mins valid
+  cookie: { maxAge:  60 * 60 * 1000} // 60mins valid
   })
 );
 
@@ -75,7 +76,7 @@ app.get('/messagewindow', reRoute);
 app.get('/notifications',reRoute);
 /**********************************/
 
-app.get('/friendList/:userId', getControllers.getFriendList);
+app.get('/randomPhoto', getRandomPhoto);app.get('/friendList/:userId', getControllers.getFriendList);
 
 
 app.post('/searchFriend', postControllers.getFriendList);

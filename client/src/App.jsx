@@ -21,7 +21,7 @@ export function App()  {
   const [userFriends, setUserFriends] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
-  const [userRealId, setUserRealId] = useState({});
+  const [userRealId, setUseRealId] = useState({});
 
   async function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
@@ -42,7 +42,9 @@ export function App()  {
       navigate('/home');
 
     } else {
-      console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId)
+      //for testing
+      console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId);
+
       navigate(`/${(e.target.innerText).toLowerCase()}`);
     }
 
@@ -56,9 +58,12 @@ export function App()  {
       setHidden(true);
     }
   }
-  //set userId into state
-  const handleUserLogin = ({userId}) => {
-    setUserRealId({userId});
+  //set userInfo from postgres into state
+  const handleUserLogin = (data) => {
+       let {address1, address2, city, state, country, zipcode} = data;
+       let userFromProsgres = {userId: data.username, thumbnailUrl: data.avatar_url, address1, address2, city, state, country, zipcode};
+       console.log('login path', userFromProsgres)
+       setUseRealId(userFromProsgres);
   };
   //sample userId data to pass down to other components (useState)
   let userId = 'batman';
@@ -66,16 +71,33 @@ export function App()  {
   let userName = '@testUserName'
 
 
+  // const getUserInfo = (user) => {
+  //   axios.get('/getUserInfo', {params: {userId: userId} })
+  //   .then((result) => {
+  //     let userInfo = result.data;
+  //     setUserInfo(userInfo);
+  //     setUserFriends(userInfo.friends);
+  //     setPendingRequests(userInfo.sentRequest);
+  //     setIncomingRequests(userInfo.incomingRequests);
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   })
+  // }
+
+
 
   useEffect(() => {
-    //user use cookie login to any app's page
+
     axios.get('/authUser')
      .then((result) => {
-        let authUserId = result.data;
-        if (authUserId !== '') {
-          setUserRealId({userId: authUserId});
-        }
-      })
+       let authUser = result.data;
+
+        let {address1, address2, city, state, country, zipcode} = authUser;
+        let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avatar_url, address1, address2, city, state, country, zipcode};
+        console.log('auth path', userFromProsgres);
+        setUseRealId(userFromProsgres);
+        })
     // all mongodb fetch data should wrapped into .then(), means: first getAuthUser, then get data from mongodb
     // axios call to get userInfo from MongoDB
     axios.get('/getUserInfo', {params: {userId: userId} })
@@ -89,7 +111,7 @@ export function App()  {
     .catch((err) => {
       console.error(err);
     })
-
+    // getUserInfo(userId);
 
     hideLogoNav(location.pathname);
   }, [location]);
@@ -106,11 +128,13 @@ export function App()  {
         <button onClick={(e) => handleDevClick(e)}>Map</button>
         <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
         <button onClick={(e) => handleDevClick(e)}>Notifications</button>
+          {incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
       </div>
 
       <Routes>
       <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
-        <Route   path="/login"   element= {<Login handleUserLogin={handleUserLogin} />}  />
+        {/* <Route   path="/"  element= {<Login />}  /> */}
+        <Route   path="/login"  element= {<Login />}  />
         <Route   path="/register"  element= {<Register />}  />
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
