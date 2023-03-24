@@ -6,7 +6,8 @@ import MessageBox from '../MessageWindow/MessageBox.jsx'
 
 
 export default function MessageWindow(props) {
-  const [conversationID, setConversationID] = useState(props.conversationID||''); // messageID should tell us who the two users are
+  //const [conversationID, setConversationID] = useState(props.conversationID||''); // messageID should tell us who the two users are
+  const [conversationID, setConversationID] = useState('641cf0d5ce9b9e5ae5a34c37');
   const [conversation, setConversation] = useState([]);
   const [message, setMessage]  = useState('');
   const [mappedMessages, setMappedMessages] = useState([]);
@@ -15,18 +16,12 @@ export default function MessageWindow(props) {
   const messageContainerRef= useRef(null);
   const [participants, setParticipants] = useState([1,2]);
 
-  const setConversationWithLogging = (newConversation) => {
-    console.log("setConversation called with:", newConversation);
-    setConversation(newConversation);
-  }
-
   useEffect(() => {
+    // sets up new conversation if conversation between two users is new
     if(!conversationID) {
       console.log(`setting conversationID!`)
       socket.on('new-conversation', (data) => {
-        console.log(`got new conversationId! ${data.conversationId}`)
         if(!conversationID) {
-          console.log(`setting conversationID`);
           setConversationID(data.conversationId);
         }
 
@@ -38,12 +33,12 @@ export default function MessageWindow(props) {
     socket.emit("join-conversation", conversationID, participants);
     socket.emit('get-conversation', conversationID);
     socket.on('conversation', (data) => {
-      console.log(`got new conversation!`)
       setConversation([...data]);
     });
     socket.on('new-message', (data) => {
-      console.log(`got newMessage!`)
-       setConversationWithLogging(prevConversation => [...prevConversation, data]);
+      console.log(`getting newMessage!`)
+        console.log(`adding new message!! data._id is equal to ${data._id}`)
+        setConversation((prevConversation) => [...prevConversation, data]);
     });
     //initializeSocketEvents()
     // prevents memory leaks, this function is executed when the component unmounts
@@ -52,7 +47,7 @@ export default function MessageWindow(props) {
       socket.off('conversation')
 
     }
-  },[conversationID])
+  },[conversationID,sender])
 
   useEffect(()=> {
     //console.log(`i'm setting the new message!`)
