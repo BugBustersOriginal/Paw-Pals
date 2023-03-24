@@ -66,19 +66,19 @@ export function App()  {
   let userName = '@testUserName'
 
 
-  const getUserInfo = (user) => {
-    axios.get('/getUserInfo', {params: {userId: userId} })
-    .then((result) => {
-      let userInfo = result.data;
-      setUserInfo(userInfo);
-      setUserFriends(userInfo.friends);
-      setPendingRequests(userInfo.sentRequest);
-      setIncomingRequests(userInfo.incomingRequests);
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-  }
+  // const getUserInfo = (user) => {
+  //   axios.get('/getUserInfo', {params: {userId: userId} })
+  //   .then((result) => {
+  //     let userInfo = result.data;
+  //     setUserInfo(userInfo);
+  //     setUserFriends(userInfo.friends);
+  //     setPendingRequests(userInfo.sentRequest);
+  //     setIncomingRequests(userInfo.incomingRequests);
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   })
+  // }
 
 
 
@@ -92,18 +92,18 @@ export function App()  {
         }
       })
 
-    // axios.get('/getUserInfo', {params: {userId: userId} })
-    // .then((result) => {
-    //   let userInfo = result.data;
-    //   setUserInfo(userInfo);
-    //   setUserFriends(userInfo.friends);
-    //   setPendingRequests(userInfo.sentRequest);
-    //   setIncomingRequests(userInfo.incomingRequests);
-    // })
-    // .catch((err) => {
-    //   console.error(err);
-    // })
-    getUserInfo(userId);
+    axios.get('/getUserInfo', {params: {userId: userId} })
+    .then((result) => {
+      let userInfo = result.data;
+      setUserInfo(userInfo);
+      setUserFriends(userInfo.friends);
+      setPendingRequests(userInfo.sentRequest);
+      setIncomingRequests(userInfo.incomingRequests);
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    // getUserInfo(userId);
 
     hideLogoNav(location.pathname);
   }, [location]);
@@ -131,7 +131,7 @@ export function App()  {
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
-        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} rerender={getUserInfo}/>} />
+        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} />} />
       </Routes>
 
       {/*
