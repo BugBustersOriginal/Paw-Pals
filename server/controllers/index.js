@@ -82,6 +82,7 @@ const postLogIn = async (req, res) => {
           //render to app main page
           res.send({
             'reminder': 'seesion set success, render app main page',
+            'userId': `${userId}`,
             'url':'/home'
           })
         } else {

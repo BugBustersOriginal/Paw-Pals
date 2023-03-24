@@ -18,6 +18,16 @@ exports.getUserInfo =  (req, res) => {
     //   });
 
 
+    let userId = req.query.userId;
+      axios.get(`${process.env.MONGODB_SERVER}/getUserInfo`, { data: { userId: userId} })
+      .then((result) => {
+        // console.log('got user info: ', result.data);
+        let userInfo = result.data;
+        res.status(200).send(userInfo);
+      })
+      .catch((err) => {
+        res.status(500).send(err);
+      });
 }
 
 
