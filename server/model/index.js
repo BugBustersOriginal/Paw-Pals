@@ -3,16 +3,16 @@ const utils = require('../lib/hashUtils');
 
 
 //create a user in users db
-const createUser = async ({firstname, lastname, username, password, address1, address2, city, state, country, zipcode, photo}) => {
+const createUser = async ({firstname, lastname, username, password, gmail, address1, address2, city, state, country, zipcode, photo}) => {
   const client = await db.connect();
-  let options = {firstname, lastname, username, password, address1, address2, city, state, country, zipcode, photo};
+  let options = {firstname, lastname, username, password, gmail, address1, address2, city, state, country, zipcode, photo};
   let salt = utils.createRandom32String();
   let passwordHashed = utils.createHash(options.password, salt);
 
-  let newUser = [options.firstname, options.lastname, options.username, passwordHashed, salt, options.photo, options.address1, options.address2, options.city, options.state, options.country, options.zipcode]
+  let newUser = [options.firstname, options.lastname, options.username, passwordHashed, salt, gmail, options.photo, options.address1, options.address2, options.city, options.state, options.country, options.zipcode]
 
   const query = {
-    text: 'INSERT INTO users(firstname, lastname, username, password, salt, avatar_url, address1, address2, city, state, country, zipcode) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *',
+    text: 'INSERT INTO users(firstname, lastname, username, password, salt, gmail, avatar_url, address1, address2, city, state, country, zipcode) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *',
     values: newUser
   };
   try {

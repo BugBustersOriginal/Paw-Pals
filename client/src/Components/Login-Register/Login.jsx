@@ -27,9 +27,10 @@ function Login({handleUserLogin}) {
         //render login page
         navigate(guest.data.url);
         if (guest.data.url === '/home') {
-          handleUserLogin({userId: guest.data.userId});
+         //send userId(which is usename, icon, address into app.jsx when user first login)
+         handleUserLogin(guest.data.user);
           //for testing
-          console.log('login set userId success', {userId: guest.data.userId})
+          console.log('login set userId success', {userId: guest.data.user.username})
 
         }
 
