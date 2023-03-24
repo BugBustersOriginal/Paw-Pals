@@ -7,7 +7,7 @@ const FriendTileList = ( props ) => {
   //will receive userId from App.jsx
   console.log(props.userId, 'line 8 props FriendTileList')
 
-  // const [chats, setChats] = useState([])
+  const [conversations, setConversations] = useState([])
   const [friends, setFriends] = useState([])
 
   //will use userId to retrieve chats from message server
@@ -23,10 +23,14 @@ const FriendTileList = ( props ) => {
   useEffect(() => {
     axios.get('/friendList/' + props.userId)
       .then((res) => {
-        console.log(res.data, 'line 26 FriendTileList')
+        // console.log(res.data.friends, 'line 26 FriendTileList')
+        // console.log(res.data.conversations, 'line 27')
+        // setFriends(res.data.friends)
+        // setConversations(res.data.conversations)
+        console.log(res.data)
         setFriends(res.data)
       })
-  }, [])
+  }, [props.userId])
 
   // return (
   //   <div>
@@ -38,7 +42,7 @@ const FriendTileList = ( props ) => {
   return (
     <div>
       <Search userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId} pendingRequests={props.pendingRequests} />
-      {friends.map((friend) => <FriendTile friend={friend} userId={props.userId}/>)}
+      {friends.map((friend) => <FriendTile friend={friend}/>)}
     </div>
   )
 }

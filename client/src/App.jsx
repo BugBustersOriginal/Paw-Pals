@@ -58,7 +58,7 @@ export function App()  {
   }
 
   //sample userId data to pass down to other components (useState)
-  let userId = 'testUser';
+  let userId = 'batman';
   let profileIcon = 'profileIcon';
   let userName = '@testUserName'
 

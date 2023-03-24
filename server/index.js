@@ -71,6 +71,7 @@ app.get('/messagewindow', reRoute);
 
 /**********************************/
 
+app.get('/friendList/:userId', getControllers.getFriendList);
 
 
 app.post('/searchFriend', postControllers.getFriendList);
