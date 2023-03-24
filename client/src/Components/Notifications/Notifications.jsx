@@ -16,6 +16,7 @@ const getFriendInfo = async (list) => {
     const results = await Promise.all(requests);
     const friendInfo = results.map(result => result.data);
     setFriendData(friendInfo);
+    console.log("🚀 ~ file: Notifications.jsx:21 ~ getFriendInfo ~ friendData:", friendData)
   }
   catch (err) {
     console.error(err);
@@ -23,7 +24,6 @@ const getFriendInfo = async (list) => {
 }
 
 const acceptRequest = (friendName) => {
-  // console.log('accepting friend request', friendName);
   let acceptObj = {
     userId: userId,
     friendId: friendName
@@ -31,11 +31,8 @@ const acceptRequest = (friendName) => {
   axios.post('/acceptRequest', acceptObj)
   .then(() => {
     console.log('accepted friend request');
-    // const newFriendData = friendData.filter((friend) => friend !== friendName);
-    // setFriendData(newFriendData);
-
-    //need to figure out why state isn't automatically refreshing
-    // window.location.reload(false);
+    // getFriendInfo(incomingRequests);
+    // props.rerender();
   })
   .catch((err) => {
     console.error(err);

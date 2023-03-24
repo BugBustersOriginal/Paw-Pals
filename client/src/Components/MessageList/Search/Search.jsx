@@ -38,8 +38,9 @@ export function Search (props) {
     // after sucessful search, change tileStatus to true
   }
 
-  const handleSelection = (user) => {
-    console.log('open window for: ', user)
+  const handleSelection = (userOne, userTwo) => {
+    let conversation = [userOne, userTwo]
+    console.log('open window for: ', conversation);
     navigate(`/messagewindow`)
   }
 

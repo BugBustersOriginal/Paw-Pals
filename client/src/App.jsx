@@ -62,10 +62,7 @@ export function App()  {
   let profileIcon = 'profileIcon';
   let userName = '@testUserName'
 
-
-
-  useEffect(() => {
-    // axios call to get userInfo from MongoDB
+  const getUserInfo = () => {
     axios.get('/getUserInfo', {params: {userId: userId} })
     .then((result) => {
       let userInfo = result.data;
@@ -77,7 +74,12 @@ export function App()  {
     .catch((err) => {
       console.error(err);
     })
+  }
 
+
+  useEffect(() => {
+
+    getUserInfo();
 
     hideLogoNav(location.pathname);
   }, [location]);
@@ -93,18 +95,19 @@ export function App()  {
         <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
         <button onClick={(e) => handleDevClick(e)}>Map</button>
         <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
-        <button onClick={(e) => handleDevClick(e)}>Notifications</button>
+          <button onClick={(e) => handleDevClick(e)}>Notifications</button>
+          {incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
       </div>
 
       <Routes>
-      <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
+      <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests} />}  />
         {/* <Route   path="/"  element= {<Login />}  /> */}
         <Route   path="/login"  element= {<Login />}  />
         <Route   path="/register"  element= {<Register />}  />
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
-        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} />} />
+        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} rerender={getUserInfo}/>} />
       </Routes>
 
       {/*
