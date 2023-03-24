@@ -9,7 +9,7 @@ export default function Message(props) {
     content:'',
     type:'text', // change to image if sending image
     image:'',
-    participants: ['1','2'], // need to change this in the future once mary ann finishes their service
+    participants: ['superman','batman'], // need to change this in the future once mary ann finishes their service
     expirationTime: '',
     conversationId:props.conversationID,
   });
@@ -61,12 +61,14 @@ export default function Message(props) {
   }
 
   useEffect(() => {
+    console.log(`props.conversationID is equal to ${props.conversationID}`)
     setNewMessage(prevNewMessage => ({
       ...prevNewMessage,
       sender: props.sender,
-      conversationId: props.conversationID
+      conversationId: props.conversationID,
+      participants: props.participants
     }));
-    },[props.sender, props.conversationID]);
+    },[props.sender, props.conversationID, props.participants]);
 
   useEffect(()=>{
     if(newMessage.content){
