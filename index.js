@@ -204,29 +204,58 @@ io.on('connection', async (socket) => {
     socket.leave(conversationId);
   });
   // Handle getting the current conversation
-  socket.on('get-conversation', async (conversationId, participants) => {
+  socket.on('get-conversation', async (participants) => {
       // Retrieve all messages associated with the conversation ID
-      try {
-        let conversation = await Conversation.findById(conversationId);
-          if (!conversation) {
-            throw new Error('Conversation not found');
-          }
-          //console.log(`conversation is equal to ${JSON.stringify(conversation)}`);
-      const messages = conversation.messages.filter((message) => {
-        if ( message.type === 'image ') {
-          const timeDifference = Math.abs(new Date() - message.openedAt);
-          const timeDifferenceInSec = Math.floor(timeDifference/1000);
-          return timeDifferenceInSec <=60;
-        }
-        return true
-      })
-      // Emit the messages back to the client
-      console.log('emitting convo back to frontend')
-      socket.emit('conversation', messages);
-    } catch(err) {
-      console.error(`error while getting conversaion ${err}`);
-      socket.emit('conversation-error', err);
-    }
+      console.log(`participants is equal to ${participants}`)
+         try {
+           const conversation = await Conversation.findOne({
+              participants:{
+                $all: participants.sort()
+              }
+           }, { _id: 1, messages: 1 }).populate('messages')
+           console.log(`conversation is equal to ${JSON.stringify(conversation)}`)
+           if(!conversation) {
+            const newConversation = await Conversation.create({participants:[...participants]});
+            await socket.emit('conversation', newConversation);
+            return;
+           }
+           console.log(`conversation before filter  is equal to ${JSON.stringify(conversation)}`)
+           const messages = conversation.messages.filter((message) => {
+                if ( message.type === 'image ') {
+                  const timeDifference = Math.abs(new Date() - message.openedAt);
+                  const timeDifferenceInSec = Math.floor(timeDifference/1000);
+                  return timeDifferenceInSec <=60;
+                }
+                return true
+              })
+              conversation.messages = [...messages];
+            socket.emit('conversation', conversation);
+
+         } catch(err) {
+           console.error('error while getting initial conversation ${err}');
+           socket.emit('conversation-error', err);
+         }
+    //   try {
+    //     let conversation = await Conversation.findById(conversationId);
+    //       if (!conversation) {
+    //         throw new Error('Conversation not found');
+    //       }
+    //       //console.log(`conversation is equal to ${JSON.stringify(conversation)}`);
+    //   const messages = conversation.messages.filter((message) => {
+    //     if ( message.type === 'image ') {
+    //       const timeDifference = Math.abs(new Date() - message.openedAt);
+    //       const timeDifferenceInSec = Math.floor(timeDifference/1000);
+    //       return timeDifferenceInSec <=60;
+    //     }
+    //     return true
+    //   })
+    //   // Emit the messages back to the client
+    //   console.log('emitting convo back to frontend')
+    //   socket.emit('conversation', messages);
+    // } catch(err) {
+    //   console.error(`error while getting conversaion ${err}`);
+    //   socket.emit('conversation-error', err);
+    // }
 
   });
 
