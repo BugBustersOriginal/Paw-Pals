@@ -3,7 +3,7 @@ import { Search } from './Search/Search.jsx';
 import FriendTile from './FriendTile.jsx';
 import axios from 'axios'
 
-const FriendTileList = ( {userId} ) => {
+const FriendTileList = ( props, {userId} ) => {
   //will receive userId from App.jsx
   // console.log(props, 'line 8 FriendTileList')
   console.log(userId, 'line 9 userID from FriendTileList')
@@ -22,7 +22,7 @@ const FriendTileList = ( {userId} ) => {
 
   return (
     <div>
-      <Search userId={userId} />
+      <Search userId={userId} userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId} pendingRequests={props.pendingRequests} />
       {chats.map((chat) => <FriendTile chat={chat} userId={userId}/>)}
     </div>
   )

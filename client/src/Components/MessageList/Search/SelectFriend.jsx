@@ -4,6 +4,7 @@ export function SelectFriend (props) {
 
   const [select, setSelect] = useState(false)
   const [arrow, setArrow] = useState(false)
+  let userId = props.userId;
 
   const handleClick = (event) => {
     setSelect(!select);
@@ -11,11 +12,11 @@ export function SelectFriend (props) {
   }
 
   return (
-    <div class="select-friend-tile" data-testid="search-tile">
+    <div className="select-friend-tile" data-testid="search-tile">
       <input type="checkbox" name="select" value="true" onClick={handleClick}/>
-      <img class="user-photo-thumbnail" src={props.friendInfo.thumbnailUrl}/>
-      <p>@{props.userInfo.userName}</p>
-      {arrow ? <span class="arrow right" onClick={() => props.handleSelection(props.friendInfo.userId)}></span> : null}
+      <img className="user-photo-thumbnail" src={props.friendInfo.thumbnailUrl}/>
+      <p>@{props.friendInfo.userId}</p>
+      {arrow ? <span className="arrow right" onClick={() => props.handleSelection(userId, props.friendInfo.userId)}></span> : null}
     </div>
   )
 }

@@ -14,7 +14,38 @@
   align-items: center;
   border: 1px solid;
   border-color: black;
-  width: 60%;
+  width: 80%;
+}
+
+.notification-tile {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid;
+  border-color: black;
+  padding: .5em;
+}
+
+.notification-badge {
+  position: absolute;
+  background-color: #f25959;
+  margin-left: -0.5em;
+  margin-top: -0.5em;
+  border-radius: 100%;
+  font-size: .7em;
+  border: 2px solid;
+  border-color: #1C1C1C;
+  height: 14px;
+  width: 14px;
+}
+
+.notification-badge p {
+  display: block;
+  margin-block-start: .2em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .friend-request-tile > img, .select-friend-tile > img {
@@ -44,13 +75,14 @@
 }
 
 .arrow {
-  margin-left: 10em;
+  margin-left: 10%;
   border: solid black;
   border-width: 0 3px 3px 0;
-  display: inline-block;
   padding: 3px;
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
+  position: relative;
+  left: 30%;
 }
 
 .map-container {
