@@ -7,6 +7,15 @@ const { Server } = require("socket.io");
 const path = require('path');
 const PORT = process.env.PORT;
 const cors = require('cors');
+
+/*** libraries for allowing photo upload to mongodb */
+const multer = require('multer');
+const {GridFsStorage} = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+const crypto = require('crypto');
+
+
+/************************************************** */
 const {Conversation, Message, FriendList} = require('./db/index.js');
 
 
@@ -32,7 +41,7 @@ function getRoomsByUser(id){
 app.use(express.json());
 const io = new Server(server, {
   cors :{
-    origin : ['http://localhost:1234','http://localhost:3000'],
+    origin : ['http://localhost:1234', 'http://localhost:3000'],
     methods:['GET','POST','PUT']
   }
 })
@@ -211,29 +220,27 @@ io.on('connection', async (socket) => {
           {new:true} // returns back the conversation after adding new message
         )
       // Broadcast message to all users in the conversation room
-      const roomNames = Object.keys(io.sockets.adapter.rooms).filter(roomId => !io.sockets.adapter.rooms[roomId].sockets[roomId]);
         io.to(data.conversationId).emit('new-message', message);
       } catch (err) {
         console.error(`error while sending new-message ${err}`)
       }
-    // Save message to database
-    const message = await Message.create(data);
-
-    // // Broadcast message to all users in the conversation
-    socket.to(data.conversationId).emit('new-message', message);
     }
-
-
-
 
   });
 
   // Handle user joining conversation
-  socket.on('join-conversation', async (conversationId) => {
+  socket.on('join-conversation', async (conversationId, participants) => {
     try {
-      await socket.join(conversationId)
+      if(!conversationId) {
+        const conversation = await Conversation.create({participants:[...participants]});
+        conversationId = conversation._id;
+        await socket.emit('new-conversation', {conversationId: conversation._id});
+      }
+      await socket.join(conversationId);
+      await socket.emit('join-success',conversationId)
     } catch(err) {
-      console.error(`error while joining a socket room ${error}`)
+      console.error(`error while joining a socket room ${err}`);
+      socket.emit('join-error',err)
     }
   });
 
@@ -242,38 +249,59 @@ io.on('connection', async (socket) => {
     socket.leave(conversationId);
   });
   // Handle getting the current conversation
-  socket.on('get-conversation', async (conversationId, participants) => {
-    console.log(`conversationId is equal to ${conversationId}`);
-    // Retrieve all messages associated with the conversation ID
-    try {
-      let conversation;
-      if(conversationId === null) {
-        conversation = new Conversation ({
-        participants: [participants.userId, participants.friendId],
-        messages:[]
-      });
-      await conversation.save();
-    } else {
-      conversation = await Conversation.findById(conversationId);
-        if (!conversation) {
-          throw new Error('Conversation not found');
-        }
-        //console.log(`conversation is equal to ${JSON.stringify(conversation)}`);
-    }
-    const messages = conversation.messages.filter((message) => {
-      if ( message.type === 'image ') {
-        const timeDifference = Math.abs(new Date() - message.openedAt);
-        const timeDifferenceInSec = Math.floor(timeDifference/1000);
-        return timeDifferenceInSec <=60;
-      }
-      return true
-    })
-    // Emit the messages back to the client
-    socket.emit('conversation', messages);
-    } catch (err) {
-      console.error('Error while getting notification', err);
-      socket.emit('conversation-error', err.message);
-    }
+  socket.on('get-conversation', async (participants) => {
+      // Retrieve all messages associated with the conversation ID
+      console.log(`participants is equal to ${participants}`)
+         try {
+           const conversation = await Conversation.findOne({
+              participants:{
+                $all: participants.sort()
+              }
+           }, { _id: 1, messages: 1 }).populate('messages')
+           console.log(`conversation is equal to ${JSON.stringify(conversation)}`)
+           if(!conversation) {
+            const newConversation = await Conversation.create({participants:[...participants]});
+            await socket.emit('conversation', newConversation);
+            return;
+           }
+           console.log(`conversation before filter  is equal to ${JSON.stringify(conversation)}`)
+           const messages = conversation.messages.filter((message) => {
+                if ( message.type === 'image ') {
+                  const timeDifference = Math.abs(new Date() - message.openedAt);
+                  const timeDifferenceInSec = Math.floor(timeDifference/1000);
+                  return timeDifferenceInSec <=60;
+                }
+                return true
+              })
+              conversation.messages = [...messages];
+            socket.emit('conversation', conversation);
+
+         } catch(err) {
+           console.error('error while getting initial conversation ${err}');
+           socket.emit('conversation-error', err);
+         }
+    //   try {
+    //     let conversation = await Conversation.findById(conversationId);
+    //       if (!conversation) {
+    //         throw new Error('Conversation not found');
+    //       }
+    //       //console.log(`conversation is equal to ${JSON.stringify(conversation)}`);
+    //   const messages = conversation.messages.filter((message) => {
+    //     if ( message.type === 'image ') {
+    //       const timeDifference = Math.abs(new Date() - message.openedAt);
+    //       const timeDifferenceInSec = Math.floor(timeDifference/1000);
+    //       return timeDifferenceInSec <=60;
+    //     }
+    //     return true
+    //   })
+    //   // Emit the messages back to the client
+    //   console.log('emitting convo back to frontend')
+    //   socket.emit('conversation', messages);
+    // } catch(err) {
+    //   console.error(`error while getting conversaion ${err}`);
+    //   socket.emit('conversation-error', err);
+    // }
+
   });
 
 
