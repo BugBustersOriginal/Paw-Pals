@@ -7,7 +7,7 @@ import MessageBox from '../MessageWindow/MessageBox.jsx'
 
 export default function MessageWindow(props) {
   //const [conversationID, setConversationID] = useState(props.conversationID||''); // messageID should tell us who the two users are
-  const [conversationID, setConversationID] = useState('641cf0d5ce9b9e5ae5a34c37');
+  const [conversationID, setConversationID] = useState('641cf574970e49637b8464bc');
   const [conversation, setConversation] = useState([]);
   const [message, setMessage]  = useState('');
   const [mappedMessages, setMappedMessages] = useState([]);
@@ -19,7 +19,6 @@ export default function MessageWindow(props) {
   useEffect(() => {
     // sets up new conversation if conversation between two users is new
     if(!conversationID) {
-      console.log(`setting conversationID!`)
       socket.on('new-conversation', (data) => {
         if(!conversationID) {
           setConversationID(data.conversationId);
@@ -36,8 +35,6 @@ export default function MessageWindow(props) {
       setConversation([...data]);
     });
     socket.on('new-message', (data) => {
-      console.log(`getting newMessage!`)
-        console.log(`adding new message!! data._id is equal to ${data._id}`)
         setConversation((prevConversation) => [...prevConversation, data]);
     });
     //initializeSocketEvents()
@@ -50,14 +47,10 @@ export default function MessageWindow(props) {
   },[conversationID,sender])
 
   useEffect(()=> {
-    //console.log(`i'm setting the new message!`)
-    // console.log(JSON.stringify(conversation))
     if(conversation.length !== 0) {
       const mappedMessages = conversation.map((message) => {
-        // console.log(JSON.stringify(message))
         return <MessageBox key={message._id} sender={message.sender} content={message.content} currentUser = {sender} type={message.type} />;
       });
-      // console.log("mapped msgs", JSON.stringify(mappedMessages))
       setMappedMessages(mappedMessages);
     }
   },[conversation, sender])
@@ -74,7 +67,6 @@ export default function MessageWindow(props) {
 
   const changeSender = (event) => {
     event.preventDefault()
-   //console.log(`sender is ${senderInputRef.current.value}`);
     let newSender = Number(senderInputRef.current.value);
     setSender(prevSender => newSender);
   }

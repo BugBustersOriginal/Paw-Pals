@@ -21,13 +21,11 @@ export default function Message(props) {
   }
   const handleKeyDown =  (event) => {
     if (event.key === 'Enter') {
-      console.log(`sending message!`)
       setNewMessage({...newMessage,content:event.target.value})
     }
   };
 
   const handleNewMessage = async () => {
-    console.log(`calling handlenewmessage!!`)
     try {
       if (newMessage.content) {
         await socket.emit('new-message', newMessage);

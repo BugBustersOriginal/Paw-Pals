@@ -49,7 +49,7 @@ export default function MessageBox(props) {
   };
 
   useEffect (() => {
-    console.log (`props.sender is equal to ${props.sender} and  ${props.currentUser}`)
+    //console.log (`props.sender is equal to ${props.sender} and  ${props.currentUser}`)
     if(props.sender !== undefined && props.currentUser !== undefined) {
       setIsSender(props.sender.toString() === props.currentUser.toString())
     }
