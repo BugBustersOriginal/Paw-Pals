@@ -71,9 +71,24 @@ export function App()  {
   let userName = '@testUserName'
 
 
+  // const getUserInfo = (user) => {
+  //   axios.get('/getUserInfo', {params: {userId: userId} })
+  //   .then((result) => {
+  //     let userInfo = result.data;
+  //     setUserInfo(userInfo);
+  //     setUserFriends(userInfo.friends);
+  //     setPendingRequests(userInfo.sentRequest);
+  //     setIncomingRequests(userInfo.incomingRequests);
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   })
+  // }
+
+
 
   useEffect(() => {
-    //user use cookie login to any app's page
+
     axios.get('/authUser')
      .then((result) => {
        let authUser = result.data;
@@ -96,7 +111,7 @@ export function App()  {
     .catch((err) => {
       console.error(err);
     })
-
+    // getUserInfo(userId);
 
     hideLogoNav(location.pathname);
   }, [location]);
@@ -113,11 +128,13 @@ export function App()  {
         <button onClick={(e) => handleDevClick(e)}>Map</button>
         <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
         <button onClick={(e) => handleDevClick(e)}>Notifications</button>
+          {incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
       </div>
 
       <Routes>
       <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
-        <Route   path="/login"   element= {<Login handleUserLogin={handleUserLogin} />}  />
+        {/* <Route   path="/"  element= {<Login />}  /> */}
+        <Route   path="/login"  element= {<Login />}  />
         <Route   path="/register"  element= {<Register />}  />
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
