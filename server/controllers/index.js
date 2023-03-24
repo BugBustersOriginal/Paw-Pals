@@ -2,6 +2,7 @@ const {createUser, getUser, getUserById, updatePassward} = require('../model')
 const {compareHash} = require('../lib/hashUtils.js')
 
 const postSignUp = async (req, res) => {
+
   // if photo is undefined, give a default photo  || req.body.photo === ''
   if (req.body.photo === undefined ) {
     req.body.photo = 'https://as2.ftcdn.net/v2/jpg/03/03/62/45/1000_F_303624505_u0bFT1Rnoj8CMUSs8wMCwoKlnWlh5Jiq.jpg';

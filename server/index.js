@@ -24,7 +24,7 @@ app.use(session({
   secret: 'pawpal',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge:  5* 60 * 1000} //5mins valid
+  cookie: { maxAge:  5 * 60 * 1000} // 5mins valid
   })
 );
 

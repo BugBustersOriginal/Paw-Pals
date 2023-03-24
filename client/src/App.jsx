@@ -37,7 +37,7 @@ export function App()  {
     } else if (e.target.innerText === 'FriendTileList') {
       //for testing
 
-      console.log('home has userId',userRealId.userId)
+      console.log('home has userId',userRealId)
 
       navigate('/home');
 
@@ -60,6 +60,7 @@ export function App()  {
   }
   //set userInfo from postgres into state
   const handleUserLogin = (data) => {
+       console.log(11111, data)
        let {address1, address2, city, state, country, zipcode} = data;
        let userFromProsgres = {userId: data.username, thumbnailUrl: data.avator_url, address1, address2, city, state, country, zipcode};
        setUseRealId(userFromProsgres);
@@ -75,7 +76,8 @@ export function App()  {
     //user use cookie login to any app's page
     axios.get('/authUser')
      .then((result) => {
-        let authUser = result.data;
+       let authUser = result.data;
+       console.log(222, authUser)
         let {address1, address2, city, state, country, zipcode} = authUser;
         let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avator_url, address1, address2, city, state, country, zipcode};
         setUseRealId(userFromProsgres);
