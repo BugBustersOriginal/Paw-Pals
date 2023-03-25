@@ -11,6 +11,7 @@ import FriendTileList from './Components/MessageList/FriendTileList.jsx';
 import FriendTile from './Components/MessageList/FriendTile.jsx';
 import Login from './Components/Login-Register/Login.jsx';
 import Register from './Components/Login-Register/Register.jsx';
+import Profile from './Components/Profile/Profile.jsx';
 
 export function App()  {
   const navigate = useNavigate();
@@ -22,7 +23,18 @@ export function App()  {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [userRealId, setUseRealId] = useState({});
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
+  //toggles darkmode
+  const toggleTheme = () => {
+    if (theme === 'light') {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
+  };
+
+  //handles Navigation
   async function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
       try {
@@ -51,6 +63,7 @@ export function App()  {
     //console.log(location.pathname);
   }
 
+  //handles visibility of nav and logo elements
   function hideLogoNav (pathname) {
     if(['/', '/login', '/register'].includes(pathname)) {
       setHidden(false);
@@ -86,8 +99,10 @@ export function App()  {
   // }
 
 
-
+  //runs on document change
   useEffect(() => {
+    localStorage.setItem('theme', theme);
+    document.body.className = theme;
 
     axios.get('/authUser')
      .then((result) => {
@@ -118,39 +133,40 @@ export function App()  {
     // getUserInfo(userId);
 
     hideLogoNav(location.pathname);
-  }, [location]);
+  }, [location, theme]);
 
 
   return (
-    <div className="App" onClick={() => hideLogoNav(location.pathname)}>
-      <img hidden={hide} className="logo" src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
-      <h4 hidden={!hide}>Navigation</h4>
-      <div className="devButtons" hidden={!hide}>
-        <button onClick={(e) => handleDevClick(e)}>Logout</button>
-        {/*<img src="./fluffyDog.webp" alt="fluffy doggy"><button onClick={(e) => handleDevClick(e)}>FriendTile</button> */}
-        <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
-        <button onClick={(e) => handleDevClick(e)}>Map</button>
-        <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
-        <button onClick={(e) => handleDevClick(e)}>Notifications</button>
+    <div className={`App ${theme}`} onClick={() => hideLogoNav(location.pathname)}>
+      <img hidden={hide} className={`logo-${theme}`} src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
+      <div className='notification-bar' hidden={!hide}>
+      <button onClick={(e) => handleDevClick(e)}>Notifications</button>
           {incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
       </div>
 
       <Routes>
-      <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
-        {/* <Route   path="/"  element= {<Login />}  /> */}
+        <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
+          {/* <Route   path="/"  element= {<Login />}  /> */}
         <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
         <Route   path="/register"  element= {<Register />}  />
+        <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
         <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} />} />
       </Routes>
 
-      {/*
-      <FriendTile />
-      <FriendTileList />
-      <Map />
-      */}
+      <div className="devButtons" hidden={!hide}>
+        <h4>Navigation</h4>
+        <div>
+          <button onClick={(e) => handleDevClick(e)}>Profile</button>
+          <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
+          <button onClick={(e) => handleDevClick(e)}>Map</button>
+          {/*<button onClick={(e) => handleDevClick(e)}>MessageWindow</button>*/}
+        </div>
+      </div>
+
+
     </div>
   )
 }
