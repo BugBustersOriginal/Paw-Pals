@@ -41,7 +41,25 @@ export default function MessageBox(props) {
     });
   }
 
+  const download = async() =>{
+    const a = document.createElement("a");
+    a.href = await toDataURL(url.url);
+    a.download = "snap.png";
+    document.body.appendChild(a);
+    console.log(a)
+    a.click();
+    document.body.removeChild(a);
+  }
 
+  function toDataURL(url) {
+    return fetch(url)
+      .then((response) => {
+        return response.blob();
+      })
+      .then((blob) => {
+        return URL.createObjectURL(blob);
+      });
+  }
 
   useEffect (() => {
     // if(props.sender !== null) {
@@ -63,7 +81,7 @@ export default function MessageBox(props) {
          url!==''? (img === false ?
          <button onClick={()=>{showSnap()}} >
          show snap
-       </button> : <img src= {url.url}/>) : content}
+       </button> : <div><button onClick={(e)=>{download()}}>download</button><img src= {url.url}/></div>) : content}
        </div>
        </div>
       </div>
