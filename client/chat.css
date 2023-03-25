@@ -2,8 +2,6 @@
 
 #main {
   height: 100%;
-  background: rgb(252,255,178);
-  background: radial-gradient(circle, rgba(252,255,178,1) 0%, rgb(249, 252, 154) 80%, rgb(255, 246, 149) 100%);
   font-family: 'Helvetica Neue LT Std', sans-serif;
 }
 
@@ -21,17 +19,34 @@
 
 }
 
+.light {
+  background: rgb(252,255,178);
+  background: radial-gradient(circle, rgba(252,255,178,1) 0%, rgb(249, 252, 154) 80%, rgb(255, 246, 149) 100%);
+}
+
+.dark {
+  background: rgb(62, 52, 80);
+  background: radial-gradient(circle, rgba(62, 52, 80,1) 0%, rgb(59, 49, 60) 80%, rgb(62, 41, 40) 100%);
+  color: bisque;
+}
+
 .devButtons {
   flex-direction: row;
   padding-bottom: 0.5rem;
+  position: fixed;
+  bottom: 0;
 }
 
 
 
 /*logo*/
-
-.logo {
+.logo-light{
   height: 20vh;
+}
+
+.logo-dark{
+  height: 20vh;
+  filter: invert(1);
 }
 /* Message Window */
 .window {
@@ -162,4 +177,13 @@ button[type="submit"]  {
 
 .forgot {
   margin-top: .5rem;
+}
+
+/*Profile*/
+
+.profile {
+  padding-top: 35vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
