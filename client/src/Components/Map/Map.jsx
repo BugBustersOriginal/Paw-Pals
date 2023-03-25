@@ -5,6 +5,8 @@ import axios from 'axios';
 
 export function Map({ userInfo, userFriends }) {
   const [screenCenter, setScreenCenter] = useState({lat: 0, lng: 0});
+  const [friendsData, setFriends] = useState({});
+
 
   useEffect(() => {
     axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.zipcode, key: ''} })
@@ -18,22 +20,20 @@ export function Map({ userInfo, userFriends }) {
     })
   }, [userInfo])
 
-  // useEffect(() => {
-  //   userFriends.forEach((user) => {
-  //     // user = {userId: user};
-  //   })
-  //     // axios.get('/getUserInfo', {params: {userId: userId} })
-  //     // .then((result) => {
-  //     //   let userInfo = result.data;
-  //     //   setUserInfo(userInfo);
-  //     //   setUserFriends(userInfo.friends);
-  //     //   setPendingRequests(userInfo.sentRequest);
-  //     //   setIncomingRequests(userInfo.incomingRequests);
-  //     // })
-  //     // .catch((err) => {
-  //     //   console.error(err);
-  //     // })
-  // }, [userFriends])
+  useEffect(() => {
+    userFriends.forEach((user, idx) => {
+      axios.get('/getUserInfo', {params: {userId: user} })
+      .then((result) => {
+        let userInfo = result.data;
+        userFriends[idx] = {userId: userInfo.userId, thumbnailUrl: userInfo.thumbnailUrl, zipcode: userInfo.zipcode}
+        // setFriends({userId: userInfo.userId, thumbnailUrl: userInfo.thumbnailUrl, zipcode: userInfo.zipcode})
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      setFriends({userId: user})
+    })
+  }, [userFriends])
 
   let friends = [
     {
