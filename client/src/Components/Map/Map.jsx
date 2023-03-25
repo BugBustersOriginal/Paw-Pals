@@ -3,9 +3,32 @@ import { useMemo } from 'react'
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import axios from 'axios';
 
+export function Map({ userInfo, userFriends }) {
 
+  const [userCoordinates, setUserCoordinates] = useState({lat: 0, lng: 0});
 
-export function Map() {
+  // axios.get('/getUserInfo', {params: {userId: userId} })
+  // .then((result) => {
+  //   let userInfo = result.data;
+  //   setUserInfo(userInfo);
+  //   setUserFriends(userInfo.friends);
+  //   setPendingRequests(userInfo.sentRequest);
+  //   setIncomingRequests(userInfo.incomingRequests);
+  // })
+  // .catch((err) => {
+  //   console.error(err);
+  // })
+  useEffect(() => {
+    axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: 90680, key: 'key'} })
+    .then((result) => {
+      console.log('user lat/long:', result.data.results[0].geometry.location)
+      // setUserCoordinates(result.data.results[0].geometry.location)
+      userInfo.location = result.data.results[0].geometry.location
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+  }, [userInfo])
 
   let user = {
     userId: 'Thomas',
@@ -66,7 +89,7 @@ export function Map() {
         }))}
       </ul>
 
-      <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={user} friends={friends}/>
+      <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={userInfo} friends={friends}/>
     </>
   )
 }
@@ -79,7 +102,7 @@ function MapView({ user, friends, screenCenter, setScreenCenter }) {
     <>
       <GoogleMap
       zoom={10}
-      center={screenCenter}
+      center={user.location}
       mapContainerClassName="map-container"
       >
 
