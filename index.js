@@ -119,6 +119,7 @@ app.get("/friendList", async (req, res) => {
 app.get("/getUserInfo", async (req, res) => {
   // it this userId should change to et userId = req.query.userId;
   let userId = req.body.userId;
+  // console.log(1111,userId)
   try {
     const user = await FriendList.find({userId});
     // if (user.length === 0) {
