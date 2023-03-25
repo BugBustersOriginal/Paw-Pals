@@ -9,9 +9,9 @@ const postSignUp = async (req, res) => {
     req.body.photo = 'https://as2.ftcdn.net/v2/jpg/03/03/62/45/1000_F_303624505_u0bFT1Rnoj8CMUSs8wMCwoKlnWlh5Jiq.jpg';
   }
   // check request has both username and password
-  if (req.body.username === undefined || req.body.password === undefined) {
+  if (req.body.username === undefined || req.body.password=== undefined) {
     res.send({
-      'reminder':'should input both username and password, redirect to signup page',
+      'reminder':'username and password is required, redirect to signup page',
       'url':'/register'
     });
   }
