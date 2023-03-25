@@ -6,7 +6,6 @@ import { Route, Routes, useNavigate, useLocation, withRouter } from 'react-route
 import { createBrowserHistory } from "history";
 import { Map } from './Components/Map/Map.jsx';
 import  { Notifications }  from './Components/Notifications/Notifications.jsx';
-// import MessageInfo from './Components/MessageList/MessageInfo.jsx';
 import FriendTileList from './Components/MessageList/FriendTileList.jsx';
 import FriendTile from './Components/MessageList/FriendTile.jsx';
 import Login from './Components/Login-Register/Login.jsx';
@@ -53,19 +52,14 @@ export function App()  {
       }
     } else if (e.target.innerText === 'FriendTileList') {
       //for testing
-
       console.log('home has userId',userRealId)
-
       navigate('/home');
 
     } else {
       //for testing
       console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId);
-
       navigate(`/${(e.target.innerText).toLowerCase()}`);
     }
-
-    //console.log(location.pathname);
   }
 
   //handles visibility of nav and logo elements
@@ -81,11 +75,12 @@ export function App()  {
       //  let {address1, address2, city, state, country, zipcode} = data;
       //  let userFromProsgres = {userId: data.username, thumbnailUrl: data.avatar_url, address1, address2, city, state, country, zipcode};
       //  console.log('login path', userFromProsgres);
+      console.log(data.username, 'line 78 App.jsx')
       let userFromProsgres = {userId: data.username};
-       setUserRealId(userFromProsgres);
+       setUserRealId(userFromProsgres); //kona
   };
   //sample userId data to pass down to other components (useState)
-  // let userId = 'superman';
+  // let userId = 'batman';
   let profileIcon = 'profileIcon';
   let userName = '@testUserName'
 
@@ -112,8 +107,10 @@ export function App()  {
 
       axios.get('/authUser')
        .then((result) => {
+         console.log(result.data, 'line 111')
           if (result.data) {
             let authUser = result.data;
+            console.log(authUser.username, 'line 113')
             // let {address1, address2, city, state, country, zipcode} = authUser;
             // let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avatar_url, address1, address2, city, state, country, zipcode};
             // console.log('auth path', userFromProsgres);
@@ -138,6 +135,7 @@ export function App()  {
           .then((result) => {
             console.log('get user info from mongodb', result.data);
             let userInfo = result.data;
+            console.log(userInfo, 'line 138')
             setUserId(userInfo.userId);
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
