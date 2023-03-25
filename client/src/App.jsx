@@ -23,7 +23,7 @@ export function App()  {
   const [userFriends, setUserFriends] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
-  const [userRealId, setUseRealId] = useState({});
+  const [userRealId, setUserRealId] = useState({});
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
   //toggles darkmode
