@@ -3,6 +3,7 @@ const axios = require('axios')
 const getRandomPhoto = (req, res) => {
   const query = Math.random() < 0.5 ? 'cats' : 'dogs';
   const accessKey = process.env.AccessKey;
+
   axios.get(`https://api.unsplash.com/photos/random?query=${query}`, {
   headers: {
     Authorization: `Client-ID ${accessKey}`

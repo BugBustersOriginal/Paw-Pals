@@ -35,19 +35,28 @@ export default function MessageBox(props) {
       }, expirationTime);
     });
   }
-  const handleSave = () => {
-     // create a fake link element
-     fetch(url.url)
-     .then((response) => response.blob())
-     .then((blob) => {
-       const url = window.URL.createObjectURL(new Blob([blob]));
-       const link = document.createElement("a");
-       link.href = url;
-       link.setAttribute("download", "snapchat.jpg");
-       document.body.appendChild(link);
-       link.click();
-     });
-  };
+
+
+  const download = async() =>{
+    const a = document.createElement("a");
+    a.href = await toDataURL(url.url);
+    a.download = "snap.png";
+    document.body.appendChild(a);
+    console.log(a)
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  function toDataURL(url) {
+    return fetch(url)
+      .then((response) => {
+        return response.blob();
+      })
+      .then((blob) => {
+        return URL.createObjectURL(blob);
+      });
+  }
+
 
   useEffect (() => {
     //console.log (`props.sender is equal to ${props.sender} and  ${props.currentUser}`)
@@ -58,27 +67,19 @@ export default function MessageBox(props) {
 
   return (
 
-      <div className ={`msg_box${isSender? ' sent':''}`}>
-        <div>
-          <div className={`line${isSender? ' sent':''}`}></div>
-          <div className = 'username'>{isSender? 'me': props.sender}</div>
-          <div className = 'content'>
-          {url !== '' ? (
-            img === false ? (
-              <button onClick={() => showSnap()}>show snap</button>
-            ) : (
-              <div>
-                <img src={url.url} />
-                {showSaveButton && (
-                  <button onClick={() => handleSave()}>Save Image</button>
-                )}
-              </div>
-            )
-          ) : (
-            content
-          )}
-          </div>
-        </div>
+    <div className ={`msg_box${isSender? ' sent':''}`}>
+      <div>
+      <div className={`line${isSender? ' sent':''}`}></div>
+      <div className = 'username'>{isSender? 'me': props.sender}</div>
+      {/* <div className = 'content'>{props.content}</div> */}
+      <div className = 'content'>{
+         url!==''? (img === false ?
+         <button onClick={()=>{showSnap()}} >
+         show snap
+       </button> : <div><button onClick={(e)=>{download()}}>download</button><img src= {url.url}/></div>) : content}
+       </div>
+       </div>
+
       </div>
 
   )
