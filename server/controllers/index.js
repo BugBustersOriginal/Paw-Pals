@@ -1,6 +1,7 @@
+require('dotenv').config();
 const {createUser, getUser, getUserById, updatePassward} = require('../model')
 const {compareHash} = require('../lib/hashUtils.js')
-
+const axios = require('axios');
 const postSignUp = async (req, res) => {
 
   // if photo is undefined, give a default photo  || req.body.photo === ''
@@ -22,6 +23,9 @@ const postSignUp = async (req, res) => {
       //new user,send body data into createUser function
      let addUser = await createUser(req.body);
 
+     let {username, avatar_url, address1, address2, city, state, country, zipcode} = addUser;
+     let register = await axios.get(`${process.env.MONGODB_SERVER}/getUserInfo`, {params:{username, avatar_url, address1, address2, city, state, country, zipcode}});
+     console.log('register to mongodb',register.data);
      //render login page, can it go direct into main page?
      res.send({
       'reminder': 'signup success, should render login page',
