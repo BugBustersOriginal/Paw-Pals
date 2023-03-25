@@ -138,7 +138,7 @@ export function App()  {
       <Routes>
       <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
         {/* <Route   path="/"  element= {<Login />}  /> */}
-        <Route   path="/login"  element= {<Login />}  />
+        <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
         <Route   path="/register"  element= {<Register />}  />
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
