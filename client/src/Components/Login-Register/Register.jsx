@@ -57,7 +57,6 @@ function Register() {
         <input type="text" placeholder="First Name" id="firstName" name="firstname" onChange={handleInputChange} value={inputs.firstname|| ''} required/>
         <input type="text" placeholder="Last Name" id="lastName" name="lastname" onChange={handleInputChange} value={inputs.lastname|| ''} required/>
         <input type="text" placeholder="Username" id="username" name="username" onChange={handleInputChange} value={inputs.username|| ''} required/>
-        <input type="email" placeholder="debrazhang09@gmail.com" id="gmail" name="gmail" onChange={handleInputChange} value={inputs.gmail|| ''} required/>
         <input type="text" placeholder="Address 1" id="address1" name="address1" onChange={handleInputChange} value={inputs.address1|| ''}/>
         <input type="text" placeholder="Address 2" id="address2" name="address2"onChange={handleInputChange} value={inputs.address2|| ''}/>
         <input type="text" placeholder="City" id="city" name="city" onChange={handleInputChange} value={inputs.city|| ''}/>

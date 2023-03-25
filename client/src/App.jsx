@@ -97,7 +97,11 @@ export function App()  {
         let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avatar_url, address1, address2, city, state, country, zipcode};
         console.log('auth path', userFromProsgres);
         setUseRealId(userFromProsgres);
+        return {'queryUserId': authUser.username}
         })
+      .then((result) => {
+        console.log('result can be used to getUserInfo in mongodb', result);
+      })
     // all mongodb fetch data should wrapped into .then(), means: first getAuthUser, then get data from mongodb
     // axios call to get userInfo from MongoDB
     axios.get('/getUserInfo', {params: {userId: userId} })
@@ -134,7 +138,7 @@ export function App()  {
       <Routes>
       <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
         {/* <Route   path="/"  element= {<Login />}  /> */}
-        <Route   path="/login"  element= {<Login />}  />
+        <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
         <Route   path="/register"  element= {<Register />}  />
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
