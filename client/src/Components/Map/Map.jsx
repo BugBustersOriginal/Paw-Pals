@@ -7,7 +7,7 @@ export function Map({ userInfo, userFriends }) {
   const [screenCenter, setScreenCenter] = useState({lat: 0, lng: 0});
 
   useEffect(() => {
-    axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: 90680, key: ''} })
+    axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.zipcode, key: ''} })
     .then((result) => {
       console.log('user lat/long:', result.data.results[0].geometry.location)
       userInfo.location = result.data.results[0].geometry.location
