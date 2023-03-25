@@ -9,8 +9,12 @@ const FriendTile = ( {friend} ) => {
 
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    //goes to conversation window
+    // console.log(`userId is equal to ${userId}`);
+    // navigate('/messagewindow', {state: {}})
     navigate('/messagewindow')
+
     //send friendUserName to message window
   }
 

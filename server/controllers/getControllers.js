@@ -2,89 +2,66 @@ const axios = require('axios');
 require('dotenv').config();
 
 exports.getUserInfo =  (req, res) => {
-  // console.log('userInfo controller', req.query.userId);
-
-
-    // console.log('friendList controller userId: ', req.body.searchQuery);
-    // let userId = req.query.userId;
-    //   axios.get(`${process.env.MONGODB_SERVER}/friendList`, { data: { userId: userId} })
-    //   .then((result) => {
-    //     // console.log('got user info: ', result.data);
-    //     let userInfo = result.data;
-    //     res.status(200).send(userInfo);
-    //   })
-    //   .catch((err) => {
-    //     res.status(500).send(err);
-    //   });
-
-
-    // let userId = req.query.userId;
-    //   axios.get(`${process.env.MONGODB_SERVER}/getUserInfo`, { data: { userId: userId} })
-    //   .then((result) => {
-    //     // console.log('got user info: ', result.data);
-    //     let userInfo = result.data;
-    //     res.status(200).send(userInfo);
-    //   })
-    //   .catch((err) => {
-    //     res.status(500).send(err);
-    //   });
+    let userId = req.query.userId;
+      axios.get(`${process.env.MONGODB_SERVER}/friendList`, { data: { userId: userId} })
+      .then((result) => {
+        // console.log('got user info: ', result.data);
+        let userInfo = result.data;
+        res.status(200).send(userInfo);
+      })
+      .catch((err) => {
+        res.status(500).send(err);
+      });
 }
 
 
 exports.getFriendList = (req, res) => {
-  // console.log('line 35 friendList controller userId: ', req.params.userId);
-  // console.log('line 36', req.body.searchQuery)
-  // let searchFriend = req.params.userId;
-  // console.log(searchFriend, 'line 38')
-  // axios.get(`${process.env.MONGODB_SERVER}/friendList`, { params: { userId: searchFriend } })
-  //   .then((result) => {
-  //     console.log('got friend info: ', result);
-  //     let friendInfo = result.data;
-  //     res.status(200).send(friendInfo);
-  //   })
-  //   .catch((err) => {
-  //     res.status(500).send(err);
-  //   });
-
-  // console.log(req, 'line 35 getControllers');
-  // let searchFriend = req.body.searchQuery;
-  // let userId = req.params.userId
-  // axios.get(`${process.env.MONGODB_SERVER}/friendList/${userId}`)
-  //   .then((result) => {
-  //     console.log('got friend info: ', result.data);
-  //     let friendInfo = result.data;
-  //     res.status(200).send(friendInfo);
-  //   })
-  //   .catch((err) => {
-  //     res.status(500).send(err);
-  //   });
-
-  let userId = req.params.userId
-  getUserInfo(userId)
-  .then( (userInfo) => {
-    const friends = userInfo.friends;
-
-    //getAll is an option
-    return Promise.all(friends.map( (friend )=> {
-      return getConversation(userId, friend)
-    }))
-    .then( (conversations) => {
-      return conversations.map( (conversation, i) => {
-        return {
-          friend: friends[i],
-          messages: conversation?.messages
-        }
-      })
+  console.log('line 35 friendList controller userId: ', req.params.userId);
+  console.log('line 36', req.body.searchQuery)
+  let searchFriend = req.params.userId;
+  console.log(searchFriend, 'line 38')
+  axios.get(`${process.env.MONGODB_SERVER}/friendList`, { params: { userId: searchFriend } })
+    .then((result) => {
+      console.log('got friend info: ', result);
+      let friendInfo = result.data;
+      res.status(200).send(friendInfo);
     })
-  })
-  .then( (conversations) => {
-   res.status(200).send(conversations)
-  })
     .catch((err) => {
-      console.error(err)
       res.status(500).send(err);
     });
-}
+
+  }
+
+  exports.getLatestChat = (req, res) => {
+    let userId = req.params.userId
+    getUserInfo(userId)
+    .then( (userInfo) => {
+      const friends = userInfo.friends;
+
+      //getAll is an option
+      return Promise.all(friends.map( (friend )=> {
+        return getConversation(userId, friend)
+      }))
+      .then( (conversations) => {
+        return conversations.map( (conversation, i) => {
+          return {
+            friend: friends[i],
+            messages: conversation?.messages
+          }
+        })
+      })
+    })
+    .then( (conversations) => {
+     res.status(200).send(conversations)
+    })
+      .catch((err) => {
+        console.error(err)
+        res.status(500).send(err);
+      });
+  }
+
+
+
 
  function getConversation(userOne, userTwo) {
 

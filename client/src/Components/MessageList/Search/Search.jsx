@@ -40,8 +40,13 @@ export function Search (props) {
 
   const handleSelection = (userOne, userTwo) => {
     let conversation = [userOne, userTwo]
-    console.log('open window for: ', conversation);
-    navigate(`/messagewindow`)
+    navigate(`/messagewindow`,{
+      state: {
+        users: conversation,
+        currentUser: userInfo.userId,
+        userTwo: userTwo
+      }
+    })
   }
 
 
