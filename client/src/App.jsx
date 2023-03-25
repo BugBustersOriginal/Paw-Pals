@@ -62,7 +62,7 @@ export function App()  {
   const handleUserLogin = (data) => {
        let {address1, address2, city, state, country, zipcode} = data;
        let userFromProsgres = {userId: data.username, thumbnailUrl: data.avatar_url, address1, address2, city, state, country, zipcode};
-       console.log('login path', userFromProsgres)
+      //  console.log('login path', userFromProsgres)
        setUseRealId(userFromProsgres);
   };
   //sample userId data to pass down to other components (useState)
@@ -88,37 +88,40 @@ export function App()  {
 
 
   useEffect(() => {
-
-    axios.get('/authUser')
-     .then((result) => {
-       let authUser = result.data;
-
-        let {address1, address2, city, state, country, zipcode} = authUser;
-        let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avatar_url, address1, address2, city, state, country, zipcode};
-        console.log('auth path', userFromProsgres);
-        setUseRealId(userFromProsgres);
-        return {'queryUserId': authUser.username}
+      axios.get('/authUser')
+       .then((result) => {
+          if (result.data) {
+            let authUser = result.data;
+            let {address1, address2, city, state, country, zipcode} = authUser;
+            let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avatar_url, address1, address2, city, state, country, zipcode};
+            // console.log('auth path', userFromProsgres);
+            setUseRealId(userFromProsgres);
+          }
         })
-      .then((result) => {
-        console.log('result can be used to getUserInfo in mongodb', result);
+      .then(() => {
+        console.log('check if user login success ', userRealId);
+        if (userRealId.userId === undefined) {
+          //user in register page, in login page or not login success, do nothing
+          return null;
+        } else {
+          axios.get('/getUserInfo', {params: {userId: userRealId.userId} })
+            .then((result) => {
+              console.log(1111)
+              let userInfo = result.data;
+              setUserInfo(userInfo);
+              setUserFriends(userInfo.friends);
+              setPendingRequests(userInfo.sentRequest);
+              setIncomingRequests(userInfo.incomingRequests);
+            })
+        }
       })
-    // all mongodb fetch data should wrapped into .then(), means: first getAuthUser, then get data from mongodb
-    // axios call to get userInfo from MongoDB
-    axios.get('/getUserInfo', {params: {userId: userId} })
-    .then((result) => {
-      let userInfo = result.data;
-      setUserInfo(userInfo);
-      setUserFriends(userInfo.friends);
-      setPendingRequests(userInfo.sentRequest);
-      setIncomingRequests(userInfo.incomingRequests);
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-    // getUserInfo(userId);
+      .catch((err) => {
+        console.error(err);
+      })
+      // getUserInfo(userId);
 
-    hideLogoNav(location.pathname);
-  }, [location]);
+      hideLogoNav(location.pathname);
+   }, [location]);
 
 
   return (
