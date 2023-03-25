@@ -65,7 +65,7 @@ export default function MessageWindow(props) {
         if(message.type === 'image' && message.sender === sender) {
           return ''
         }
-        return <MessageBox key={message._id} sender={message.sender} content={message.content} currentUser = {sender} type={message.type} />;
+        return <MessageBox key={message._id} sender={message.sender} content={message.content} currentUser = {sender} type={message.type} expirationTime = { message.expirationTime}  />;
       });
       setMappedMessages(mappedMessages);
   },[conversation, sender, participant])

@@ -71,6 +71,7 @@ export default function Message(props) {
     },[props.sender, props.conversationID, props.participants]);
 
   useEffect(()=>{
+    console.log(`newMessage is currently equal to ${JSON.stringify(newMessage)}`);
     if(newMessage.content){
       handleNewMessage()
     }
@@ -79,6 +80,7 @@ export default function Message(props) {
   const setTime=(e)=>{
     console.log(e.target.value)
     settime({time:e.target.value})
+    setNewMessage({...newMessage,'expirationTime':Number(e.target.value)})
   }
 
   return (
@@ -93,7 +95,7 @@ export default function Message(props) {
          />
         {img !== ''?
         <div>
-            <img src={img}/>
+            <img src={img} style={{ width: "20px", height: "20px" }}/>
             <button onClick={()=>{handleSendImg()}}>send snap</button>
         </div>
         : null}
