@@ -4,37 +4,36 @@ import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps
 import axios from 'axios';
 
 export function Map({ userInfo, userFriends }) {
+  const [screenCenter, setScreenCenter] = useState({lat: 0, lng: 0});
 
-  const [userCoordinates, setUserCoordinates] = useState({lat: 0, lng: 0});
-
-  // axios.get('/getUserInfo', {params: {userId: userId} })
-  // .then((result) => {
-  //   let userInfo = result.data;
-  //   setUserInfo(userInfo);
-  //   setUserFriends(userInfo.friends);
-  //   setPendingRequests(userInfo.sentRequest);
-  //   setIncomingRequests(userInfo.incomingRequests);
-  // })
-  // .catch((err) => {
-  //   console.error(err);
-  // })
   useEffect(() => {
-    axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: 90680, key: 'key'} })
+    axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: 90680, key: ''} })
     .then((result) => {
       console.log('user lat/long:', result.data.results[0].geometry.location)
-      // setUserCoordinates(result.data.results[0].geometry.location)
       userInfo.location = result.data.results[0].geometry.location
+      setScreenCenter(userInfo.location)
     })
     .catch((err) => {
       console.error(err);
     })
   }, [userInfo])
 
-  let user = {
-    userId: 'Thomas',
-    location: {lat: 44, lng: -80},
-    thumbnailUrl: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485565/pngwing.com_1_ka3o33.png'
-  }
+  // useEffect(() => {
+  //   userFriends.forEach((user) => {
+  //     // user = {userId: user};
+  //   })
+  //     // axios.get('/getUserInfo', {params: {userId: userId} })
+  //     // .then((result) => {
+  //     //   let userInfo = result.data;
+  //     //   setUserInfo(userInfo);
+  //     //   setUserFriends(userInfo.friends);
+  //     //   setPendingRequests(userInfo.sentRequest);
+  //     //   setIncomingRequests(userInfo.incomingRequests);
+  //     // })
+  //     // .catch((err) => {
+  //     //   console.error(err);
+  //     // })
+  // }, [userFriends])
 
   let friends = [
     {
@@ -57,8 +56,6 @@ export function Map({ userInfo, userFriends }) {
     query: '',
     list: []
   })
-
-  const [screenCenter, setScreenCenter] = useState(user.location);
 
   const handleChange = (e) => {
     const results = friends.filter(friend => {
