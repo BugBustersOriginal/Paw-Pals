@@ -3,37 +3,49 @@ import {socket} from '../../socket.js'
 import "../../../../client/chat.css"
 import Message from '../MessageWindow/Message.jsx'
 import MessageBox from '../MessageWindow/MessageBox.jsx'
+import { useLocation } from 'react-router-dom';
 
 
 export default function MessageWindow(props) {
   //const [conversationID, setConversationID] = useState(props.conversationID||''); // messageID should tell us who the two users are
-  const [conversationID, setConversationID] = useState('641cf574970e49637b8464bc');
+  const [conversationID, setConversationID] = useState('');
   const [conversation, setConversation] = useState([]);
   const [message, setMessage]  = useState('');
   const [mappedMessages, setMappedMessages] = useState([]);
-  const [sender, setSender] = useState(1);
+  const [sender, setSender] = useState('');
+  const [participant, setParticipant] = useState('');
   const senderInputRef = useRef(null);
   const messageContainerRef= useRef(null);
-  const [participants, setParticipants] = useState([1,2]);
-
+  const participantRef = useRef(null);
+  const [participants, setParticipants] = useState([]);
+  const location = useLocation()
   useEffect(() => {
-    // sets up new conversation if conversation between two users is new
-    if(!conversationID) {
-      socket.on('new-conversation', (data) => {
-        if(!conversationID) {
-          setConversationID(data.conversationId);
-        }
-
-      });
+    if(location.state?.users && location.state?.currentUser && location.state?.userTwo ) {
+      // console.log(`users in message window is equal to ${location.state?.users}`)
+      // console.log(`users in message window is equal to ${location.state?.currentUser}`)
+      setSender(location.state?.currentUser);
+      setParticipants([...location.state?.users]);
+      setParticipant(location.state?.userTwo);
     }
   },[])
   useEffect(() => {
+    // sets up new conversation if conversation between two users is new
+    if(participants.length !== 0) {
+      //console.log(`participants is equal to ${participants}`)
+      socket.emit('get-conversation', participants);
+    }
+    socket.on('conversation', (data) => {
+      //console.log(`data in convo is equal to ${JSON.stringify(data.messages)}`);
+      setConversationID(data._id);
+      if(data.messages.length > 0) {
+        console.log(`setting conversation`)
+        setConversation([...data.messages]);
+      }
+    });
+  },[participants])
+  useEffect(() => {
     socket.off('new-message'); // remove previous event listener
     socket.emit("join-conversation", conversationID, participants);
-    socket.emit('get-conversation', conversationID);
-    socket.on('conversation', (data) => {
-      setConversation([...data]);
-    });
     socket.on('new-message', (data) => {
         setConversation((prevConversation) => [...prevConversation, data]);
     });
@@ -47,13 +59,22 @@ export default function MessageWindow(props) {
   },[conversationID,sender])
 
   useEffect(()=> {
-    if(conversation.length !== 0) {
+      //console.log(`mapping!`)
       const mappedMessages = conversation.map((message) => {
-        return <MessageBox key={message._id} sender={message.sender} content={message.content} currentUser = {sender} type={message.type} />;
+        console.log(`message is equal to ${JSON.stringify(message)}`);
+        if(message.type === 'image' && message.sender === sender) {
+          return ''
+        }
+        return <MessageBox key={message._id} sender={message.sender} content={message.content} currentUser = {sender} type={message.type} expirationTime = { message.expirationTime}  />;
       });
       setMappedMessages(mappedMessages);
-    }
-  },[conversation, sender])
+  },[conversation, sender, participant])
+
+  useEffect(() => {
+    return () => {
+      setMappedMessages([]);
+    };
+  }, []);
 
   useEffect(() => {
     if (messageContainerRef.current) {
@@ -67,18 +88,27 @@ export default function MessageWindow(props) {
 
   const changeSender = (event) => {
     event.preventDefault()
-    let newSender = Number(senderInputRef.current.value);
+    let newSender = senderInputRef.current.value;
     setSender(prevSender => newSender);
   }
 
+  const changeParticipant = (event) => {
+    event.preventDefault()
+    let newParticipant = participantRef.current.value;
+    console.log(`newParticipant is equal to ${newParticipant}`);
+    setParticipants(prevParticipant => [sender,newParticipant]);
+  }
+
+
   return (
   <div className = "window">
-    Current User Id : {sender}
+    {participant !== undefined ? participant : ''}
     <form> <input name ='userID' type = 'text' ref= {senderInputRef} /> <button onClick ={changeSender}>change user</button> </form>
+    <form> <input name ='userID' type = 'text' ref= {participantRef } /> <button onClick ={changeParticipant}>change participant</button> </form>
     <div className="message-container" ref={messageContainerRef}>
       {mappedMessages}
     </div>
-    <Message sender = {sender} newMessage = {new_message} conversationID={conversationID}/>
+    <Message sender = {sender} newMessage = {new_message} conversationID={conversationID} participants = {participants}/>
   </div>
   )
 }

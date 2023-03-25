@@ -5,6 +5,7 @@ import axios from 'axios'
 
 const FriendTileList = ( props, {userId} ) => {
   //will receive userId from App.jsx
+  console.log(`userinfo is equal to ${JSON.stringify(props.userInfo)}`);
   // console.log(props, 'line 8 FriendTileList')
   console.log(userId, 'line 9 userID from FriendTileList')
   // const userName = userId
