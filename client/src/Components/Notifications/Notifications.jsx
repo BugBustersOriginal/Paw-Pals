@@ -10,36 +10,37 @@ console.log("🚀 ~ file: Notifications.jsx:9 ~ Notifications ~ incomingRequests
 const [friendData, setFriendData] = useState([])
 
 
-
-const getFriendInfo = (list) => {
-  list.forEach( async (name) => {
-    try {
-      const result = await axios.post('/searchFriend', {searchQuery: name});
-      // friendData.push(result.data);
-      // console.log("🚀 ~ file: Notifications.jsx:17 ~ incomingRequests.forEach ~ friendData:", friendData)
-      let friendInfo = result.data;
-      setFriendData(prevState => [...prevState, friendInfo]);
-    }
-    catch (err) {
-      console.error(err);
-    }
-  });
+const getFriendInfo = async (list) => {
+  try {
+    const requests = list.map(name => axios.post('/searchFriend', {searchQuery: name}));
+    const results = await Promise.all(requests);
+    const friendInfo = results.map(result => result.data);
+    setFriendData(friendInfo);
+    console.log("🚀 ~ file: Notifications.jsx:21 ~ getFriendInfo ~ friendData:", friendData)
+  }
+  catch (err) {
+    console.error(err);
+  }
 }
 
 const acceptRequest = (friendName) => {
-  // console.log('accepting friend request', friendName);
   let acceptObj = {
     userId: userId,
     friendId: friendName
   }
+  // let index = incomingRequests.indexOf(friendName)
+  // let incomingRequests = incomingRequests.slice(index, 1)
   axios.post('/acceptRequest', acceptObj)
   .then(() => {
     console.log('accepted friend request');
-    // const newFriendData = friendData.filter((friend) => friend !== friendName);
-    // setFriendData(newFriendData);
 
-    //need to figure out why state isn't automatically refreshing
-    // window.location.reload(false);
+// code works but renders tile weird. Will fix later
+    // getFriendInfo(incomingRequests);
+    // props.rerender();
+    // let index = incomingRequests.indexOf(friendName);
+    // incomingRequests.splice(index, 1);
+    // console.log('incomingRequests: ', incomingRequests);
+    // getFriendInfo(incomingRequests);
   })
   .catch((err) => {
     console.error(err);

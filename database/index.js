@@ -1,14 +1,10 @@
 require('dotenv').config();
 const { Pool } = require('pg');
 const uuid = require('pg-uuid');
+const dbSet = require('./config.js');
 
-const pool = new Pool({
-  user: process.env.POSTGRES_USER,
-  host: 'localhost',
-  database: 'postgres',
-  password: process.env.POSTGRES_PASSSWORD,
-  port: 5432
-});
+
+const pool = new Pool(dbSet(process.env.user, process.env.database, process.env.password, 'localhost'));
 
 (async () => {
   const client = await pool.connect();
@@ -33,7 +29,6 @@ const pool = new Pool({
         username VARCHAR(50) UNIQUE,
         password VARCHAR(64),
         salt VARCHAR(64),
-        google_id VARCHAR(255) UNIQUE,
         create_at TIMESTAMP NOT NULL DEFAULT NOW(),
         avatar_url VARCHAR(255),
         address1 TEXT,
@@ -44,7 +39,7 @@ const pool = new Pool({
         zipcode VARCHAR(10)
       )`;
     await client.query(createUsersQuery);
-    console.log('users created successfully');
+    console.log('users successfully');
 
     //create session table to authication
     const createSessionQuery = `
@@ -55,7 +50,7 @@ const pool = new Pool({
     )
     WITH (OIDS=FALSE);`;
     await client.query(createSessionQuery);
-    console.log('session created successfully');
+    console.log('session successfully');
 
   } catch (err) {
     console.error('Error creating table', err);

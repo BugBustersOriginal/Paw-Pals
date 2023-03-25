@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-function Login() {
+function Login({handleUserLogin}) {
 
-  //remember all filled information in login
+
   const [inputs, setInput] = useState({});
   const [alerts, setAlerts] = useState('');
 
   const navigate = useNavigate();
 
-  //everytime user want to fill in the form, it will put it into input object
+
   const handleInputChange = (event) => {
     event.persist();
     setInput(inputs => (
@@ -22,12 +22,17 @@ function Login() {
     try {
       const guest = await axios.post('/login', inputs);
       //for testing
-      console.log(guest.data);
+      console.log(guest.data.reminder);
       if (guest.data.alert == undefined) {
         //render login page
-
-
         navigate(guest.data.url);
+        if (guest.data.url === '/home') {
+         //send userId(which is usename, icon, address into app.jsx when user first login)
+         handleUserLogin(guest.data.user);
+          //for testing
+          console.log('login set userId success', {userId: guest.data.user.username})
+
+        }
 
       } else {
        setAlerts(() => (
@@ -55,6 +60,7 @@ function Login() {
         <input type="password" placeholder="Password" id="password" name="password" onChange={handleInputChange} value={inputs.password|| ''}/>
         <button type="submit">Log In</button>
       </form>
+      <button className="google-logo">Continue with Google</button>
       <button className="link-button forgot">Forgot Password</button>
       <button className="link-button" onClick={handleClick} >Don't have an account? Register here</button>
       {/* if username exist, alert user to change a new username */}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 function Register() {
@@ -20,6 +20,7 @@ function Register() {
   const handleSubmit = async () => {
     event.preventDefault();
     try {
+
       const guest = await axios.post('/signup', inputs);
       //for testing
       console.log(guest.data.reminder);
@@ -41,7 +42,14 @@ function Register() {
   function handleClick () {
     navigate("/login");
   };
-
+  useEffect( () => {
+    axios.get('/randomPhoto')
+      .then(result => {
+        let randomPhoto = result.data;
+        // console.log('randomPhoto', result.data);
+        setInput({...inputs, photo: randomPhoto});
+      })
+  }, [])
   return(
     <div className="auth-form-container">
       <h2>Register</h2>
