@@ -22,7 +22,6 @@ export function App()  {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [userRealId, setUseRealId] = useState({});
-  const [notificationIcon, setNotificationIcon] = useState(true);
 
   async function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
@@ -67,7 +66,7 @@ export function App()  {
        setUseRealId(userFromProsgres);
   };
   //sample userId data to pass down to other components (useState)
-  let userId = 'superman';
+  let userId;
   let profileIcon = 'profileIcon';
   let userName = '@testUserName'
 
@@ -86,9 +85,6 @@ export function App()  {
   //   })
   // }
 
-  const notificationView = () => {
-    setNotificationIcon(false)
-  }
 
 
   useEffect(() => {
@@ -105,22 +101,23 @@ export function App()  {
         })
       .then((result) => {
         console.log('result can be used to getUserInfo in mongodb', result);
+        let userId = result.queryUserId;
+        axios.get('/getUserInfo', {params: {userId: userId} })
+        .then((result) => {
+          let userInfo = result.data;
+          setUserInfo(userInfo);
+          setUserFriends(userInfo.friends);
+          setPendingRequests(userInfo.sentRequest);
+          setIncomingRequests(userInfo.incomingRequests);
+        })
       })
     // all mongodb fetch data should wrapped into .then(), means: first getAuthUser, then get data from mongodb
     // axios call to get userInfo from MongoDB
-    axios.get('/getUserInfo', {params: {userId: userId} })
-    .then((result) => {
-      let userInfo = result.data;
-      setUserInfo(userInfo);
-      setUserFriends(userInfo.friends);
-      setPendingRequests(userInfo.sentRequest);
-      setIncomingRequests(userInfo.incomingRequests);
-    })
     .catch((err) => {
       console.error(err);
     })
     // getUserInfo(userId);
-    setNotificationIcon(true);
+
     hideLogoNav(location.pathname);
   }, [location]);
 
@@ -136,7 +133,7 @@ export function App()  {
         <button onClick={(e) => handleDevClick(e)}>Map</button>
         <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
         <button onClick={(e) => handleDevClick(e)}>Notifications</button>
-          {notificationIcon && incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
+          {incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
       </div>
 
       <Routes>
@@ -147,7 +144,7 @@ export function App()  {
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
-        <Route   path="/notifications" element={<Notifications notificationView={notificationView} userId={userId} incomingRequests={incomingRequests} />} />
+        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} />} />
       </Routes>
 
       {/*

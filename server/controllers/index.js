@@ -22,6 +22,7 @@ const postSignUp = async (req, res) => {
     if (findUser === null) {
       //new user,send body data into createUser function
      let addUser = await createUser(req.body);
+     console.log("🚀 ~ file: index.js:25 ~ postSignUp ~ addUser:", addUser)
 
      let {username, avatar_url, address1, address2, city, state, country, zipcode} = addUser;
      let register = await axios.get(`${process.env.MONGODB_SERVER}/getUserInfo`, {params:{username, avatar_url, address1, address2, city, state, country, zipcode}});

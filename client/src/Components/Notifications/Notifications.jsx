@@ -51,7 +51,7 @@ const acceptRequest = (friendName) => {
 
 useEffect(() => {
   getFriendInfo(incomingRequests);
-  props.notificationView()
+  // props.notificationView()
 
 },[incomingRequests]);
 
