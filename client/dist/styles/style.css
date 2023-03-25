@@ -61,6 +61,10 @@
   width: 80%;
 }
 
+.friend-tile-container > img {
+  margin: 1em .5em 1em .5em;
+}
+
 .friend-tile-username {
 
 }
