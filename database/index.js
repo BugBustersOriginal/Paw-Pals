@@ -29,7 +29,6 @@ const pool = new Pool(dbSet(process.env.user, process.env.database, process.env.
         username VARCHAR(50) UNIQUE,
         password VARCHAR(64),
         salt VARCHAR(64),
-        google_id VARCHAR(255) UNIQUE,
         create_at TIMESTAMP NOT NULL DEFAULT NOW(),
         avatar_url VARCHAR(255),
         address1 TEXT,
@@ -40,7 +39,7 @@ const pool = new Pool(dbSet(process.env.user, process.env.database, process.env.
         zipcode VARCHAR(10)
       )`;
     await client.query(createUsersQuery);
-    console.log('users created successfully');
+    console.log('users successfully');
 
     //create session table to authication
     const createSessionQuery = `
@@ -51,7 +50,7 @@ const pool = new Pool(dbSet(process.env.user, process.env.database, process.env.
     )
     WITH (OIDS=FALSE);`;
     await client.query(createSessionQuery);
-    console.log('session created successfully');
+    console.log('session successfully');
 
   } catch (err) {
     console.error('Error creating table', err);

@@ -8,9 +8,10 @@ const FriendTile = ( {chat, userId} ) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleClick = () => {
+  const handleClick = (e) => {
     //goes to conversation window
-    navigate('/messagewindow')
+    console.log(`userId is equal to ${userId}`);
+    navigate('/messagewindow', {state: {}})
 
     //send friendUserName to message window
     //navigate to message window

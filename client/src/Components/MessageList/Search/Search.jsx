@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import { Route, Routes, useNavigate, useLocation, withRouter } from 'react-router-dom';
 import {SearchTile} from './SearchTile.jsx';
 
 export function Search (props) {
@@ -7,6 +8,7 @@ export function Search (props) {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [searchResult, setSearchResult] = useState(null);
+  const navigate = useNavigate();
 
 
   let userId = props.userId;
@@ -36,8 +38,15 @@ export function Search (props) {
     // after sucessful search, change tileStatus to true
   }
 
-  const handleSelection = (user) => {
-    console.log('open window for: ', user)
+  const handleSelection = (userOne, userTwo) => {
+    let conversation = [userOne, userTwo]
+    navigate(`/messagewindow`,{
+      state: {
+        users: conversation,
+        currentUser: userInfo.userId,
+        userTwo: userTwo
+      }
+    })
   }
 
 

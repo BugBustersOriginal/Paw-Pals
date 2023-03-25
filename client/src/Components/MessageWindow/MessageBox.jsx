@@ -6,40 +6,36 @@ import "../../../../client/chat.css";
 export default function MessageBox(props) {
   const [img, setimg]  = useState(false);
   const [url, seturl]  = useState('');
-  const[content, setcontent] = useState(props.content)
-  var str =''
-  if(props.content && url === ''){
-    if(props.content[0]=== '<' && props.content[1] === 'i'&& props.content[2] ==="m"){
-      for(var i = 5; i<props.content.length - 6 ; i++){
-        str = str + props.content[i]
-      }
+  const [content, setcontent] = useState(props.content);
+  const [isSender, setIsSender] =useState(false);
+  const [showSaveButton, setShowSaveButton] = useState(false);
 
-      seturl({
-        url:str
-      })
 
-    }
-  }
-
-  const showSnap = () =>{
-    setimg({
-      img: true
+  if(props.type === 'image' && url === '') {
+    seturl({
+      url:props.content
     })
-    resolveAfter2Seconds()
+  }
+  const showSnap = () =>{
+    setimg(true)
+    setShowSaveButton(true);
+    resolveAfterXSeconds(props.expirationTime)
   }
   useEffect(()=>{
     console.log("img", img)
-  })
+    console.log(`url is equal to ${JSON.stringify(url)}`)
+  },[url])
 
-  const resolveAfter2Seconds=() => {
-    console.log("timeout")
+  const resolveAfterXSeconds=(expirationTime) => {
+    console.log(`expirationTime is equal to ${expirationTime}`);
     var prom = new Promise(resolve => {
       setTimeout(() => {
         seturl({url:''});
-        setcontent({content: 'Image deleted'})
-      }, 2000);
+        setcontent('Image deleted')
+      }, expirationTime);
     });
   }
+
 
   const download = async() =>{
     const a = document.createElement("a");
@@ -61,17 +57,16 @@ export default function MessageBox(props) {
       });
   }
 
+
   useEffect (() => {
-    // if(props.sender !== null) {
-    //   setIsSender(props.sender.toString() === props.currentUser.toString())
-    // }
-    console.log (`props.sender is equal to ${props.sender}`)
-   })
-
-  const [isSender, setIsSender] =useState(false)
-
+    //console.log (`props.sender is equal to ${props.sender} and  ${props.currentUser}`)
+    if(props.sender !== undefined && props.currentUser !== undefined) {
+      setIsSender(props.sender.toString() === props.currentUser.toString())
+    }
+   }, [props.sender, props.currentUser]);
 
   return (
+<<<<<<< HEAD
     <div className ={`msg_box${isSender? ' sent':''}`}>
       <div>
       <div className={`line${isSender? ' sent':''}`}></div>
@@ -84,6 +79,8 @@ export default function MessageBox(props) {
        </button> : <div><button onClick={(e)=>{download()}}>download</button><img src= {url.url}/></div>) : content}
        </div>
        </div>
+
       </div>
+
   )
 }
