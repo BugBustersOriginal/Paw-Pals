@@ -37,10 +37,11 @@ const acceptRequest = (friendName) => {
 // code works but renders tile weird. Will fix later
     // getFriendInfo(incomingRequests);
     // props.rerender();
-    // let index = incomingRequests.indexOf(friendName);
-    // incomingRequests.splice(index, 1);
-    // console.log('incomingRequests: ', incomingRequests);
-    // getFriendInfo(incomingRequests);
+
+    let index = incomingRequests.indexOf(friendName);
+    incomingRequests.splice(index, 1);
+    console.log('incomingRequests: ', incomingRequests);
+    getFriendInfo(incomingRequests);
   })
   .catch((err) => {
     console.error(err);
@@ -50,6 +51,8 @@ const acceptRequest = (friendName) => {
 
 useEffect(() => {
   getFriendInfo(incomingRequests);
+  props.notificationView()
+
 },[incomingRequests]);
 
 

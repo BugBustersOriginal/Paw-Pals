@@ -22,6 +22,7 @@ export function App()  {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [userRealId, setUseRealId] = useState({});
+  const [notificationIcon, setNotificationIcon] = useState(true);
 
   async function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
@@ -85,6 +86,9 @@ export function App()  {
   //   })
   // }
 
+  const notificationView = () => {
+    setNotificationIcon(false)
+  }
 
 
   useEffect(() => {
@@ -112,7 +116,7 @@ export function App()  {
       console.error(err);
     })
     // getUserInfo(userId);
-
+    setNotificationIcon(true);
     hideLogoNav(location.pathname);
   }, [location]);
 
@@ -128,7 +132,7 @@ export function App()  {
         <button onClick={(e) => handleDevClick(e)}>Map</button>
         <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
         <button onClick={(e) => handleDevClick(e)}>Notifications</button>
-          {incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
+          {notificationIcon && incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
       </div>
 
       <Routes>
@@ -139,7 +143,7 @@ export function App()  {
         <Route   path="/map"  element= {<Map />}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
-        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} />} />
+        <Route   path="/notifications" element={<Notifications notificationView={notificationView} userId={userId} incomingRequests={incomingRequests} />} />
       </Routes>
 
       {/*
