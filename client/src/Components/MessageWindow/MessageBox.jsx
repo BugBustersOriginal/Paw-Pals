@@ -66,7 +66,7 @@ export default function MessageBox(props) {
    }, [props.sender, props.currentUser]);
 
   return (
-<<<<<<< HEAD
+
     <div className ={`msg_box${isSender? ' sent':''}`}>
       <div>
       <div className={`line${isSender? ' sent':''}`}></div>
