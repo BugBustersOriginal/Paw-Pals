@@ -19,6 +19,7 @@ export function App()  {
   let history = createBrowserHistory();
   const [hide, setHidden] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const [userId, setUserId] =useState('');
   const [userFriends, setUserFriends] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
@@ -38,6 +39,10 @@ export function App()  {
   async function handleDevClick (e) {
     if(e.target.innerText === 'Logout') {
       try {
+        setUserRealId({});
+        // setUserInfo(null);
+        // setPendingRequests([]);
+        // setIncomingRequests([]);
         const guest = await axios.get('/logout');
         //for testing
         console.log(guest.data.reminder);
@@ -73,13 +78,14 @@ export function App()  {
   }
   //set userInfo from postgres into state
   const handleUserLogin = (data) => {
-       let {address1, address2, city, state, country, zipcode} = data;
-       let userFromProsgres = {userId: data.username, thumbnailUrl: data.avatar_url, address1, address2, city, state, country, zipcode};
-       console.log('login path', userFromProsgres)
-       setUseRealId(userFromProsgres);
+      //  let {address1, address2, city, state, country, zipcode} = data;
+      //  let userFromProsgres = {userId: data.username, thumbnailUrl: data.avatar_url, address1, address2, city, state, country, zipcode};
+      //  console.log('login path', userFromProsgres);
+      let userFromProsgres = {userId: data.username};
+       setUserRealId(userFromProsgres);
   };
   //sample userId data to pass down to other components (useState)
-  let userId = 'superman';
+  // let userId = 'superman';
   let profileIcon = 'profileIcon';
   let userName = '@testUserName'
 
@@ -104,36 +110,51 @@ export function App()  {
     localStorage.setItem('theme', theme);
     document.body.className = theme;
 
-    axios.get('/authUser')
-     .then((result) => {
-       let authUser = result.data;
+      axios.get('/authUser')
+       .then((result) => {
+          if (result.data) {
+            let authUser = result.data;
+            // let {address1, address2, city, state, country, zipcode} = authUser;
+            // let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avatar_url, address1, address2, city, state, country, zipcode};
+            // console.log('auth path', userFromProsgres);
+            let userFromProsgres = {userId: authUser.username};
+            setUserRealId(userFromProsgres);
+            return authUser.username;
+          }
 
-        let {address1, address2, city, state, country, zipcode} = authUser;
-        let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avatar_url, address1, address2, city, state, country, zipcode};
-        console.log('auth path', userFromProsgres);
-        setUseRealId(userFromProsgres);
-        return {'queryUserId': authUser.username}
         })
-      .then((result) => {
-        console.log('result can be used to getUserInfo in mongodb', result);
-      })
-    // all mongodb fetch data should wrapped into .then(), means: first getAuthUser, then get data from mongodb
-    // axios call to get userInfo from MongoDB
-    axios.get('/getUserInfo', {params: {userId: userId} })
-    .then((result) => {
-      let userInfo = result.data;
-      setUserInfo(userInfo);
-      setUserFriends(userInfo.friends);
-      setPendingRequests(userInfo.sentRequest);
-      setIncomingRequests(userInfo.incomingRequests);
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-    // getUserInfo(userId);
+      .then((userName) => {
+        let user;
+        if (userName) {
+          user = userName;
+        } else if (userRealId.userId) {
+          user = userRealId.userId;
+        } else {
+          //user in register page, in login page or not login success, do nothing
+          return null;
+        }
+        console.log('check if user login success ', user);
+        axios.get('/getUserInfo', {params: {userId: user} })
+          .then((result) => {
+            console.log('get user info from mongodb', result.data);
+            let userInfo = result.data;
+            setUserId(userInfo.userId);
+            setUserInfo(userInfo);
+            setUserFriends(userInfo.friends);
+            setPendingRequests(userInfo.sentRequest);
+            setIncomingRequests(userInfo.incomingRequests);
+          })
 
-    hideLogoNav(location.pathname);
-  }, [location, theme]);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      // getUserInfo(userId);
+
+      hideLogoNav(location.pathname);
+   }, [location,theme]);
+
+
 
 
   return (
