@@ -21,8 +21,8 @@ export default function MessageWindow(props) {
   const location = useLocation()
   useEffect(() => {
     if(location.state?.users && location.state?.currentUser && location.state?.userTwo ) {
-      console.log(`users in message window is equal to ${location.state?.users}`)
-      console.log(`users in message window is equal to ${location.state?.currentUser}`)
+      // console.log(`users in message window is equal to ${location.state?.users}`)
+      // console.log(`users in message window is equal to ${location.state?.currentUser}`)
       setSender(location.state?.currentUser);
       setParticipants([...location.state?.users]);
       setParticipant(location.state?.userTwo);
@@ -31,11 +31,11 @@ export default function MessageWindow(props) {
   useEffect(() => {
     // sets up new conversation if conversation between two users is new
     if(participants.length !== 0) {
-      console.log(`participants is equal to ${participants}`)
+      //console.log(`participants is equal to ${participants}`)
       socket.emit('get-conversation', participants);
     }
     socket.on('conversation', (data) => {
-      console.log(`data in convo is equal to ${JSON.stringify(data.messages)}`);
+      //console.log(`data in convo is equal to ${JSON.stringify(data.messages)}`);
       setConversationID(data._id);
       if(data.messages.length > 0) {
         console.log(`setting conversation`)
@@ -59,9 +59,12 @@ export default function MessageWindow(props) {
   },[conversationID,sender])
 
   useEffect(()=> {
-      console.log(`mapping!`)
+      //console.log(`mapping!`)
       const mappedMessages = conversation.map((message) => {
         console.log(`message is equal to ${JSON.stringify(message)}`);
+        if(message.type === 'image' && message.sender === sender) {
+          return ''
+        }
         return <MessageBox key={message._id} sender={message.sender} content={message.content} currentUser = {sender} type={message.type} />;
       });
       setMappedMessages(mappedMessages);

@@ -40,8 +40,6 @@ export function Search (props) {
 
   const handleSelection = (userOne, userTwo) => {
     let conversation = [userOne, userTwo]
-    console.log('open window for: ', conversation);
-    console.log(`userInfo is equal to ${JSON.stringify(userInfo)}`);
     navigate(`/messagewindow`,{
       state: {
         users: conversation,
