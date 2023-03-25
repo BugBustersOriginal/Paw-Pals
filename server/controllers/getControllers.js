@@ -163,47 +163,4 @@ exports.getConversations = (req, res) => {
   // .catch((err) => {
   //   res.status(500).send(err);
   // });
-
-
-  // res.send([
-  //   {
-  //     participants: [
-  //       {
-  //         username: 'andy',
-  //         profileIcon: 'https://picsum.photos/100/100',
-  //         userId: '1'
-  //       }, {
-  //         username: 'me',
-  //         profileIcon: 'https://picsum.photos/100/100',
-  //         userId: 'testUser'
-  //       }],
-  //     messages: [{
-  //       content: 'hi',
-  //       createdAt: '10am'
-  //     }, {
-  //       content: 'hello',
-  //       createdAt: '11am'
-  //     }]
-  //   },
-  //   {
-  //     participants: [
-  //       {
-  //         username: 'tony',
-  //         profileIcon: 'https://picsum.photos/100/100',
-  //         userId: '2'
-  //       }, {
-  //         username: 'me',
-  //         profileIcon: 'https://picsum.photos/100/100',
-  //         userId: 'testUser'
-  //       }],
-  //     messages: [{
-  //       content: 'how are you',
-  //       createdAt: '1 pm'
-  //     }, {
-  //       content: 'fine',
-  //       createdAt: '2 pm'
-  //     }]
-  //   },
-
-  // ])
 }
