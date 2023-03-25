@@ -18,6 +18,7 @@ export function App()  {
   let history = createBrowserHistory();
   const [hide, setHidden] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const [userId, setUserId] =useState('');
   const [userFriends, setUserFriends] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
@@ -71,7 +72,7 @@ export function App()  {
        setUserRealId(userFromProsgres);
   };
   //sample userId data to pass down to other components (useState)
-  let userId = 'superman';
+  // let userId = 'superman';
   let profileIcon = 'profileIcon';
   let userName = '@testUserName'
 
@@ -120,6 +121,7 @@ export function App()  {
           .then((result) => {
             console.log('get user info from mongodb', result.data);
             let userInfo = result.data;
+            setUserId(userInfo.userId);
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
             setPendingRequests(userInfo.sentRequest);
