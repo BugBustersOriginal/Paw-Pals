@@ -15,6 +15,6 @@
   },
   "scripts": {
     "server": "node ./index.js ",
-    "server-dev": "nodemon ./index.js "
+    "server-dev": "npx nodemon ./index.js "
   }
 }

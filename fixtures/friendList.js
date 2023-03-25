@@ -5,7 +5,7 @@ let list = [
   userId: 'batman',
   thumbnailUrl: 'https://pbs.twimg.com/profile_images/874661809139073025/X8yzIhNy_400x400.jpg',
   location: '',
-  friends: ['tivo', 'banjo'],
+  friends: ['tivo', 'banjo', 'superman', 'shadow'],
   conversations: [],
   incomingRequests: [],
   sentRequest: []
