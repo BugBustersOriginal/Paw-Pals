@@ -66,7 +66,7 @@ export function App()  {
        setUseRealId(userFromProsgres);
   };
   //sample userId data to pass down to other components (useState)
-  let userId = 'testUser';
+  let userId = 'superman';
   let profileIcon = 'profileIcon';
   let userName = '@testUserName'
 
@@ -119,8 +119,6 @@ export function App()  {
 
     hideLogoNav(location.pathname);
   }, [location]);
-
-
   return (
     <div className="App" onClick={() => hideLogoNav(location.pathname)}>
       <img hidden={hide} className="logo" src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
