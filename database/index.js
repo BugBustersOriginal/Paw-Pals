@@ -29,7 +29,6 @@ const pool = new Pool(dbSet(process.env.user, process.env.database, process.env.
         username VARCHAR(50) UNIQUE,
         password VARCHAR(64),
         salt VARCHAR(64),
-        gmail VARCHAR(255) UNIQUE,
         create_at TIMESTAMP NOT NULL DEFAULT NOW(),
         avatar_url VARCHAR(255),
         address1 TEXT,
