@@ -22,9 +22,9 @@ const postSignUp = async (req, res) => {
     if (findUser === null) {
       //new user,send body data into createUser function
      let addUser = await createUser(req.body);
-
+    //  console.log('adduser', addUser)
      let {username, avatar_url, address1, address2, city, state, country, zipcode} = addUser;
-     let register = await axios.get(`${process.env.MONGODB_SERVER}/getUserInfo`, {params:{username, avatar_url, address1, address2, city, state, country, zipcode}});
+     let register = await axios.post(`${process.env.MONGODB_SERVER}/register`, {username, avatar_url, address1, address2, city, state, country, zipcode});
      console.log('register to mongodb',register.data);
      //render login page, can it go direct into main page?
      res.send({
@@ -126,7 +126,9 @@ const getAuthLogin = async (req, res) => {
     let findUser = await getUserById({id});
     let {username, avatar_url, address1, address2, city, state, country, zipcode} = findUser;
     res.send({username, avatar_url, address1, address2, city, state, country, zipcode});
+    return;
   }
+  res.send();
 }
 module.exports = {postSignUp, postLogIn, getLogOut, getAuthLogin};
 
