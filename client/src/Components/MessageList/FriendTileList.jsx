@@ -6,9 +6,9 @@ import axios from 'axios'
 const FriendTileList = ( props ) => {
   //will receive userId from App.jsx
   // console.log(`userinfo is equal to ${JSON.stringify(props.userInfo)}`);
-  console.log(props, 'line 8 FriendTileList')
-  let userId = 'batman'
-  console.log(userId, 'line 9 userID from FriendTileList')
+  console.log(props.userId, 'line 8 FriendTileList')
+  // let userId = 'batman'
+  // console.log(userId, 'line 9 userID from FriendTileList')
   // const userName = userId
 
   const [conversations, setConversations] = useState([])
@@ -25,7 +25,7 @@ const FriendTileList = ( props ) => {
 
   //will use userId to retrieve friends list from message server
   useEffect(() => {
-    axios.get('/latestChat/' + userId)
+    axios.get('/latestChat/' + props.userId)
       .then((res) => {
         // console.log(res.data.friends, 'line 26 FriendTileList')
         // console.log(res.data.conversations, 'line 27')

@@ -3,7 +3,7 @@ require('dotenv').config();
 
 exports.getUserInfo =  (req, res) => {
     let userId = req.query.userId;
-      axios.get(`${process.env.MONGODB_SERVER}/friendList`, { data: { userId: userId} })
+      axios.get(`${process.env.MONGODB_SERVER}/getUserInfo`, { data: { userId: userId} })
       .then((result) => {
         // console.log('got user info: ', result.data);
         let userInfo = result.data;
