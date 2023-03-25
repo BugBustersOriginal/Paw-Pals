@@ -25,6 +25,7 @@ const FriendTile = ( {friend} ) => {
     <div className="friend-tile-container">
       <div className="friend-tile-username" onClick={handleClick}>{friend.friend}</div>
       <div>{friend.messages? friend.messages[friend.messages.length-1].content : 'no messages yet'}</div>
+      <div>{friend.messages? friend.messages[friend.messages.length-1].createdAt : ''}</div>
     </div>
   )
 

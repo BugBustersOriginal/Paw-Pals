@@ -5,7 +5,7 @@ import axios from 'axios'
 
 const FriendTileList = ( props ) => {
   //will receive userId from App.jsx
-  console.log(props.userId, 'line 8 props FriendTileList')
+  console.log(props, 'line 8 props FriendTileList')
 
   const [conversations, setConversations] = useState([])
   const [friends, setFriends] = useState([])

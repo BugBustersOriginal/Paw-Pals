@@ -76,7 +76,9 @@ app.get('/messagewindow', reRoute);
 app.get('/notifications',reRoute);
 /**********************************/
 
-app.get('/randomPhoto', getRandomPhoto);app.get('/friendList/:userId', getControllers.getFriendList);
+app.get('/randomPhoto', getRandomPhoto);
+
+app.get('/friendList/:userId', getControllers.getFriendList);
 
 
 app.post('/searchFriend', postControllers.getFriendList);

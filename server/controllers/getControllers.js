@@ -32,11 +32,13 @@ exports.getUserInfo =  (req, res) => {
 
 
 exports.getFriendList = (req, res) => {
-  // console.log('friendList controller userId: ', req.body.searchQuery);
-  // let searchFriend = req.body.searchQuery;
-  // axios.get(`${process.env.MONGODB_SERVER}/friendList`, { data: { userId: searchFriend } })
+  // console.log('line 35 friendList controller userId: ', req.params.userId);
+  // // console.log('line 36', req.body.searchQuery)
+  // let searchFriend = req.params.userId;
+  // console.log(searchFriend, 'line 38')
+  // axios.get(`${process.env.MONGODB_SERVER}/friendList`, { params: { userId: searchFriend } })
   //   .then((result) => {
-  //     console.log('got friend info: ', result.data);
+  //     console.log('got friend info: ', result);
   //     let friendInfo = result.data;
   //     res.status(200).send(friendInfo);
   //   })
@@ -89,10 +91,12 @@ async function getConversation(userOne, userTwo) {
         participants: ['batman', 'tivo'],
         messages: [
           {
-            content: "How are you"
+            content: "How are you",
+            createdAt: '10am'
           },
           {
-            content: "I'm doing great"
+            content: "I'm doing great",
+            createdAt: '11am'
           },
         ]
       },
@@ -100,10 +104,12 @@ async function getConversation(userOne, userTwo) {
         participants: ['batman', 'superman'],
         messages: [
           {
-            content: "How are you, Superman"
+            content: "How are you, Superman",
+            createdAt: '1pm'
           },
           {
-            content: "I'm doing great!"
+            content: "I'm doing great!",
+            createdAt: '2pm'
           },
         ]
       }
@@ -123,6 +129,27 @@ async function getUserInfo(userId) {
   })
 
   return userInfo
+}
+
+async function getFriendProfileIcon(friendName) {
+  const friendInfo = ({
+    friendName: 'tivo',
+    thumbnailUrl: 'https://pbs.twimg.com/profile_images/874661809139073025/X8yzIhNy_400x400.jpg',
+  },
+  {
+    friendName: 'bango',
+    thumbnailUrl: 'https://pbs.twimg.com/profile_images/874661809139073025/X8yzIhNy_400x400.jpg',
+  },
+  {
+    friendName: 'superman',
+    thumbnailUrl: 'https://pbs.twimg.com/profile_images/874661809139073025/X8yzIhNy_400x400.jpg',
+  },
+  {
+    friendName: 'shadow',
+    thumbnailUrl: 'https://pbs.twimg.com/profile_images/874661809139073025/X8yzIhNy_400x400.jpg',
+  })
+
+  return friendInfo.thumbnailUrl;
 }
 
 exports.getConversations = (req, res) => {
