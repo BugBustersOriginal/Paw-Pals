@@ -128,32 +128,54 @@ app.get("/friendList", async (req, res) => {
 app.get("/getUserInfo", async (req, res) => {
   // it this userId should change to et userId = req.query.userId;
   let userId = req.body.userId;
+  // console.log(1111,userId)
   try {
     const user = await FriendList.find({userId});
-    if (user.length === 0) {
-      let userId = req.query.username;
-      let thumbnailUrl = req.query.avatar_url;
-      let location = locationString(req.query);
-      const newUser = new FriendList({
-        userId: userId,
-        thumbnailUrl,
-        location,
-        friends: [],
-        conversations: [],
-        incomingRequests: [],
-        sentRequest: []
-      });
-      await newUser.save();
-      res.status(200).send('save to mongodb success');
-      return;
-    }
+    // if (user.length === 0) {
+    //   let userId = req.query.username;
+    //   console.log(11111,userId)
+    //   let thumbnailUrl = req.query.avatar_url;
+    //   let location = locationString(req.query);
+    //   const newUser = new FriendList({
+    //     userId: userId,
+    //     thumbnailUrl,
+    //     location,
+    //     friends: [],
+    //     conversations: [],
+    //     incomingRequests: [],
+    //     sentRequest: []
+    //   });
+    //   await newUser.save();
+    //   res.status(200).send('save to mongodb success');
+    //   return;
+    // }
     res.status(200).send(user[0])
   } catch (err) {
     console.error(err);
     res.status(500).send(err);
   }
 })
-
+app.post("/register", async (req, res) => {
+  // console.log(req.body);
+  let userId = req.body.username;
+  let thumbnailUrl = req.body.avatar_url;
+  let location = locationString(req.body);
+  const newUser = new FriendList({
+    userId: userId,
+    thumbnailUrl,
+    location,
+    friends: [],
+    conversations: [],
+    incomingRequests: [],
+    sentRequest: []
+  });
+  try {
+    await newUser.save();
+    res.status(200).send(`${req.body.username} save success`);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 // [
 //   {
 //     _id: new ObjectId("64160b46cc57fa46efca1bed"),
