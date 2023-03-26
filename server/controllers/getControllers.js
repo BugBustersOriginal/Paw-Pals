@@ -5,8 +5,8 @@ exports.getUserInfo =  (req, res) => {
     let userId = req.query.userId;
       axios.get(`${process.env.MONGODB_SERVER}/getUserInfo`, { data: { userId: userId} })
       .then((result) => {
-        // console.log('got user info: ', result.data);
         let userInfo = result.data;
+        // console.log(userInfo, 'line 9')
         res.status(200).send(userInfo);
       })
       .catch((err) => {
@@ -32,81 +32,44 @@ exports.getFriendList = (req, res) => {
 
   }
 
-  exports.getLatestChat = (req, res) => {
-    let userId = req.params.userId
-    getUserInfo(userId)
-    .then( (userInfo) => {
-      const friends = userInfo.friends;
+exports.getLatestChat = (req, res) => {
+  let userId = req.params.userId
+  getUserInfo(userId)
+  .then( (userInfo) => {
+    const friends = userInfo.friends;
 
-      //getAll is an option
-      return Promise.all(friends.map( (friend )=> {
-        return getConversation(userId, friend)
-      }))
-      .then( (conversations) => {
-        return conversations.map( (conversation, i) => {
-          return {
-            friend: friends[i],
-            messages: conversation?.messages
-          }
-        })
+    //getAll is an option
+    return Promise.all(friends.map( (friend )=> {
+      return getConversation(userId, friend)
+    }))
+    .then( (conversations) => {
+      return conversations.map( (conversation, i) => {
+        return {
+          friend: friends[i],
+          messages: conversation?.messages
+        }
       })
     })
-    .then( (conversations) => {
-     res.status(200).send(conversations)
-    })
-      .catch((err) => {
-        console.error(err)
-        res.status(500).send(err);
-      });
-  }
+  })
+  .then( (conversations) => {
+    res.status(200).send(conversations)
+  })
+    .catch((err) => {
+      console.error(err)
+      res.status(500).send(err);
+    });
+}
 
-
-
-
- function getConversation(userOne, userTwo) {
+function getConversation(userOne, userTwo) {
 
   return axios.get(`${process.env.MONGODB_SERVER}/conversations/${userOne}`)
     .then((result) => {
-
-
       let conversationInfo = result.data.find( (conversation) => {
         return conversation.participants.includes(userTwo)
       });
       console.log('got convervations: ', conversationInfo);
       return conversationInfo
     })
-
-  // const conversations = {
-  //   batman: {
-  //     tivo: {
-  //       participants: ['batman', 'tivo'],
-  //       messages: [
-  //         {
-  //           content: "How are you",
-  //           createdAt: '10am'
-  //         },
-  //         {
-  //           content: "I'm doing great",
-  //           createdAt: '11am'
-  //         },
-  //       ]
-  //     },
-  //     superman: {
-  //       participants: ['batman', 'superman'],
-  //       messages: [
-  //         {
-  //           content: "How are you, Superman",
-  //           createdAt: '1pm'
-  //         },
-  //         {
-  //           content: "I'm doing great!",
-  //           createdAt: '2pm'
-  //         },
-  //       ]
-  //     }
-  //   }
-  // }
-  // return conversations[userOne][userTwo]
 }
 
 function getUserInfo(userId) {
@@ -117,18 +80,6 @@ function getUserInfo(userId) {
       console.log('got friend info: ', friendInfo.friends);
       return friendInfo
     })
-
-
-  // const userInfo = ({
-  //   userId: 'batman',
-  //   thumbnailUrl: 'https://pbs.twimg.com/profile_images/874661809139073025/X8yzIhNy_400x400.jpg',
-  //   location: '',
-  //   friends: ['tivo', 'banjo', 'superman', 'shadow'],
-  //   incomingRequests: [],
-  //   sentRequest: []
-  // })
-
-  // return userInfo
 }
 
 async function getFriendProfileIcon(friendName) {
@@ -153,14 +104,14 @@ async function getFriendProfileIcon(friendName) {
 }
 
 exports.getConversations = (req, res) => {
-  // let userId = req.params.userId;
-  // axios.get(`${process.env.MONGODB_SERVER}/conversations/${userId}`)
-  // .then((result) => {
-  //   console.log('friends list: ', result.data);
-  //   let friendsList = result.data;
-  //   res.status(200).send(friendsList);
-  // })
-  // .catch((err) => {
-  //   res.status(500).send(err);
-  // });
+  let userId = req.params.userId;
+  axios.get(`${process.env.MONGODB_SERVER}/conversations/${userId}`)
+  .then((result) => {
+    console.log('friends list: ', result.data);
+    let friendsList = result.data;
+    res.status(200).send(friendsList);
+  })
+  .catch((err) => {
+    res.status(500).send(err);
+  });
 }
