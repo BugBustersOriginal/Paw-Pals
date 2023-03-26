@@ -65,10 +65,10 @@ function getConversation(userOne, userTwo) {
   return axios.get(`${process.env.MONGODB_SERVER}/conversations/${userOne}`)
     .then((result) => {
       let conversationInfo = result.data.find( (conversation) => {
-        return conversation.participants.includes(userTwo)
+        return conversation.participants.includes(userTwo);
       });
       console.log('got convervations: ', conversationInfo);
-      return conversationInfo
+      return conversationInfo;
     })
 }
 
@@ -78,7 +78,7 @@ function getUserInfo(userId) {
     .then((result) => {
       let friendInfo = result.data;
       console.log('got friend info: ', friendInfo.friends);
-      return friendInfo
+      return friendInfo;
     })
 }
 
