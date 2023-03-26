@@ -107,10 +107,10 @@ export function App()  {
 
       axios.get('/authUser')
        .then((result) => {
-         console.log(result.data, 'line 111')
+         console.log(result.data, 'line 111 App.jsx')
           if (result.data) {
             let authUser = result.data;
-            console.log(authUser.username, 'line 113')
+            console.log(authUser.username, 'line 113 App.jsx')
             // let {address1, address2, city, state, country, zipcode} = authUser;
             // let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avatar_url, address1, address2, city, state, country, zipcode};
             // console.log('auth path', userFromProsgres);
@@ -135,7 +135,6 @@ export function App()  {
           .then((result) => {
             console.log('get user info from mongodb', result.data);
             let userInfo = result.data;
-            console.log(userInfo, 'line 138')
             setUserId(userInfo.userId);
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
