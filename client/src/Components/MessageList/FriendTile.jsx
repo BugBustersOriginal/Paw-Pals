@@ -4,26 +4,12 @@ import { useNavigate } from 'react-router-dom';
 const FriendTile = ( {friend} ) => {
   console.log(friend, 'line 5 friend FriendTile')
 
-
-
-
   const navigate = useNavigate();
 
   const handleClick = (e) => {
-    //goes to conversation window
-    // console.log(`userId is equal to ${userId}`);
-    // navigate('/messagewindow', {state: {}})
-    navigate('/messagewindow')
-
-    //send friendUserName to message window
+    navigate('/messagewindow', {state: {}})
+    // navigate('/messagewindow')
   }
-
-  // const otherParticipant = chat.participants.find((e) => {
-  //   return e.userId !== userId;
-  // })
-
-  // let last = chat.messages.length-1
-  // const latestMessage = chat.messages[last]
 
   return (
     <div className="friend-tile-container">
@@ -33,15 +19,6 @@ const FriendTile = ( {friend} ) => {
       <div>{friend.messages? friend.messages[friend.messages.length-1].createdAt : ''}</div>
     </div>
   )
-
-  // return (
-  //   <div className="friend-tile-container">
-  //       <div className="friend-tile-username" onClick={handleClick}>{otherParticipant.username}</div>
-  //       <div>{otherParticipant.profileIcon}</div>
-  //       <div onClick={handleClick}>{latestMessage.content}</div>
-  //       <div className="friend-time-timestamp">{latestMessage.createdAt}</div>
-  //   </div>
-  // )
 }
 
 export default FriendTile;
