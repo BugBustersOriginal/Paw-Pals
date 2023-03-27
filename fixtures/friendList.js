@@ -7,7 +7,7 @@ let list = [
   location: '',
   friends: ['tivo', 'banjo'],
   conversations: [],
-  incomingRequests: [],
+  incomingNotifications: [],
   sentRequest: []
   },
   {
@@ -16,8 +16,8 @@ let list = [
     location: '',
     friends: ['superman', 'shadow', 'batman'],
     conversations: [],
-    incomingRequests: [],
-    sentRequest: ['tivo']
+    incomingNotifications: [],
+    sentRequest: ['doggy']
   },
   {
     userId: 'tivo',
@@ -25,7 +25,7 @@ let list = [
     location: '',
     friends: ['superman', 'shadow', 'batman'],
     conversations: [],
-    incomingRequests: [],
+    incomingNotifications: [],
     sentRequest: []
   },
   {
@@ -34,7 +34,16 @@ let list = [
     location: '',
     friends: ['superman'],
     conversations: [],
-    incomingRequests: ['banjo', 'batman'],
+    incomingNotifications: [],
+    sentRequest: []
+  },
+  {
+    userId: 'doggy',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1517331156700-3c241d2b4d83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=Mnw0MjYyNTJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2Nzk5NDUxOTc&ixlib=rb-4.0.3&q=80&w=1080',
+    location: 'USA80021',
+    friends: [],
+    conversations: [],
+    incomingNotifications: [{friendId: 'banjo', type: 'friend request'}, {friendId: 'batman', type: 'saved photo'}],
     sentRequest: []
   }
 ]

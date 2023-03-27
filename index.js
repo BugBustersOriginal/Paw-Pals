@@ -113,7 +113,7 @@ app.get("/conversations/:userId", async (req, res) => {
 
 app.get("/friendList", async (req, res) => {
   let userId = req.body.userId;
-  // console.log('checking friendList', userId);
+  console.log('checking friendList', userId);
   try {
     const friend = await FriendList.find({userId})
     // console.log('got friend: ', friend[0]);
@@ -155,8 +155,9 @@ app.get("/getUserInfo", async (req, res) => {
     res.status(500).send(err);
   }
 })
+
 app.post("/register", async (req, res) => {
-  // console.log(req.body);
+  console.log('register req: ', req.body);
   let userId = req.body.username;
   let thumbnailUrl = req.body.avatar_url;
   let location = locationString(req.body);
@@ -196,7 +197,7 @@ app.post('/friendRequest', async (req, res) => {
   let friendId = req.body.data.selectedUser;
   let userId = req.body.data.userId;
   let friendFilter = {userId: friendId};
-  let update = {$push: { incomingRequests: userId  }};
+  let update = {$push: { incomingNotifications: {friendId: userId, type: 'friend request'}  }};
   let pendingRequest = {$push: {sentRequest: friendId}};
   let userFilter = {userId: userId};
   // console.log('got friendRequest in server: ', req.body.data.friendRequestObj);
@@ -220,15 +221,30 @@ app.post('/acceptRequest', async (req, res) => {
   let updateUserFriends = {$push: {friends: friendId}}
   try {
     const accept = await FriendList.updateOne(friendFilter, update)
-    const removeFriendRequest = await FriendList.updateOne(friendFilter, {$pull: {incomingRequests: userId}})
+    const removeFriendRequest = await FriendList.updateOne(friendFilter, { $pull: { sentRequest: userId } })
     const userUpdate = await FriendList.updateOne(userFilter, updateUserFriends)
-    const removeSentRequest = await FriendList.updateOne(userFilter, {$pull: {incomingRequests: friendId}})
+    const removeSentRequest = await FriendList.updateOne(userFilter, {$pull: {incomingNotifications: {friendId: friendId}}})
     // console.log('mongodb accept updated')
     res.status(201).send();
   } catch(err) {
     console.error(err);
     res.status(500).send(err);
   }
+})
+
+app.post('/dismissNotification', async (req, res) => {
+  let dismissObj = req.body.data;
+  let userId = req.body.data.userId;
+  let friendId = req.body.data.friendId;
+  let update = {$pull: {incomingNotifications: userId}};
+  let updateUserFriends = {$push: {friends: friendId}}
+
+  console.log('dismiss hit', dismissObj);
+
+
+  // try {
+
+  // }
 })
 
 io.on('connection', async (socket) => {
