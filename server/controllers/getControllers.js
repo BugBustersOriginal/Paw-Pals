@@ -16,9 +16,9 @@ exports.getUserInfo =  (req, res) => {
 
 
 exports.getFriendList = (req, res) => {
-  console.log('line 35 friendList controller userId: ', req.params.userId);
-  console.log('line 36', req.body.searchQuery)
-  let searchFriend = req.params.userId;
+  // console.log('line 35 friendList controller userId: ', req.params.userId);
+  // console.log('line 36', req.body.searchQuery)
+  let searchFriend = req.body.searchQuery;
   console.log(searchFriend, 'line 38')
   axios.get(`${process.env.MONGODB_SERVER}/friendList`, { params: { userId: searchFriend } })
     .then((result) => {
@@ -67,7 +67,7 @@ function getConversation(userOne, userTwo) {
       let conversationInfo = result.data.find( (conversation) => {
         return conversation.participants.includes(userTwo);
       });
-      console.log('got convervations: ', conversationInfo);
+      // console.log('got convervations: ', conversationInfo);
       return conversationInfo;
     })
 }
@@ -77,7 +77,7 @@ function getUserInfo(userId) {
   return axios.get(`${process.env.MONGODB_SERVER}/friendList/${userId}`)
     .then((result) => {
       let friendInfo = result.data;
-      console.log('got friend info: ', friendInfo.friends);
+      // console.log('got friend info: ', friendInfo.friends);
       return friendInfo;
     })
 }
