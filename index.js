@@ -236,15 +236,16 @@ app.post('/dismissNotification', async (req, res) => {
   let dismissObj = req.body.data;
   let userId = req.body.data.userId;
   let friendId = req.body.data.friendId;
-  let update = {$pull: {incomingNotifications: userId}};
-  let updateUserFriends = {$push: {friends: friendId}}
-
+  let userFilter = {userId: userId};
   console.log('dismiss hit', dismissObj);
 
-
-  // try {
-
-  // }
+  try {
+    const updateUser = await FriendList.updateOne(userFilter, {$pull: {incomingNotifications: {friendId: friendId}}})
+    res.status(201).send();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
 })
 
 io.on('connection', async (socket) => {
