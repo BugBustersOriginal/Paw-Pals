@@ -76,8 +76,8 @@ app.get('/authUser', getAuthLogin);
 
 app.get('/randomPhoto', getRandomPhoto);
 
-app.get('/latestChat/:userId', getControllers.getLatestChat)
-;
+app.get('/latestChat/:userId', getControllers.getLatestChat);
+
 app.get('/friendList/:userId', getControllers.getFriendList);
 
 
