@@ -114,12 +114,12 @@ app.get("/conversations/:userId", async (req, res) => {
   }
 });
 
-app.get("/friendList/:userId", async (req, res) => {
-  console.log('checking friendList', req.params.userId);
-  const userId = req.params.userId;
+app.get("/friendList", async (req, res) => {
+  let userId = req.body.userId;
+  console.log('checking friendList', userId);
   try {
     const friend = await FriendList.find({userId})
-    console.log('got friend: ', friend[0]);
+    // console.log('got friend: ', friend[0]);
     res.status(200).send(friend[0])
   } catch (err) {
     console.error(err);
