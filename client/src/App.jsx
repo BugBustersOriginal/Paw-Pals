@@ -25,7 +25,6 @@ export function App()  {
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [userRealId, setUserRealId] = useState({});
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-  const [notificationView, setNotificationView] = useState(true);
 
   //toggles darkmode
   const toggleTheme = () => {
@@ -85,14 +84,25 @@ export function App()  {
       let userFromProsgres = {userId: data.username};
        setUserRealId(userFromProsgres);
   };
-
-  const changeNotificationView = () => {
-    setNotificationView(false);
-  }
   //sample userId data to pass down to other components (useState)
   // let userId = 'superman';
   let profileIcon = 'profileIcon';
   let userName = '@testUserName'
+
+
+  // const getUserInfo = (user) => {
+  //   axios.get('/getUserInfo', {params: {userId: userId} })
+  //   .then((result) => {
+  //     let userInfo = result.data;
+  //     setUserInfo(userInfo);
+  //     setUserFriends(userInfo.friends);
+  //     setPendingRequests(userInfo.sentRequest);
+  //     setIncomingRequests(userInfo.incomingRequests);
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   })
+  // }
 
 
   //runs on document change
@@ -132,7 +142,7 @@ export function App()  {
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
             setPendingRequests(userInfo.sentRequest);
-            setIncomingRequests(userInfo.incomingRequests);
+            setIncomingRequests(userInfo.incomingNotifications);
           })
 
       })
@@ -140,7 +150,7 @@ export function App()  {
         console.error(err);
       })
       // getUserInfo(userId);
-      setNotificationView(true);
+
       hideLogoNav(location.pathname);
    }, [location,theme]);
 
@@ -152,7 +162,7 @@ export function App()  {
       <img hidden={hide} className={`logo-${theme}`} src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
       <div className='notification-bar' hidden={!hide}>
       <button onClick={(e) => handleDevClick(e)}>Notifications</button>
-          {incomingRequests.length && notificationView ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
+          {/* {incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null} */}
       </div>
 
       <Routes>
@@ -164,7 +174,7 @@ export function App()  {
         <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
-        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={changeNotificationView}/>} />
+        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} />} />
       </Routes>
 
       <div className="devButtons" hidden={!hide}>

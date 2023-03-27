@@ -12,11 +12,12 @@ const [friendData, setFriendData] = useState([])
 
 const getFriendInfo = async (list) => {
   try {
-    const requests = list.map(name => axios.post('/searchFriend', {searchQuery: name}));
+    const requests = list.map(name => axios.post('/searchFriend', {searchQuery: name.friendId}));
     const results = await Promise.all(requests);
     const friendInfo = results.map(result => result.data);
     setFriendData(friendInfo);
-    console.log("🚀 ~ file: Notifications.jsx:21 ~ getFriendInfo ~ friendData:", friendData)
+    console.log('friendData:', friendData);
+
   }
   catch (err) {
     console.error(err);
@@ -38,10 +39,10 @@ const acceptRequest = (friendName) => {
     // getFriendInfo(incomingRequests);
     // props.rerender();
 
-    let index = incomingRequests.indexOf(friendName);
-    incomingRequests.splice(index, 1);
-    console.log('incomingRequests: ', incomingRequests);
-    getFriendInfo(incomingRequests);
+    // let index = incomingRequests.indexOf(friendName);
+    // incomingRequests.splice(index, 1);
+    // console.log('incomingRequests: ', incomingRequests);
+    // getFriendInfo(incomingRequests);
   })
   .catch((err) => {
     console.error(err);
@@ -50,8 +51,8 @@ const acceptRequest = (friendName) => {
 }
 
 useEffect(() => {
+  // props.notificationView()
   getFriendInfo(incomingRequests);
-  props.notificationView()
 
 },[incomingRequests]);
 
