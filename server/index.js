@@ -29,6 +29,7 @@ app.use(session({
 );
 
 app.get('/getUserInfo', getControllers.getUserInfo);
+app.get('/getNotifications', getControllers.getNotifications);
 
 const reRoute = (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../client/dist/index.html'), function(err) {

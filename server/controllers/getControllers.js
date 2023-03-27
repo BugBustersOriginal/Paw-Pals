@@ -88,3 +88,9 @@ exports.getConversations = (req, res) => {
 
   ])
 }
+
+exports.getNotifications = (req, res) => {
+  let friendList = req.query;
+  // console.log('get notification friendList: ', friendList)
+  axios.get(`${process.env.MONGODB_SERVER}/getNotifications`, { data: friendList })
+}
