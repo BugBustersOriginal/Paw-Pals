@@ -2,8 +2,19 @@ import React, {useState, useEffect, useRef, useCallback} from 'react';
 
 
 export default function DateSplitter (props) {
+  function checkIfToday(date) {
+    const todayDate = new Date();
+    return (
+      date.getFullYear() === todayDate.getFullYear() &&
+      date.getMonth() === todayDate.getMonth() &&
+      date.getDate() === todayDate.getDate()
+    );
+  }
   function formatDate(date) {
-    const options = { month: 'short', day: 'numeric' };
+    if (checkIfToday(props.date)) {
+      return 'Today'
+    }
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return date.toLocaleDateString(undefined, options);
   }
 

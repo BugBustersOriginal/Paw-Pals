@@ -74,7 +74,6 @@ export default function MessageWindow(props) {
       const mappedMessages = conversation.map((message, index) => {
         var createdAtDate = new Date(message.createdAt);
         let showDateSeparator = false;
-        console.log(`conversation[index-1] is equal to ${conversation[index-1]} and conversation is equal to ${conversation[index]}`);
         if(index > 0) {
           const prevDate = new Date(conversation[index-1].createdAt);
           const currDate = new Date(conversation[index].createdAt);
@@ -82,9 +81,6 @@ export default function MessageWindow(props) {
         } else if (index === 0) {
           showDateSeparator = true;
         }
-        console.log(`showDateSeparator is equal to ${showDateSeparator}`);
-        console.log(`message is equal to ${JSON.stringify(createdAtDate)}`);
-
         // uncomment only if you want the receiver to see images and not the sender
         // if(message.type === 'image' && message.sender === sender) {
         //   return ''
@@ -126,7 +122,6 @@ export default function MessageWindow(props) {
   const changeParticipant = (event) => {
     event.preventDefault()
     let newParticipant = participantRef.current.value;
-    console.log(`newParticipant is equal to ${newParticipant}`);
     setParticipants(prevParticipant => [sender,newParticipant]);
   }
 
