@@ -36,7 +36,7 @@ let friendListSchema = new mongoose.Schema({
   location: String,
   friends: [String],
   conversations: [],
-  incomingRequests: [],
+  incomingNotifications: [],
   sentRequest: []
 })
 
