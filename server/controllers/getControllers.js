@@ -22,7 +22,7 @@ exports.getFriendList = (req, res) => {
   console.log(searchFriend, 'line 38')
   axios.get(`${process.env.MONGODB_SERVER}/friendList`, { params: { userId: searchFriend } })
     .then((result) => {
-      console.log('got friend info: ', result);
+      // console.log('got friend info: ', result.data);
       let friendInfo = result.data;
       res.status(200).send(friendInfo);
     })

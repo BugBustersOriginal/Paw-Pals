@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 
 export function FriendRequest (props) {
-console.log("🚀 ~ file: FriendRequest.jsx:5 ~ FriendRequest ~ sentRequest:", props.pendingRequests)
+// console.log("🚀 ~ file: FriendRequest.jsx:5 ~ FriendRequest ~ sentRequest:", props.pendingRequests)
 
   const [requestSent, setRequestSent] = useState(false);
   let pendingRequests = props.pendingRequests;
