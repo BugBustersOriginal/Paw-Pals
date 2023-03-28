@@ -167,7 +167,7 @@ export function App()  {
 
       <Routes>
         <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
-          {/* <Route   path="/"  element= {<Login />}  /> */}
+          <Route   path="/"  element= {<Login />}  />
         <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
         <Route   path="/register"  element= {<Register />}  />
         <Route   path="/map"  element= {<Map userInfo={userRealId} userFriends={userFriends} />}  />
@@ -183,7 +183,7 @@ export function App()  {
           <button onClick={(e) => handleDevClick(e)}>Profile</button>
           <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
           <button onClick={(e) => handleDevClick(e)}>Map</button>
-          {/*<button onClick={(e) => handleDevClick(e)}>MessageWindow</button>*/}
+          <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
         </div>
       </div>
 
