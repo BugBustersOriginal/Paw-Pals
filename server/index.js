@@ -63,8 +63,7 @@ app.get('/map',getAuth, reRoute);
 app.get('/friendtile',getAuth, reRoute);
 app.get('/messagewindow', getAuth, reRoute);
 app.get('/notifications',getAuth,reRoute);
-app.get('/profile',getAuth,reRoute);
-app.get('/authUser', getAuthLogin)
+app.get('/authUser', getAuthLogin);
 /*************for every page own testing, comment out getAuth middleware and comment in the part below *********************************/
 
 // app.get('/login', reRoute);
@@ -76,6 +75,12 @@ app.get('/authUser', getAuthLogin)
 /**********************************/
 
 app.get('/randomPhoto', getRandomPhoto);
+
+//MaryAnn's route
+app.get('/latestChat/:userId', getControllers.getLatestChat);
+
+// app.get('/friendList/:userId', getControllers.getFriendList);
+
 
 app.post('/searchFriend', postControllers.getFriendList);
 

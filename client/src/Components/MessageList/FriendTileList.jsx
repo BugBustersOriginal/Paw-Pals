@@ -3,28 +3,23 @@ import { Search } from './Search/Search.jsx';
 import FriendTile from './FriendTile.jsx';
 import axios from 'axios'
 
-const FriendTileList = ( props, {userId} ) => {
-  //will receive userId from App.jsx
-  console.log(`userinfo is equal to ${JSON.stringify(props.userInfo)}`);
-  // console.log(props, 'line 8 FriendTileList')
-  console.log(userId, 'line 9 userID from FriendTileList')
-  // const userName = userId
+const FriendTileList = ( props ) => {
 
-  const [chats, setChats] = useState([])
+  const [friends, setFriends] = useState([])
 
-  //will use userId to retrieve chats from message server
+  //will use userId to retrieve chats with each friend from message server
   useEffect(() => {
-    axios.post('/conversations/' + userId)
+    axios.get('/latestChat/' + props.userId)
       .then((res) => {
-        console.log(res.data, 'line 16 FriendTileList')
-        setChats(res.data)
+        console.log(res.data, 'line 34 FriendTileList')
+        setFriends(res.data)
       })
-  }, [])
+  }, [props.userId])
 
   return (
     <div>
-      <Search userId={userId} userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId} pendingRequests={props.pendingRequests} />
-      {chats.map((chat) => <FriendTile chat={chat} userId={userId}/>)}
+      <Search userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId} pendingRequests={props.pendingRequests} />
+      {friends.map((friend) => <FriendTile friend={friend}/>)}
     </div>
   )
 }
