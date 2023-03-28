@@ -20,11 +20,11 @@ exports.getUserInfo =  (req, res) => {
 
 
 exports.getFriendList = (req, res) => {
-  // console.log('friendList controller userId: ', req.body.searchQuery);
+  // console.log('friendList GET controller userId: ', req.body.searchQuery);
   let searchFriend = req.body.searchQuery;
   axios.get(`${process.env.MONGODB_SERVER}/friendList`, { data: { userId: searchFriend } })
     .then((result) => {
-      console.log('got friend info: ', result.data);
+      // console.log('got friend info: ', result.data);
       let friendInfo = result.data;
       res.status(200).send(friendInfo);
     })
@@ -87,10 +87,4 @@ exports.getConversations = (req, res) => {
     },
 
   ])
-}
-
-exports.getNotifications = (req, res) => {
-  let friendList = req.query;
-  // console.log('get notification friendList: ', friendList)
-  axios.get(`${process.env.MONGODB_SERVER}/getNotifications`, { data: friendList })
 }

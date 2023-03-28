@@ -36,7 +36,7 @@ const getFriendInfo = async (list) => {
 
 
     setFriendData(friendInfo);
-    console.log('friendData:', friendData);
+    // console.log('friendData:', friendData);
 
 
   }
@@ -73,6 +73,14 @@ const acceptRequest = (friendName) => {
 
 }
 
+const dismissNotification = (friendName) => {
+  let dismissObj = {
+    userId: userId,
+    friendId: friendName
+  }
+  axios.post('dismissNotification', dismissObj);
+}
+
 useEffect(() => {
   // props.notificationView()
   getFriendInfo(incomingRequests);
@@ -85,7 +93,7 @@ useEffect(() => {
       <h4>Notifications</h4>
       {friendData?.map((friend, index) => {
         return (
-            <NotificationTile key={index} userId={friend.userId} thumbnailUrl={friend.thumbnailUrl} savedPhoto={savedPhoto} requestList={requestList} acceptRequest={acceptRequest} />
+            <NotificationTile key={index} userId={friend.userId} thumbnailUrl={friend.thumbnailUrl} savedPhoto={savedPhoto} requestList={requestList} acceptRequest={acceptRequest} dismissNotification={dismissNotification} />
           )
       })}
     </div>

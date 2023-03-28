@@ -29,7 +29,6 @@ app.use(session({
 );
 
 app.get('/getUserInfo', getControllers.getUserInfo);
-app.get('/getNotifications', getControllers.getNotifications);
 
 const reRoute = (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../client/dist/index.html'), function(err) {
@@ -92,6 +91,8 @@ app.get('/logout', getLogOut);
 app.post('/retrieveFriends', getControllers.getFriendList);
 
 app.post('/acceptRequest', postControllers.acceptRequest);
+
+app.post('/dismissNotification', postControllers.dismissNotification);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
