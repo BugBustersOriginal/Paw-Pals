@@ -52,7 +52,10 @@ app.get('/', (req, res) => {
 
 // front end needs to make a newconversation if the conversation has not happened before
 app.post("/newConversation", async (req,res) => {
-
+//will provide list of participants (JSON body)
+//will need to determine if there is already a convo between these 2 participants
+//if yes, send that convo
+//if no, create new convo and send that convo
 })
 app.post("/openedImage/:id", async (req, res) => {
   const imageId = req.params.id;
@@ -113,7 +116,7 @@ app.get("/conversations/:userId", async (req, res) => {
 
 app.get("/friendList", async (req, res) => {
   let userId = req.body.userId;
-  // console.log('checking friendList', userId);
+  console.log('checking friendList', userId);
   try {
     const friend = await FriendList.find({userId})
     // console.log('got friend: ', friend[0]);
