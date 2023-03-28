@@ -76,9 +76,10 @@ app.get('/authUser', getAuthLogin);
 
 app.get('/randomPhoto', getRandomPhoto);
 
+//MaryAnn's route
 app.get('/latestChat/:userId', getControllers.getLatestChat);
 
-app.get('/friendList/:userId', getControllers.getFriendList);
+// app.get('/friendList/:userId', getControllers.getFriendList);
 
 
 app.post('/searchFriend', postControllers.getFriendList);

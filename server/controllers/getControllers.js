@@ -16,9 +16,9 @@ exports.getUserInfo =  (req, res) => {
 
 
 exports.getFriendList = (req, res) => {
-  console.log('line 35 friendList controller userId: ', req.params.userId);
-  console.log('line 36', req.body.searchQuery)
-  let searchFriend = req.params.userId;
+  // console.log('line 35 friendList controller userId: ', req.params.userId);
+  // console.log('line 36', req.body.searchQuery)
+  let searchFriend = req.body.searchQuery;
   console.log(searchFriend, 'line 38')
   axios.get(`${process.env.MONGODB_SERVER}/friendList`, { params: { userId: searchFriend } })
     .then((result) => {
@@ -32,13 +32,12 @@ exports.getFriendList = (req, res) => {
 
   }
 
+//MaryAnn
 exports.getLatestChat = (req, res) => {
   let userId = req.params.userId
-  getUserInfo(userId)
+  axios.get(`${process.env.MONGODB_SERVER}/getUserInfo`, { data: { userId: userId} })
   .then( (userInfo) => {
-    const friends = userInfo.friends;
-
-    //getAll is an option
+    const friends = userInfo.data.friends;
     return Promise.all(friends.map( (friend )=> {
       return getConversation(userId, friend)
     }))
@@ -60,28 +59,28 @@ exports.getLatestChat = (req, res) => {
     });
 }
 
+//MaryAnn
 function getConversation(userOne, userTwo) {
-
   return axios.get(`${process.env.MONGODB_SERVER}/conversations/${userOne}`)
     .then((result) => {
       let conversationInfo = result.data.find( (conversation) => {
         return conversation.participants.includes(userTwo);
       });
-      console.log('got convervations: ', conversationInfo);
       return conversationInfo;
     })
 }
 
-function getUserInfo(userId) {
+// function getUserInfo(userId) {
 
-  return axios.get(`${process.env.MONGODB_SERVER}/friendList/${userId}`)
-    .then((result) => {
-      let friendInfo = result.data;
-      console.log('got friend info: ', friendInfo.friends);
-      return friendInfo;
-    })
-}
+//   return axios.get(`${process.env.MONGODB_SERVER}/friendList/${userId}`)
+//     .then((result) => {
+//       let friendInfo = result.data;
+//       console.log('got friend info: ', friendInfo.friends);
+//       return friendInfo;
+//     })
+// }
 
+//MaryAnn
 async function getFriendProfileIcon(friendName) {
   const friendInfo = ({
     friendName: 'tivo',
