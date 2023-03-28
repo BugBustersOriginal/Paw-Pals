@@ -22,21 +22,17 @@ const FriendTile = ( {conversation, userId, userInfo} ) => {
   }
 
   return (
-    <div className="friend-tile-container">
+    <div className="friend-tile-container" onClick={handleClick}>
       <img className="user-photo-thumbnail" src={conversation.friend.thumbnailUrl}/>
-      <div className="friend-tile-username" onClick={handleClick}>{conversation.friend.userId}</div>
-      <div>{conversation.messages? conversation.messages[conversation.messages.length-1].content : 'no messages yet'}</div>
-      <div>{conversation.messages? conversation.messages[conversation.messages.length-1].createdAt : ''}</div>
+      <div>
+        <div className="name-timestamp space-between">
+          <div>{conversation.friend.userId}</div>
+          <div>{conversation.messages? conversation.messages[conversation.messages.length-1].createdAt : ''}</div>
+        </div>
+        <div grow row center>{conversation.messages? conversation.messages[conversation.messages.length-1].content : 'no messages yet'}</div>
+    </div>
     </div>
   )
-  // return (
-  //   <div className="friend-tile-container">
-  //     <img className="user-photo-thumbnail" src="https://pbs.twimg.com/profile_images/874661809139073025/X8yzIhNy_400x400.jpg/"/>
-  //     <div className="friend-tile-username" onClick={handleClick}>{friend.friend}</div>
-  //     <div>{friend.messages? friend.messages[friend.messages.length-1].content : 'no messages yet'}</div>
-  //     <div>{friend.messages? friend.messages[friend.messages.length-1].createdAt : ''}</div>
-  //   </div>
-  // )
 }
 
 export default FriendTile;
