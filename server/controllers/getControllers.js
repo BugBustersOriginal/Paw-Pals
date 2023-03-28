@@ -35,22 +35,31 @@ exports.getFriendList = (req, res) => {
 //MaryAnn
 exports.getLatestChat = (req, res) => {
   let userId = req.params.userId
-  axios.get(`${process.env.MONGODB_SERVER}/getUserInfo`, { data: { userId: userId} })
+  getUserInfo(userId)
   .then( (userInfo) => {
-    const friends = userInfo.data.friends;
-    return Promise.all(friends.map( (friend )=> {
-      return getConversation(userId, friend)
-    }))
-    .then( (conversations) => {
+    const friends = userInfo.friends;
+    return Promise.all([
+      Promise.all(friends.map( (friend )=> {
+        return getConversation(userId, friend)
+      })),
+      Promise.all(friends.map( (friend )=> {
+        return getUserInfo(friend)
+      }))
+    ])
+    .then( ([conversations, friendsInfo]) => {
+      // const conversations = promises[0];
+      // const friendsInfo = promises[1];
+
       return conversations.map( (conversation, i) => {
         return {
-          friend: friends[i],
+          friend: friendsInfo[i],
           messages: conversation?.messages
         }
       })
     })
   })
   .then( (conversations) => {
+    console.log(conversations, 'line 62 getControllers')
     res.status(200).send(conversations)
   })
     .catch((err) => {
@@ -70,15 +79,16 @@ function getConversation(userOne, userTwo) {
     })
 }
 
-// function getUserInfo(userId) {
+//MaryAnn
+function getUserInfo(userId) {
 
-//   return axios.get(`${process.env.MONGODB_SERVER}/friendList/${userId}`)
-//     .then((result) => {
-//       let friendInfo = result.data;
-//       console.log('got friend info: ', friendInfo.friends);
-//       return friendInfo;
-//     })
-// }
+  return axios.get(`${process.env.MONGODB_SERVER}/getUserInfo`, { data: { userId: userId} })
+    .then((result) => {
+      let friendInfo = result.data;
+      console.log('got friend info: ', friendInfo.friends);
+      return friendInfo;
+    })
+}
 
 //MaryAnn
 async function getFriendProfileIcon(friendName) {
