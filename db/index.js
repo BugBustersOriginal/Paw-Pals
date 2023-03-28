@@ -40,6 +40,8 @@ let friendListSchema = new mongoose.Schema({
   sentRequest: []
 })
 
+
+
 let Message = mongoose.model('Messages', messagesSchema);
 let Conversation = mongoose.model('Conversations', conversationsSchema);
 let FriendList = mongoose.model('FriendList', friendListSchema);
