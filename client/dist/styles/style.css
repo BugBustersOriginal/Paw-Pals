@@ -55,10 +55,14 @@
 .friend-tile-container {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: row;
   border: 1px solid;
   border-color: black;
-  background-color: rgb(190, 187, 187);
+  width: 80%;
+}
+
+.friend-tile-container > img {
+  margin: 1em .5em 1em .5em;
 }
 
 .friend-tile-username {
