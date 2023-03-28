@@ -97,6 +97,8 @@ app.post('/retrieveFriends', getControllers.getFriendList);
 
 app.post('/acceptRequest', postControllers.acceptRequest);
 
+app.post('/dismissNotification', postControllers.dismissNotification);
+
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 })

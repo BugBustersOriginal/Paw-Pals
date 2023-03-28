@@ -139,7 +139,7 @@ export function App()  {
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
             setPendingRequests(userInfo.sentRequest);
-            setIncomingRequests(userInfo.incomingRequests);
+            setIncomingRequests(userInfo.incomingNotifications);
           })
 
       })
@@ -159,7 +159,7 @@ export function App()  {
       <img hidden={hide} className={`logo-${theme}`} src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
       <div className='notification-bar' hidden={!hide}>
       <button onClick={(e) => handleDevClick(e)}>Notifications</button>
-          {incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
+          {/* {incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null} */}
       </div>
 
       <Routes>
