@@ -19,8 +19,10 @@ export function App()  {
   let history = createBrowserHistory();
   const [hide, setHidden] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
   const [userId, setUserId] =useState('');
   const [userFriends, setUserFriends] = useState([]);
+  const [friendsLocation, setFriendsLocation] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [userRealId, setUserRealId] = useState({});
@@ -122,7 +124,7 @@ export function App()  {
         axios.get('/getUserInfo', {params: {userId: user} })
           .then((result) => {
             let userInfo = result.data;
-            setUserId(userInfo.userId);
+            userInfo.location = userInfo.location.slice(-5);
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
             setPendingRequests(userInfo.sentRequest);
@@ -177,7 +179,7 @@ export function App()  {
         <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
         <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
         <Route   path="/register"  element= {<Register />}  />
-        <Route   path="/map"  element= {<Map userInfo={userRealId} userFriends={userFriends} />}  />
+        <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  />
         <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
