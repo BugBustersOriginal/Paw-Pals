@@ -140,25 +140,27 @@ export function App()  {
 
   //this is for page refresh set to every 5 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      console.log('refresh userId: ', userId);
-      axios.get('/getUserInfo', {params: {userId: userId} })
-          .then((result) => {
-            console.log('page refreshed');
-            let userInfo = result.data;
+    if (userId) {
 
-            setUserInfo(userInfo);
-            setUserFriends(userInfo.friends);
-            setPendingRequests(userInfo.sentRequest);
-            setIncomingRequests(userInfo.incomingNotifications);
-          })
-          .catch((err) => {
-            console.error(err);
-          })
-      }, 5000)
+      const interval = setInterval(() => {
+        axios.get('/getUserInfo', {params: {userId: userId} })
+            .then((result) => {
+              // console.log('data refreshed');
+              let userInfo = result.data;
 
-      return () => clearInterval(interval);
-    }, [userId]);
+              setUserInfo(userInfo);
+              setUserFriends(userInfo.friends);
+              setPendingRequests(userInfo.sentRequest);
+              setIncomingRequests(userInfo.incomingNotifications);
+            })
+            .catch((err) => {
+              console.error(err);
+            })
+        }, 5000)
+
+        return () => clearInterval(interval);
+    }
+  }, [userId]);
 
 
   return (
