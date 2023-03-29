@@ -55,27 +55,13 @@
 .friend-tile-container {
   display: flex;
   flex-direction: row;
-  flex-wrap: row;
   border: 1px solid;
   border-color: black;
-  width: 80%;
+  width: 100%;
 }
-
-.friend-tile-container > img {
-  margin: 1em .5em 1em .5em;
-}
-
-.friend-tile-username {
-
-}
-
-.friend-tile-timestamp {
-
-
-}
-
-.friend-tile-message {
-
+.name-timestamp {
+  display: flex;
+  justify-content: space-between;
 }
 
 .arrow {
