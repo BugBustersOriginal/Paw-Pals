@@ -82,7 +82,7 @@ const dismissNotification = (friendName) => {
 }
 
 useEffect(() => {
-  // props.notificationView()
+  props.notificationView()
   getFriendInfo(incomingRequests);
 
 },[incomingRequests]);

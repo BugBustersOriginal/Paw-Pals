@@ -24,6 +24,7 @@ export function App()  {
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [userRealId, setUserRealId] = useState({});
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [notificationBadge, setNotificationBadge] = useState(true);
 
   //toggles darkmode
   const toggleTheme = () => {
@@ -80,10 +81,9 @@ export function App()  {
        setUserRealId(userFromProsgres); //kona
   };
   //sample userId data to pass down to other components (useState)
-  // let userId = 'batman';
-  let profileIcon = 'profileIcon';
-  let userName = '@testUserName'
-
+  const notificationView = () => {
+    setNotificationBadge(false);
+  }
 
   // const getUserInfo = (user) => {
   //   axios.get('/getUserInfo', {params: {userId: userId} })
@@ -147,7 +147,7 @@ export function App()  {
         console.error(err);
       })
       // getUserInfo(userId);
-
+      setNotificationBadge(true);
       hideLogoNav(location.pathname);
    }, [location,theme]);
 
@@ -159,7 +159,7 @@ export function App()  {
       <img hidden={hide} className={`logo-${theme}`} src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
       <div className='notification-bar' hidden={!hide}>
       <button onClick={(e) => handleDevClick(e)}>Notifications</button>
-          {/* {incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null} */}
+          {incomingRequests.length && notificationBadge ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
       </div>
 
       <Routes>
@@ -171,7 +171,7 @@ export function App()  {
         <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
-        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} />} />
+        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={notificationView} />} />
       </Routes>
 
       <div className="devButtons" hidden={!hide}>

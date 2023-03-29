@@ -15,6 +15,10 @@ export function FriendRequest (props) {
     }
   })
 
+  useEffect(() => {
+
+  }, [requestSent])
+
   const handleFriendRequest = (event) => {
     //make an axios call to send a friend request
     let selectionObj = {
