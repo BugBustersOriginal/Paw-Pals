@@ -47,6 +47,10 @@ function Login({handleUserLogin}) {
 
   };
 
+  function handleForgotClick () {
+    navigate("/forgotpassword");
+  };
+
   function handleClick () {
     navigate("/register");
   };
@@ -61,11 +65,11 @@ function Login({handleUserLogin}) {
         <input type="password" placeholder="Password" id="password" name="password" onChange={handleInputChange} value={inputs.password|| ''}/>
         <button type="submit">Log In</button>
       </form>
-      <button className="google-logo">Continue with Google</button>
-      <button className="link-button forgot">Forgot Password</button>
+      {/*<button className="google-logo">Continue with Google</button>*/}
+      <button className="link-button forgot" onClick={handleForgotClick}>Forgot Password</button>
       <button className="link-button" onClick={handleClick} >Don't have an account? Register here</button>
       {/* if username exist, alert user to change a new username */}
-      {alerts !== '' ? <button>{alerts}</button>: null}
+      {alerts !== '' ? <span className="alert">{alerts}</span>: null}
     </div>
   );
 }

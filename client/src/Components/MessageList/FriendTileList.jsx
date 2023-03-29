@@ -5,21 +5,23 @@ import axios from 'axios'
 
 const FriendTileList = ( props ) => {
 
-  const [friends, setFriends] = useState([])
+  // const [friends, setFriends] = useState([])
+  const [conversations, setConversations] = useState([]);
 
-  //will use userId to retrieve chats with each friend from message server
+  //will use userId to retrieve conversations with each friend from message server
   useEffect(() => {
     axios.get('/latestChat/' + props.userId)
       .then((res) => {
-        console.log(res.data, 'line 34 FriendTileList')
-        setFriends(res.data)
+        console.log(res.data, 'line 15 FriendTileList')
+        setConversations(res.data)
       })
   }, [props.userId])
 
   return (
     <div>
       <Search userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId} pendingRequests={props.pendingRequests} />
-      {friends.map((friend) => <FriendTile friend={friend}/>)}
+      {conversations.map((conversation) => <FriendTile conversation={conversation} userId={props.userId} userInfo={props.userInfo}/>
+      )}
     </div>
   )
 }

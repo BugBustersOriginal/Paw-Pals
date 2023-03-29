@@ -130,5 +130,50 @@ const getAuthLogin = async (req, res) => {
   }
   res.send();
 }
-module.exports = {postSignUp, postLogIn, getLogOut, getAuthLogin};
+
+const forgetPassword = async (req, res) => {
+  //part1 way:
+  //suppose req.body = {username: "debrazhang", firstname: "debra", lastname:"zhang", newPassword: ""}
+  if (!req.body.username || !req.body.firstname || !req.body.lastname) {
+    res.send('input should have username, firstname, and lastname, render forgetPassword page');
+    return;
+  }
+  let findUser = await getUser({username: req.body.username});
+  if (findUser === null) {
+    //user not exist in db users, redirect to signup page
+    res.send('new user, redirect to signup page');
+  } else {
+    //check firstname and lastname is correct
+    if (findUser.firstname === req.body.firstname && findUser.lastname === req.body.lastname) {
+      //vertify success
+      if (!req.body.newPassword) {
+        res.send('input should have newPassword, render forgetPassword page')
+        return;
+      }
+      await updatePassward(findUser.id, req.body.newPassword);
+      console.log('set new password success');
+      res.send('set new password success, render login page');
+
+    } else {
+      res.send('verity wrong, render login page');
+   }
+
+
+  }
+};
+
+const changePassword = async (req, res) => {
+  //part1 way:
+  //suppose req.body = {username: "debrazhang", newPassword: ""}
+  let findUser = await getUser({username: req.body.username});
+  if (!req.body.newPassword) {
+    res.send('input should have newPassword, render forgetPassword page')
+    return;
+  }
+  await updatePassward(findUser.id, req.body.newPassword);
+  console.log('set new password success');
+  res.send('set new password success, render login page');
+};
+
+module.exports = {postSignUp, postLogIn, getLogOut, getAuthLogin, forgetPassword, changePassword};
 
