@@ -35,13 +35,13 @@ export function NotificationTile (props) {
       {!accepted && requestTile ?  <div className="notification-tile">
         <img className="user-photo-thumbnail" src={props.thumbnailUrl}/>
       <p>@{props.userId} sent you a friend request!</p>
-      <button onClick={() => handleAccept(props.userId)}>Accept</button>
+      <button className="notification-button" onClick={() => handleAccept(props.userId)}>Accept</button>
     </div> : null}
 
     {savedTile && !dismiss ? <div className="notification-tile">
       <img className="user-photo-thumbnail" src={props.thumbnailUrl}/>
       <p>@{props.userId} saved your photo!</p>
-      <button onClick={() => handleDismiss(props.userId)} >Dismiss</button>
+      <button className="notification-button" onClick={() => handleDismiss(props.userId)} >Dismiss</button>
       </div> : null}
     </div>
   )
