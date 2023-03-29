@@ -6,7 +6,11 @@ const FriendTile = ( {conversation, userId, userInfo} ) => {
   // console.log(userId, 'line 6, FriendTile')
   // console.log(conversation.messages, 'line 7')
   // console.log(userInfo.thumbnailUrl, 'line 8')
-  console.log(conversation)
+
+  if (conversation.messages === undefined) {
+    conversation.messages = []
+  }
+  console.log(conversation.messages, 'line 9 Friendtile')
 
   const navigate = useNavigate();
 
@@ -27,9 +31,9 @@ const FriendTile = ( {conversation, userId, userInfo} ) => {
       <div>
         <div className="name-timestamp space-between">
           <div>{conversation.friend.userId}</div>
-          <div>{conversation.messages? conversation.messages[conversation.messages.length-1].createdAt : ''}</div>
+          <div>{conversation.messages.length > 0? conversation.messages[conversation.messages.length-1].createdAt : ''}</div>
         </div>
-        <div grow row center>{conversation.messages? conversation.messages[conversation.messages.length-1].content : 'no messages yet'}</div>
+        <div>{conversation.messages.length > 0? conversation.messages[conversation.messages.length-1].content : 'no messages yet'}</div>
     </div>
     </div>
   )

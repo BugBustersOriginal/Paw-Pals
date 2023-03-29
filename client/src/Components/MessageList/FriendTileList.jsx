@@ -12,7 +12,7 @@ const FriendTileList = ( props ) => {
   useEffect(() => {
     axios.get('/latestChat/' + props.userId)
       .then((res) => {
-        console.log(res.data, 'line 34 FriendTileList')
+        console.log(res.data, 'line 15 FriendTileList')
         setConversations(res.data)
       })
   }, [props.userId])
@@ -20,7 +20,8 @@ const FriendTileList = ( props ) => {
   return (
     <div>
       <Search userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId} pendingRequests={props.pendingRequests} />
-      {conversations.map((conversation) => <FriendTile conversation={conversation} userId={props.userId} userInfo={props.userInfo}/>)}
+      {conversations.map((conversation) => <FriendTile conversation={conversation} userId={props.userId} userInfo={props.userInfo}/>
+      )}
     </div>
   )
 }
