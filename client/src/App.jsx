@@ -88,6 +88,39 @@ export function App()  {
   const notificationView = () => {
     setNotificationBadge(false);
   }
+  useEffect(() => {
+    if (userInfo) {
+      axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
+      .then((result) => {
+        userInfo.location = result.data.results[0].geometry.location
+        setUserLocation(userInfo)
+      })
+      .catch((err) => {
+          console.error('error getting location', err);
+        })
+      }
+  }, [userInfo])
+
+  useEffect(() => {
+    let temp = []
+    userFriends.forEach((friend, idx) => {
+      axios.get('/getUserInfo', {params: {userId: friend} })
+      .then((result) => {
+        // console.log('result', result.data)
+        let friendInfo = result.data;
+        axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
+        .then((result) => {
+          temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
+          // setFriendsLocation(current => [...current, friend])
+          setFriendsLocation(temp)
+          console.log(friendsLocation)
+        })
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+    })
+  }, [userFriends])
 
 
   //runs on document change
@@ -125,6 +158,7 @@ export function App()  {
           .then((result) => {
             let userInfo = result.data;
             userInfo.location = userInfo.location.slice(-5);
+            setUserId(userInfo.userId);
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
             setPendingRequests(userInfo.sentRequest);
