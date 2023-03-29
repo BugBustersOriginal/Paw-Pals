@@ -202,7 +202,7 @@ export function App()  {
           {/* <Route   path="/"  element= {<Login />}  /> */}
         <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
         <Route   path="/register"  element= {<Register />}  />
-        {/* <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  /> */}
+        <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  />
         <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />

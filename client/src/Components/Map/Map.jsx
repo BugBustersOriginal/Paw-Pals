@@ -17,19 +17,21 @@ export function Map({ userInfo, userFriends }) {
 
   const handleChange = (e) => {
     const results = userFriends.filter(friend => {
-      if (e.target.value === "") return friends
+      if (e.target.value === "") return userFriends
       return friend.userId.toLowerCase().includes(e.target.value.toLowerCase())
     })
     setstate({
       query: e.target.value,
       list: results
     })
-    setScreenCenter(state.list[0].location)
+    if (state.list[0]) {
+      setScreenCenter(state.list[0].location)
+    }
   }
 
-  useEffect(() => {
-    setScreenCenter(userInfo.location)
-  }, [userInfo])
+  // useEffect(() => {
+  //   setScreenCenter(userInfo.location)
+  // }, [userInfo])
 
   if (!isLoaded) return <div>Loading...</div>
   return (
