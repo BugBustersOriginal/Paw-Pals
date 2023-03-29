@@ -27,9 +27,9 @@ export function Map({ userInfo, userFriends }) {
     setScreenCenter(state.list[0].location)
   }
 
-    useEffect(() => {
-      setScreenCenter(userInfo.location)
-    }, [userInfo])
+  useEffect(() => {
+    setScreenCenter(userInfo.location)
+  }, [userInfo])
 
   if (!isLoaded) return <div>Loading...</div>
   return (
@@ -53,15 +53,6 @@ export function Map({ userInfo, userFriends }) {
 
 function MapView({ user, friends, screenCenter, setScreenCenter }) {
   const [selectedCenter, setSelectedCenter] = useState(null);
-
-  useEffect(() => {
-    console.log('friends in MapView:', friends);
-  }, [friends])
-
-  useEffect(() => {
-    console.log('User.location in MapView:', user.location);
-  }, [user])
-
 
   return (
     <>
