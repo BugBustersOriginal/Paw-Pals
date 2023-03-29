@@ -29,9 +29,9 @@ export function Map({ userInfo, userFriends }) {
     }
   }
 
-  // useEffect(() => {
-  //   setScreenCenter(userInfo.location)
-  // }, [userInfo])
+  useEffect(() => {
+    setScreenCenter(userInfo.location)
+  }, [userInfo])
 
   if (!isLoaded) return <div>Loading...</div>
   return (
