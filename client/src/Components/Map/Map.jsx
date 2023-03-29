@@ -5,71 +5,40 @@ import axios from 'axios';
 
 export function Map({ userInfo, userFriends }) {
   const [screenCenter, setScreenCenter] = useState({lat: 0, lng: 0});
-  const [friendsData, setFriends] = useState([
-    {
-      userId: 'Andy',
-      location: {lat: 44, lng: -79.5},
-      thumbnailUrl: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485565/pngwing.com_4_hssthb.png'
-    },
-    {
-      userId: 'Tony',
-      location: {lat: 44, lng: -79},
-      thumbnailUrl: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485700/pngwing.com_3_ja6dw9.png'
-    }
-  ]);
-
-  console.log('userInfo:', userInfo)
-  console.log('userFriends:', userFriends)
 
   useEffect(() => {
-    axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.zipcode || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
-    .then((result) => {
-      // console.log('user lat/long:', result.data.results[0].geometry.location)
-      userInfo.location = result.data.results[0].geometry.location
-      setScreenCenter(userInfo.location)
-    })
-    .catch((err) => {
-      console.error('error getting location', err);
-    })
+    console.log('userInfo in maps:', userInfo)
+    if (userInfo) {
+      axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
+      .then((result) => {
+        // console.log('user lat/long:', result.data.results[0].geometry.location)
+        userInfo.location = result.data.results[0].geometry.location
+        console.log('userInfo in maps after coordinates:', userInfo)
+        setScreenCenter(userInfo.location)
+      })
+      .catch((err) => {
+          console.error('error getting location', err);
+        })
+      }
   }, [userInfo])
 
   useEffect(() => {
-    userFriends.forEach((user, idx) => {
-      axios.get('/getUserInfo', {params: {userId: user} })
+    userFriends.forEach((friend, idx) => {
+      axios.get('/getUserInfo', {params: {userId: friend} })
       .then((result) => {
-        console.log('result', result)
-        let userInfo = result.data;
-        // userFriends[idx] = {userId: userInfo.userId, thumbnailUrl: userInfo.thumbnailUrl, zipcode: userInfo.zipcode || 90680 + idx + 1}
-        userFriends[idx] = {userId: userInfo.userId, thumbnailUrl: userInfo.thumbnailUrl, zipcode: 90680 + idx + 1 }
-        // setFriends({userId: userInfo.userId, thumbnailUrl: userInfo.thumbnailUrl, zipcode: userInfo.zipcode})
-        console.log('userFriends', userFriends)
+        console.log('result', result.data)
+        let friendInfo = result.data;
+        axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
+        .then((result) => {
+          userFriends[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
+          console.log('userFriends', userFriends)
+        })
       })
       .catch((err) => {
         console.error(err);
       })
-      setFriends({userId: user})
     })
   }, [userFriends])
-
-
-  let user = {
-    userId: 'Thomas',
-    location: {lat: 44, lng: -80},
-    thumbnailUrl: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485565/pngwing.com_1_ka3o33.png'
-  }
-
-  let friends = [
-    {
-      userId: 'Andy',
-      location: {lat: 44, lng: -79.5},
-      thumbnailUrl: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485565/pngwing.com_4_hssthb.png'
-    },
-    {
-      userId: 'Tony',
-      location: {lat: 44, lng: -79},
-      thumbnailUrl: 'https://res.cloudinary.com/ddu3bzkvr/image/upload/v1678485700/pngwing.com_3_ja6dw9.png'
-    }
-  ]
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1le7LEHbnuufJ03zPAF2Mh1xlmszRo4U" // restricted key
@@ -81,7 +50,7 @@ export function Map({ userInfo, userFriends }) {
   })
 
   const handleChange = (e) => {
-    const results = friends.filter(friend => {
+    const results = userFriends.filter(friend => {
       if (e.target.value === "") return friends
       return friend.userId.toLowerCase().includes(e.target.value.toLowerCase())
     })
@@ -97,29 +66,34 @@ export function Map({ userInfo, userFriends }) {
     <>
     <h1>Map</h1>
 
-    {/* search bar */}
     <form>
       <input type="search" value={state.query} onChange={handleChange} />
     </form>
 
-    {/* search result */}
       <ul>
         {(state.query === '' ? "" : state.list.map(friend => {
           return <li key={friend.userId}>{friend.userId}</li>
         }))}
       </ul>
 
-      <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={userInfo} friends={friendsData}/>
+      <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={userInfo}/>
+      {/* <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={userInfo} friends={friendsData}/> */}
       {/* <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={user} friends={friends}/> */}
       {/* <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={userInfo} friends={userFriends}/> */}
     </>
   )
 }
 
-function MapView({ user, friends, screenCenter, setScreenCenter }) {
+function MapView({ user, screenCenter, setScreenCenter }) {
+// function MapView({ user, friends, screenCenter, setScreenCenter }) {
 
   const [selectedCenter, setSelectedCenter] = useState(null);
-  console.log('friends:', friends)
+
+  useEffect(() => {
+    console.log('selectedCenter:', selectedCenter);
+  }, [user])
+
+  console.log('User in MapView:', user);
   return (
     <>
       <GoogleMap
@@ -143,7 +117,7 @@ function MapView({ user, friends, screenCenter, setScreenCenter }) {
         />
 
         {/* generate friends' location */}
-        {friends.map((friend, idx) =>
+        {/* {friends.map((friend, idx) =>
           <Marker key={idx}
           position={friend.location}
           icon={{
@@ -155,7 +129,7 @@ function MapView({ user, friends, screenCenter, setScreenCenter }) {
             setSelectedCenter(friend);
           }}
         />
-        )}
+        )} */}
         {selectedCenter && (
    <InfoWindow
       onCloseClick={() => {

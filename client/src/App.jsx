@@ -135,7 +135,7 @@ export function App()  {
           .then((result) => {
             console.log('get user info from mongodb', result.data);
             let userInfo = result.data;
-            setUserId(userInfo.userId);
+            userInfo.location = userInfo.location.slice(-5);
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
             setPendingRequests(userInfo.sentRequest);
@@ -167,7 +167,7 @@ export function App()  {
           {/* <Route   path="/"  element= {<Login />}  /> */}
         <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
         <Route   path="/register"  element= {<Register />}  />
-        <Route   path="/map"  element= {<Map userInfo={userRealId} userFriends={userFriends} />}  />
+        <Route   path="/map"  element= {<Map userInfo={userInfo} userFriends={userFriends} />}  />
         <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
