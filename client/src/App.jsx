@@ -11,6 +11,7 @@ import FriendTile from './Components/MessageList/FriendTile.jsx';
 import Login from './Components/Login-Register/Login.jsx';
 import Register from './Components/Login-Register/Register.jsx';
 import Profile from './Components/Profile/Profile.jsx';
+import ForgotPassword from './Components/Login-Register/ForgotPassword.jsx';
 
 export function App()  {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ export function App()  {
 
   //handles visibility of nav and logo elements
   function hideLogoNav (pathname) {
-    if(['/', '/login', '/register'].includes(pathname)) {
+    if(['/', '/login', '/register', '/forgotpassword'].includes(pathname)) {
       setHidden(false);
     } else {
       setHidden(true);
@@ -166,6 +167,7 @@ export function App()  {
         <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
           {/* <Route   path="/"  element= {<Login />}  /> */}
         <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
+        <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
         <Route   path="/register"  element= {<Register />}  />
         <Route   path="/map"  element= {<Map userInfo={userRealId} userFriends={userFriends} />}  />
         <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
