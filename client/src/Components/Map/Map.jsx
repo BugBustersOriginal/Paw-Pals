@@ -6,40 +6,6 @@ import axios from 'axios';
 export function Map({ userInfo, userFriends }) {
   const [screenCenter, setScreenCenter] = useState({lat: 0, lng: 0});
 
-  useEffect(() => {
-    console.log('userInfo in maps:', userInfo)
-    if (userInfo) {
-      axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
-      .then((result) => {
-        // console.log('user lat/long:', result.data.results[0].geometry.location)
-        userInfo.location = result.data.results[0].geometry.location
-        console.log('userInfo in maps after coordinates:', userInfo)
-        setScreenCenter(userInfo.location)
-      })
-      .catch((err) => {
-          console.error('error getting location', err);
-        })
-      }
-  }, [userInfo])
-
-  useEffect(() => {
-    userFriends.forEach((friend, idx) => {
-      axios.get('/getUserInfo', {params: {userId: friend} })
-      .then((result) => {
-        console.log('result', result.data)
-        let friendInfo = result.data;
-        axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
-        .then((result) => {
-          userFriends[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
-          console.log('userFriends', userFriends)
-        })
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-    })
-  }, [userFriends])
-
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1le7LEHbnuufJ03zPAF2Mh1xlmszRo4U" // restricted key
   });
@@ -61,6 +27,10 @@ export function Map({ userInfo, userFriends }) {
     setScreenCenter(state.list[0].location)
   }
 
+    useEffect(() => {
+      setScreenCenter(userInfo.location)
+    }, [userInfo])
+
   if (!isLoaded) return <div>Loading...</div>
   return (
     <>
@@ -76,24 +46,23 @@ export function Map({ userInfo, userFriends }) {
         }))}
       </ul>
 
-      <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={userInfo}/>
-      {/* <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={userInfo} friends={friendsData}/> */}
-      {/* <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={user} friends={friends}/> */}
-      {/* <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={userInfo} friends={userFriends}/> */}
+      <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={userInfo} friends={userFriends} />
     </>
   )
 }
 
-function MapView({ user, screenCenter, setScreenCenter }) {
-// function MapView({ user, friends, screenCenter, setScreenCenter }) {
-
+function MapView({ user, friends, screenCenter, setScreenCenter }) {
   const [selectedCenter, setSelectedCenter] = useState(null);
 
   useEffect(() => {
-    console.log('selectedCenter:', selectedCenter);
+    console.log('friends in MapView:', friends);
+  }, [friends])
+
+  useEffect(() => {
+    console.log('User.location in MapView:', user.location);
   }, [user])
 
-  console.log('User in MapView:', user);
+
   return (
     <>
       <GoogleMap
@@ -102,22 +71,22 @@ function MapView({ user, screenCenter, setScreenCenter }) {
       mapContainerClassName="map-container"
       >
 
-        {/* generate user's location */}
-        <Marker
-          position={user.location}
-          icon={{
-            url: user.thumbnailUrl,
-            scaledSize: new google.maps.Size(90, 90)
-          }}
-          // label={user.userId}
-          onClick={() => {
-            setScreenCenter(user.location);
-            setSelectedCenter(user);
-          }}
-        />
+      {/* generate user's location */}
+      <Marker
+        position={user.location}
+        icon={{
+          url: user.thumbnailUrl,
+          scaledSize: new google.maps.Size(90, 90)
+        }}
+        // label={user.userId}
+        onClick={() => {
+          setScreenCenter(user.location);
+          setSelectedCenter(user);
+        }}
+      />
 
         {/* generate friends' location */}
-        {/* {friends.map((friend, idx) =>
+        {friends.map((friend, idx) =>
           <Marker key={idx}
           position={friend.location}
           icon={{
@@ -129,7 +98,8 @@ function MapView({ user, screenCenter, setScreenCenter }) {
             setSelectedCenter(friend);
           }}
         />
-        )} */}
+        )}
+
         {selectedCenter && (
    <InfoWindow
       onCloseClick={() => {
