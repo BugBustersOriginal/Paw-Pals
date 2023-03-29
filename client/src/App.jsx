@@ -81,24 +81,11 @@ export function App()  {
       let userFromProsgres = {userId: data.username};
        setUserRealId(userFromProsgres); //kona
   };
-  //sample userId data to pass down to other components (useState)
+
+  //clears notification badge on notification page
   const notificationView = () => {
     setNotificationBadge(false);
   }
-
-  // const getUserInfo = (user) => {
-  //   axios.get('/getUserInfo', {params: {userId: userId} })
-  //   .then((result) => {
-  //     let userInfo = result.data;
-  //     setUserInfo(userInfo);
-  //     setUserFriends(userInfo.friends);
-  //     setPendingRequests(userInfo.sentRequest);
-  //     setIncomingRequests(userInfo.incomingRequests);
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //   })
-  // }
 
 
   //runs on document change
@@ -134,7 +121,6 @@ export function App()  {
         console.log('check if user login success ', user);
         axios.get('/getUserInfo', {params: {userId: user} })
           .then((result) => {
-            // console.log('get user info from mongodb', result.data);
             let userInfo = result.data;
             setUserId(userInfo.userId);
             setUserInfo(userInfo);
@@ -147,12 +133,32 @@ export function App()  {
       .catch((err) => {
         console.error(err);
       })
-      // getUserInfo(userId);
       setNotificationBadge(true);
       hideLogoNav(location.pathname);
    }, [location,theme]);
 
 
+  //this is for page refresh set to every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log('refresh userId: ', userId);
+      axios.get('/getUserInfo', {params: {userId: userId} })
+          .then((result) => {
+            console.log('page refreshed');
+            let userInfo = result.data;
+
+            setUserInfo(userInfo);
+            setUserFriends(userInfo.friends);
+            setPendingRequests(userInfo.sentRequest);
+            setIncomingRequests(userInfo.incomingNotifications);
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+      }, 5000)
+
+      return () => clearInterval(interval);
+    }, [userId]);
 
 
   return (
