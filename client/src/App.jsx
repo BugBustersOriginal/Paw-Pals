@@ -11,7 +11,6 @@ import FriendTile from './Components/MessageList/FriendTile.jsx';
 import Login from './Components/Login-Register/Login.jsx';
 import Register from './Components/Login-Register/Register.jsx';
 import Profile from './Components/Profile/Profile.jsx';
-import ForgotPassword from './Components/Login-Register/ForgotPassword.jsx';
 
 export function App()  {
   const navigate = useNavigate();
@@ -19,15 +18,12 @@ export function App()  {
   let history = createBrowserHistory();
   const [hide, setHidden] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const [userLocation, setUserLocation] = useState(null);
   const [userId, setUserId] =useState('');
   const [userFriends, setUserFriends] = useState([]);
-  const [friendsLocation, setFriendsLocation] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [userRealId, setUserRealId] = useState({});
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-  const [notificationBadge, setNotificationBadge] = useState(true);
 
   //toggles darkmode
   const toggleTheme = () => {
@@ -68,7 +64,7 @@ export function App()  {
 
   //handles visibility of nav and logo elements
   function hideLogoNav (pathname) {
-    if(['/', '/login', '/register', '/forgotpassword'].includes(pathname)) {
+    if(['/', '/login', '/register'].includes(pathname)) {
       setHidden(false);
     } else {
       setHidden(true);
@@ -83,45 +79,25 @@ export function App()  {
       let userFromProsgres = {userId: data.username};
        setUserRealId(userFromProsgres); //kona
   };
+  //sample userId data to pass down to other components (useState)
+  // let userId = 'batman';
+  let profileIcon = 'profileIcon';
+  let userName = '@testUserName'
 
-  //clears notification badge on notification page
-  const notificationView = () => {
-    setNotificationBadge(false);
-  }
-  useEffect(() => {
-    if (userInfo) {
-      axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
-      .then((result) => {
-        userInfo.location = result.data.results[0].geometry.location
-        setUserLocation(userInfo)
-      })
-      .catch((err) => {
-          console.error('error getting location', err);
-        })
-      }
-  }, [userInfo])
 
-  useEffect(() => {
-    let temp = []
-    userFriends.forEach((friend, idx) => {
-      axios.get('/getUserInfo', {params: {userId: friend} })
-      .then((result) => {
-        // console.log('result', result.data)
-        let friendInfo = result.data;
-        console.log(friendInfo, 'line 111')
-        axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
-        .then((result) => {
-          temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
-          // setFriendsLocation(current => [...current, friend])
-          setFriendsLocation(temp)
-          // console.log(friendsLocation)
-        })
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-    })
-  }, [userFriends])
+  // const getUserInfo = (user) => {
+  //   axios.get('/getUserInfo', {params: {userId: userId} })
+  //   .then((result) => {
+  //     let userInfo = result.data;
+  //     setUserInfo(userInfo);
+  //     setUserFriends(userInfo.friends);
+  //     setPendingRequests(userInfo.sentRequest);
+  //     setIncomingRequests(userInfo.incomingRequests);
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   })
+  // }
 
 
   //runs on document change
@@ -157,10 +133,8 @@ export function App()  {
         console.log('check if user login success ', user);
         axios.get('/getUserInfo', {params: {userId: user} })
           .then((result) => {
+            console.log('get user info from mongodb', result.data);
             let userInfo = result.data;
-            console.log(userInfo, 'line 160')
-            userInfo.location = '90066'
-            // userInfo.location = userInfo.location.slice(-5);
             setUserId(userInfo.userId);
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
@@ -172,34 +146,12 @@ export function App()  {
       .catch((err) => {
         console.error(err);
       })
-      setNotificationBadge(true);
+      // getUserInfo(userId);
+
       hideLogoNav(location.pathname);
    }, [location,theme]);
 
 
-  //this is for page refresh set to every 5 seconds
-  useEffect(() => {
-    if (userId) {
-
-      const interval = setInterval(() => {
-        axios.get('/getUserInfo', {params: {userId: userId} })
-            .then((result) => {
-              // console.log('data refreshed');
-              let userInfo = result.data;
-
-              setUserInfo(userInfo);
-              setUserFriends(userInfo.friends);
-              setPendingRequests(userInfo.sentRequest);
-              setIncomingRequests(userInfo.incomingNotifications);
-            })
-            .catch((err) => {
-              console.error(err);
-            })
-        }, 5000)
-
-        return () => clearInterval(interval);
-    }
-  }, [userId]);
 
 
   return (
@@ -207,20 +159,19 @@ export function App()  {
       <img hidden={hide} className={`logo-${theme}`} src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
       <div className='notification-bar' hidden={!hide}>
       <button onClick={(e) => handleDevClick(e)}>Notifications</button>
-          {incomingRequests.length && notificationBadge ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
+          {/* {incomingRequests.length ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null} */}
       </div>
 
       <Routes>
-        <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} incomingRequests={incomingRequests} pendingRequests={pendingRequests}/>}  />
+        <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
           {/* <Route   path="/"  element= {<Login />}  /> */}
         <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
-        <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
         <Route   path="/register"  element= {<Register />}  />
-        <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  />
+        <Route   path="/map"  element= {<Map userInfo={userRealId} userFriends={userFriends} />}  />
         <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
         <Route   path="/friendtile"  element= {<FriendTile />}  />
         <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
-        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={notificationView} />} />
+        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} />} />
       </Routes>
 
       <div className="devButtons" hidden={!hide}>
