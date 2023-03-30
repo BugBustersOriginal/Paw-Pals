@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
-
+import axios from 'axios';
 
 export default function DateSplitter (props) {
   function checkIfToday(date) {
@@ -10,6 +10,15 @@ export default function DateSplitter (props) {
       date.getDate() === todayDate.getDate()
     );
   }
+  useEffect(() => {
+    axios.post(`http://localhost:1234/test`, { viewed: true })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }, [])
   function formatDate(date) {
     if (checkIfToday(props.date)) {
       return 'Today'
@@ -21,9 +30,7 @@ export default function DateSplitter (props) {
   const formattedDate = formatDate(props.date);
   return (
     <div className="message-date-separator">
-      <div className="line"></div>
       <div className="date">{formattedDate}</div>
-      <div className="line"></div>
     </div>
   )
 }
