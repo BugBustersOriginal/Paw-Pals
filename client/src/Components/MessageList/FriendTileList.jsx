@@ -19,7 +19,7 @@ const FriendTileList = ( props ) => {
 
   return (
     <div>
-      <Search userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId} pendingRequests={props.pendingRequests} />
+      <Search userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId} incomingRequests={props.incomingRequests} pendingRequests={props.pendingRequests} />
       {conversations.map((conversation) => <FriendTile conversation={conversation} userId={props.userId} userInfo={props.userInfo}/>
       )}
     </div>

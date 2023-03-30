@@ -3,6 +3,7 @@ import axios from 'axios';
 import { NotificationTile } from './NotificationTile.jsx';
 
 export function Notifications (props) {
+  props.notificationView()
 
 const userId = props.userId;
 let incomingRequests = props.incomingRequests;

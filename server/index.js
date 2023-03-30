@@ -8,7 +8,7 @@ const path = require('path');
 const PORT = process.env.PORT;
 const getControllers = require('./controllers/getControllers.js');
 const postControllers = require('./controllers/postControllers.js');
-const {postSignUp, postLogIn, getLogOut, getAuthLogin} = require('./controllers/index.js');
+const {postSignUp, postLogIn, getLogOut, getAuthLogin, forgetPassword, changePassword} = require('./controllers/index.js');
 const {getRandomPhoto} = require('./lib/randomPhoto.js')
 const pgPool = require('../database/index.js');
 app.use(express.json());
@@ -58,6 +58,7 @@ const getAuth = (req, res, next) => {
   }
 };
 app.get('/login', getAuth, reRoute);
+app.get('/forgotpassword', getAuth, reRoute);
 app.get('/home', getAuth, reRoute);
 app.get('/map',getAuth, reRoute);
 app.get('/friendtile',getAuth, reRoute);
@@ -88,6 +89,9 @@ app.post('/sendFriendRequest', postControllers.sendFriendRequest);
 
 app.post('/conversations/:userId', getControllers.getConversations);
 
+app.post('/forgotpassword', forgetPassword);
+
+app.post('/changepassword', changePassword);
 
 app.post('/signup', postSignUp);
 app.post('/login',postLogIn);
