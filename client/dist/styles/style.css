@@ -14,7 +14,7 @@
   align-items: center;
   border: 1px solid;
   border-color: black;
-  width: 80%;
+  width: 100%;
 }
 
 .notification-tile {
@@ -55,23 +55,13 @@
 .friend-tile-container {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   border: 1px solid;
   border-color: black;
-  background-color: rgb(190, 187, 187);
+  width: 100%;
 }
-
-.friend-tile-username {
-
-}
-
-.friend-tile-timestamp {
-
-
-}
-
-.friend-tile-message {
-
+.name-timestamp {
+  display: flex;
+  justify-content: space-between;
 }
 
 .arrow {
@@ -82,7 +72,7 @@
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
   position: relative;
-  left: 30%;
+  left: 21%;
 }
 
 .map-container {
