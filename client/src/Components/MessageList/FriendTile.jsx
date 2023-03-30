@@ -2,18 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const FriendTile = ( {conversation, userId, userInfo} ) => {
-  // console.log(conversation.friend, 'line 5 conversation FriendTile')
-  // console.log(userId, 'line 6, FriendTile')
-  console.log(conversation.messages, 'line 7')
-  console.log(conversation.friend.userId, 'line 8')
-  // console.log(conversation, 'line 9')
 
   if (conversation.messages === undefined) {
     conversation.messages = []
   }
-  console.log(conversation.messages, 'line 14 Friendtile')
-  // console.log(conversation.messages[conversation.messages.length-1].content, 'line 14')
-  // console.log(conversation.messages[conversation.messages.length-1].createdAt, 'line 15')
 
   let formattedTime;
 
@@ -45,7 +37,6 @@ const FriendTile = ( {conversation, userId, userInfo} ) => {
           <div>{conversation.friend.userId}</div>
           <div>{formattedTime}</div>
         </div>
-        {/* <div>{getLastMessageContent(conversation)}</div> */}
         <div>{conversation.messages.length > 0 ? (
           conversation.messages[conversation.messages.length-1].type === 'image' ? (
             'I just sent you a photo!'
