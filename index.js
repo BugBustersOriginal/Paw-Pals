@@ -17,7 +17,7 @@ const crypto = require('crypto');
 
 /************************************************** */
 const {Conversation, Message, FriendList} = require('./db/index.js');
-
+const {locationString} = require('./serverHelper.js');
 
 /***** helper functions for debugging socker rooms */
 
@@ -51,13 +51,18 @@ app.get('/', (req, res) => {
 });
 
 // front end needs to make a newconversation if the conversation has not happened before
+<<<<<<< HEAD
 app.post("/test", async (req,res) => {
   console.log(`test came in!!!!`)
+=======
+app.post("/newConversation", async (req,res) => {
+//will provide list of participants (JSON body)
+//will need to determine if there is already a convo between these 2 participants
+//if yes, send that convo
+//if no, create new convo and send that convo
 })
 app.post("/openedImage/:id", async (req, res) => {
-  console.log(`req.params.id for opened image is equal to ${req.params.id}`)
-  const messageId = req.params.id;
-  console.log(`messageId is equal to ${messageId}`);
+  const imageId = req.params.id;
   try {
     const updatedMessage = await Message.findOneAndUpdate(
       { _id: messageId, type: 'image'},
@@ -67,7 +72,7 @@ app.post("/openedImage/:id", async (req, res) => {
     if (!updatedMessage) {
       return res.status(404).send({ error: 'Message not found or does not contain an image' });
     }
-    console.log(`updatedMessage is equal to ${updatedMessage.conversationId}`);
+    console.log(`convoId is equal to ${updatedMessage.conversationId}`);
     const conversationId = updatedMessage.conversationId;
     const updatedConversation = await Conversation.findOneAndUpdate(
       { _id: conversationId, 'messages._id': messageId },
@@ -77,7 +82,7 @@ app.post("/openedImage/:id", async (req, res) => {
     res.status(200).send(updatedConversation);
   } catch (error) {
     console.error(error);
-    res.status(500).send({ error: 'An error occurred while updating the viewed image' });
+    res.status(500).send({ error: 'An error occurred while updating an viewed Image' });
   }
 });
 
@@ -130,21 +135,29 @@ app.get("/friendList", async (req, res) => {
 
 //API for getting userInfo and creating new model if new user does not exist
 app.get("/getUserInfo", async (req, res) => {
+  // it this userId should change to et userId = req.query.userId;
   let userId = req.body.userId;
+  // console.log(1111,userId)
   try {
-    const user = await FriendList.find({userId})
-    if (user.length === 0) {
-      const newUser = new FriendList({
-        userId: userId,
-        thumbnailUrl: '',
-        friends: [],
-        conversations: [],
-        incomingRequests: [],
-        sentRequest: []
-      });
-      newUser.save();
-      res.status(200).send();
-    }
+    const user = await FriendList.find({userId});
+    // if (user.length === 0) {
+    //   let userId = req.query.username;
+    //   console.log(11111,userId)
+    //   let thumbnailUrl = req.query.avatar_url;
+    //   let location = locationString(req.query);
+    //   const newUser = new FriendList({
+    //     userId: userId,
+    //     thumbnailUrl,
+    //     location,
+    //     friends: [],
+    //     conversations: [],
+    //     incomingRequests: [],
+    //     sentRequest: []
+    //   });
+    //   await newUser.save();
+    //   res.status(200).send('save to mongodb success');
+    //   return;
+    // }
     res.status(200).send(user[0])
   } catch (err) {
     console.error(err);
@@ -152,6 +165,27 @@ app.get("/getUserInfo", async (req, res) => {
   }
 })
 
+app.post("/register", async (req, res) => {
+  console.log('register req: ', req.body);
+  let userId = req.body.username;
+  let thumbnailUrl = req.body.avatar_url;
+  let location = locationString(req.body);
+  const newUser = new FriendList({
+    userId: userId,
+    thumbnailUrl,
+    location,
+    friends: [],
+    conversations: [],
+    incomingRequests: [],
+    sentRequest: []
+  });
+  try {
+    await newUser.save();
+    res.status(200).send(`${req.body.username} save success`);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 // [
 //   {
 //     _id: new ObjectId("64160b46cc57fa46efca1bed"),
@@ -172,7 +206,7 @@ app.post('/friendRequest', async (req, res) => {
   let friendId = req.body.data.selectedUser;
   let userId = req.body.data.userId;
   let friendFilter = {userId: friendId};
-  let update = {$push: { incomingRequests: userId  }};
+  let update = {$push: { incomingNotifications: {friendId: userId, type: 'friend request'}  }};
   let pendingRequest = {$push: {sentRequest: friendId}};
   let userFilter = {userId: userId};
   // console.log('got friendRequest in server: ', req.body.data.friendRequestObj);
@@ -196,12 +230,28 @@ app.post('/acceptRequest', async (req, res) => {
   let updateUserFriends = {$push: {friends: friendId}}
   try {
     const accept = await FriendList.updateOne(friendFilter, update)
-    const removeFriendRequest = await FriendList.updateOne(friendFilter, {$pull: {incomingRequests: userId}})
+    const removeFriendRequest = await FriendList.updateOne(friendFilter, { $pull: { sentRequest: userId } })
     const userUpdate = await FriendList.updateOne(userFilter, updateUserFriends)
-    const removeSentRequest = await FriendList.updateOne(userFilter, {$pull: {incomingRequests: friendId}})
+    const removeSentRequest = await FriendList.updateOne(userFilter, {$pull: {incomingNotifications: {friendId: friendId}}})
     // console.log('mongodb accept updated')
     res.status(201).send();
   } catch(err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+})
+
+app.post('/dismissNotification', async (req, res) => {
+  let dismissObj = req.body.data;
+  let userId = req.body.data.userId;
+  let friendId = req.body.data.friendId;
+  let userFilter = {userId: userId};
+  console.log('dismiss hit', dismissObj);
+
+  try {
+    const updateUser = await FriendList.updateOne(userFilter, {$pull: {incomingNotifications: {friendId: friendId}}})
+    res.status(201).send();
+  } catch (err) {
     console.error(err);
     res.status(500).send(err);
   }

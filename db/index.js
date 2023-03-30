@@ -36,9 +36,11 @@ let friendListSchema = new mongoose.Schema({
   location: String,
   friends: [String],
   conversations: [],
-  incomingRequests: [],
+  incomingNotifications: [],
   sentRequest: []
 })
+
+
 
 let Message = mongoose.model('Messages', messagesSchema);
 let Conversation = mongoose.model('Conversations', conversationsSchema);
