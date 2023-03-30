@@ -108,6 +108,7 @@ export function App()  {
       .then((result) => {
         // console.log('result', result.data)
         let friendInfo = result.data;
+        console.log(friendInfo, 'line 111')
         axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
         .then((result) => {
           temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
@@ -157,7 +158,9 @@ export function App()  {
         axios.get('/getUserInfo', {params: {userId: user} })
           .then((result) => {
             let userInfo = result.data;
-            userInfo.location = userInfo.location.slice(-5);
+            console.log(userInfo, 'line 160')
+            userInfo.location = '90066'
+            // userInfo.location = userInfo.location.slice(-5);
             setUserId(userInfo.userId);
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
