@@ -34,10 +34,10 @@ const FriendTile = ( {conversation, userId} ) => {
       <img className="friend-profile-icon" src={conversation.friend.thumbnailUrl}/>
       <div>
         <div className="name-timestamp">
-          <div>{conversation.friend.userId}</div>
+          <div className="friend-username">{conversation.friend.userId}</div>
           <div className="timestamp">{formattedTime}</div>
         </div>
-        <div>{conversation.messages.length > 0 ? (
+        <div className="message">{conversation.messages.length > 0 ? (
           conversation.messages[conversation.messages.length-1].type === 'image' ? (
             'I just sent you a photo!'
           ) : (
