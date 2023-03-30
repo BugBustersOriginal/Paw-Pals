@@ -113,7 +113,7 @@ export function App()  {
           temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
           // setFriendsLocation(current => [...current, friend])
           setFriendsLocation(temp)
-          console.log(friendsLocation)
+          // console.log(friendsLocation)
         })
       })
       .catch((err) => {
