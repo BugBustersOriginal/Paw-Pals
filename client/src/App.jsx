@@ -157,7 +157,8 @@ export function App()  {
          axios.get('/getUserInfo', {params: {userId: user} })
           .then((result) => {
             let userInfo = result.data;
-            userInfo.location = userInfo.location.slice(-5);
+            //userInfo.location = userInfo.location.slice(-5);
+            userInfo.location = '90066'
             setUserId(userInfo.userId);
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
