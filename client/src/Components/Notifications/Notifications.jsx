@@ -3,6 +3,7 @@ import axios from 'axios';
 import { NotificationTile } from './NotificationTile.jsx';
 
 export function Notifications (props) {
+  props.notificationView()
 
 const userId = props.userId;
 let incomingRequests = props.incomingRequests;
@@ -82,7 +83,7 @@ const dismissNotification = (friendName) => {
 }
 
 useEffect(() => {
-  props.notificationView()
+  // props.notificationView()
   getFriendInfo(incomingRequests);
 
 },[incomingRequests]);

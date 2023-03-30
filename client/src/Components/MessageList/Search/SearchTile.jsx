@@ -28,7 +28,7 @@ export function SearchTile (props) {
     <div>
       {isFriend ?
       <SelectFriend userId={props.userId} friendInfo={friendInfo} handleSelection={props.handleSelection}/> :
-      <FriendRequest userId={props.userId} friendInfo={friendInfo} pendingRequests={props.pendingRequests} handleSelection={props.handleSelection}/>}
+      <FriendRequest userId={props.userId} friendInfo={friendInfo} incomingRequests={props.incomingRequests} pendingRequests={props.pendingRequests} handleSelection={props.handleSelection}/>}
     </div>
   )
 

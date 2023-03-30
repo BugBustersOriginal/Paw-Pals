@@ -83,25 +83,11 @@ export function App()  {
       let userFromProsgres = {userId: data.username};
        setUserRealId(userFromProsgres); //kona
   };
-  //sample userId data to pass down to other components (useState)
+
+  //clears notification badge on notification page
   const notificationView = () => {
     setNotificationBadge(false);
   }
-
-  // const getUserInfo = (user) => {
-  //   axios.get('/getUserInfo', {params: {userId: userId} })
-  //   .then((result) => {
-  //     let userInfo = result.data;
-  //     setUserInfo(userInfo);
-  //     setUserFriends(userInfo.friends);
-  //     setPendingRequests(userInfo.sentRequest);
-  //     setIncomingRequests(userInfo.incomingRequests);
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //   })
-  // }
-
   useEffect(() => {
     if (userInfo) {
       axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
@@ -127,7 +113,7 @@ export function App()  {
           temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
           // setFriendsLocation(current => [...current, friend])
           setFriendsLocation(temp)
-          console.log(friendsLocation)
+          // console.log(friendsLocation)
         })
       })
       .catch((err) => {
@@ -135,6 +121,7 @@ export function App()  {
       })
     })
   }, [userFriends])
+
 
   //runs on document change
   useEffect(() => {
@@ -169,9 +156,9 @@ export function App()  {
         console.log('check if user login success ', user);
         axios.get('/getUserInfo', {params: {userId: user} })
           .then((result) => {
-            // console.log('get user info from mongodb', result.data);
             let userInfo = result.data;
             userInfo.location = userInfo.location.slice(-5);
+            setUserId(userInfo.userId);
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
             setPendingRequests(userInfo.sentRequest);
@@ -182,12 +169,34 @@ export function App()  {
       .catch((err) => {
         console.error(err);
       })
-      // getUserInfo(userId);
       setNotificationBadge(true);
       hideLogoNav(location.pathname);
    }, [location,theme]);
 
 
+  //this is for page refresh set to every 5 seconds
+  useEffect(() => {
+    if (userId) {
+
+      const interval = setInterval(() => {
+        axios.get('/getUserInfo', {params: {userId: userId} })
+            .then((result) => {
+              // console.log('data refreshed');
+              let userInfo = result.data;
+
+              setUserInfo(userInfo);
+              setUserFriends(userInfo.friends);
+              setPendingRequests(userInfo.sentRequest);
+              setIncomingRequests(userInfo.incomingNotifications);
+            })
+            .catch((err) => {
+              console.error(err);
+            })
+        }, 5000)
+
+        return () => clearInterval(interval);
+    }
+  }, [userId]);
 
 
   return (
@@ -199,7 +208,7 @@ export function App()  {
       </div>
 
       <Routes>
-        <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
+        <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} incomingRequests={incomingRequests} pendingRequests={pendingRequests}/>}  />
           {/* <Route   path="/"  element= {<Login />}  /> */}
         <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
         <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
