@@ -80,9 +80,20 @@
   border-color: black;
   width: 100%;
 }
+
+.friend-profile-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: .5em;
+}
 .name-timestamp {
   display: flex;
   justify-content: space-between;
+}
+
+.timestamp {
+  display: flex;
+  justify-content: end;
 }
 
 .arrow {

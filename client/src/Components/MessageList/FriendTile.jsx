@@ -31,11 +31,11 @@ const FriendTile = ( {conversation, userId} ) => {
 
   return (
     <div className="friend-tile-container" onClick={handleClick}>
-      <img className="user-photo-thumbnail" src={conversation.friend.thumbnailUrl}/>
+      <img className="friend-profile-icon" src={conversation.friend.thumbnailUrl}/>
       <div>
-        <div className="name-timestamp space-between">
+        <div className="name-timestamp">
           <div>{conversation.friend.userId}</div>
-          <div>{formattedTime}</div>
+          <div className="timestamp">{formattedTime}</div>
         </div>
         <div>{conversation.messages.length > 0 ? (
           conversation.messages[conversation.messages.length-1].type === 'image' ? (
