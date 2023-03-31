@@ -21,8 +21,7 @@ function ForgotPassword() {
     event.preventDefault();
     try {
       const guest = await axios.post('/forgotpassword', inputs);
-      //for testing
-      console.log(111, guest.data);
+
       if (guest.data.alert === undefined) {
         //render login page
         navigate(guest.data.url);
