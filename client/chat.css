@@ -49,11 +49,23 @@
   filter: invert(1);
 }
 /* Message Window */
-.window {
+.window-light {
   row-gap: 50px;
   margin: auto;
   border: 2px solid #dedede;
   background-color: rgb(252,255,178);
+  border-radius: 5px;
+  padding: 10px;
+  width: 95%;
+  height: 95%;
+  text-align:left;
+}
+
+.window-dark {
+  row-gap: 50px;
+  margin: auto;
+  border: 2px solid #dedede;
+  background-color: rgb(62, 52, 80);
   border-radius: 5px;
   padding: 10px;
   width: 95%;
