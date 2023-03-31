@@ -19,6 +19,11 @@ describe('Message Window Component', () => {
     console.log(`testBox.value is equal to ${testBox.value}`);
     expect(testBox.value).toBe('Hello, world!');
   });
+  it('user can press enter to submit new message', async () => {
+    const props = {
+
+    }
+  })
 })
 
 
