@@ -17,11 +17,9 @@ export default function Message(props) {
   const [img, setImg] = useState('');
   const [time, settime] = useState('');
   const handleChange = (event) => {
-    console.log(`message in handlechange is equal to ${message}`);
     setMessage(event.target.value)
   }
   const handleKeyDown =  (event) => {
-    console.log(`message is equal to ${message}`);
     if (event.key === 'Enter') {
       setNewMessage({...newMessage,content:event.target.value})
     }
