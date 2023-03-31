@@ -66,14 +66,14 @@ export function App()  {
     }
   }
 
-  //handles visibility of nav and logo elements
-  function hideLogoNav (pathname) {
-    if(['/', '/login', '/register', '/forgotpassword'].includes(pathname)) {
-      setHidden(false);
-    } else {
-      setHidden(true);
-    }
+ //handles visibility of nav and logo elements
+ function hideLogoNav (pathname) {
+  if(['/', '/login', '/register', '/forgotpassword'].includes(pathname)) {
+    setHidden(false);
+  } else {
+    setHidden(true);
   }
+}
   //set userInfo from postgres into state
   const handleUserLogin = (data) => {
       //  let {address1, address2, city, state, country, zipcode} = data;
@@ -83,25 +83,11 @@ export function App()  {
       let userFromProsgres = {userId: data.username};
        setUserRealId(userFromProsgres); //kona
   };
-  //sample userId data to pass down to other components (useState)
+
+  //clears notification badge on notification page
   const notificationView = () => {
     setNotificationBadge(false);
   }
-
-  // const getUserInfo = (user) => {
-  //   axios.get('/getUserInfo', {params: {userId: userId} })
-  //   .then((result) => {
-  //     let userInfo = result.data;
-  //     setUserInfo(userInfo);
-  //     setUserFriends(userInfo.friends);
-  //     setPendingRequests(userInfo.sentRequest);
-  //     setIncomingRequests(userInfo.incomingRequests);
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //   })
-  // }
-
   useEffect(() => {
     if (userInfo) {
       axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
@@ -127,7 +113,7 @@ export function App()  {
           temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
           // setFriendsLocation(current => [...current, friend])
           setFriendsLocation(temp)
-          console.log(friendsLocation)
+          // console.log(friendsLocation)
         })
       })
       .catch((err) => {
@@ -135,6 +121,7 @@ export function App()  {
       })
     })
   }, [userFriends])
+
 
   //runs on document change
   useEffect(() => {
@@ -167,11 +154,12 @@ export function App()  {
           return null;
         }
         console.log('check if user login success ', user);
-        axios.get('/getUserInfo', {params: {userId: user} })
+         axios.get('/getUserInfo', {params: {userId: user} })
           .then((result) => {
-            // console.log('get user info from mongodb', result.data);
             let userInfo = result.data;
-            userInfo.location = userInfo.location.slice(-5);
+            //userInfo.location = userInfo.location.slice(-5);
+            userInfo.location = '90066'
+            setUserId(userInfo.userId);
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
             setPendingRequests(userInfo.sentRequest);
@@ -182,48 +170,70 @@ export function App()  {
       .catch((err) => {
         console.error(err);
       })
-      // getUserInfo(userId);
       setNotificationBadge(true);
       hideLogoNav(location.pathname);
    }, [location,theme]);
 
 
+ //this is for page refresh set to every 5 seconds
+ useEffect(() => {
+  if (userId) {
+
+    const interval = setInterval(() => {
+      axios.get('/getUserInfo', {params: {userId: userId} })
+          .then((result) => {
+            // console.log('data refreshed');
+            let userInfo = result.data;
+
+            setUserInfo(userInfo);
+            setUserFriends(userInfo.friends);
+            setPendingRequests(userInfo.sentRequest);
+            setIncomingRequests(userInfo.incomingNotifications);
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+      }, 5000)
+
+      return () => clearInterval(interval);
+  }
+}, [userId]);
 
 
-  return (
-    <div className={`App ${theme}`} onClick={() => hideLogoNav(location.pathname)}>
-      <img hidden={hide} className={`logo-${theme}`} src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
-      <div className='notification-bar' hidden={!hide}>
-      <button onClick={(e) => handleDevClick(e)}>Notifications</button>
-          {incomingRequests.length && notificationBadge ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
-      </div>
-
-      <Routes>
-        <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} pendingRequests={pendingRequests}/>}  />
-          {/* <Route   path="/"  element= {<Login />}  /> */}
-        <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
-        <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
-        <Route   path="/register"  element= {<Register />}  />
-        <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  />
-        <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
-        <Route   path="/friendtile"  element= {<FriendTile />}  />
-        <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
-        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={notificationView} />} />
-      </Routes>
-
-      <div className="devButtons" hidden={!hide}>
-        <h4>Navigation</h4>
-        <div>
-          <button onClick={(e) => handleDevClick(e)}>Profile</button>
-          <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
-          <button onClick={(e) => handleDevClick(e)}>Map</button>
-          {/*<button onClick={(e) => handleDevClick(e)}>MessageWindow</button>*/}
-        </div>
-      </div>
-
-
+return (
+  <div className={`App ${theme}`} onClick={() => hideLogoNav(location.pathname)}>
+    <img hidden={hide} className={`logo-${theme}`} src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
+    <div className='notification-bar' hidden={!hide}>
+    <button onClick={(e) => handleDevClick(e)}>Notifications</button>
+        {incomingRequests.length && notificationBadge ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
     </div>
-  )
+
+    <Routes>
+      <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} incomingRequests={incomingRequests} pendingRequests={pendingRequests}/>}  />
+        {/* <Route   path="/"  element= {<Login />}  /> */}
+      <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
+      <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
+      <Route   path="/register"  element= {<Register />}  />
+      <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  />
+      <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
+      <Route   path="/friendtile"  element= {<FriendTile />}  />
+      <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} theme={theme} />}  />
+      <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={notificationView} />} />
+    </Routes>
+
+    <div className="devButtons" hidden={!hide}>
+      <h4>Navigation</h4>
+      <div>
+        <button onClick={(e) => handleDevClick(e)}>Profile</button>
+        <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
+        <button onClick={(e) => handleDevClick(e)}>Map</button>
+        {/*<button onClick={(e) => handleDevClick(e)}>MessageWindow</button>*/}
+      </div>
+    </div>
+
+
+  </div>
+)
 }
 
 

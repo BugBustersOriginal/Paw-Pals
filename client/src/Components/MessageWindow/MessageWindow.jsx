@@ -127,7 +127,7 @@ export default function MessageWindow(props) {
 
 
   return (
-  <div className = "window">
+  <div className ={`window-${props.theme}`}>
     {participant !== undefined ? participant : ''}
     <form> <input name ='userID' type = 'text' ref= {senderInputRef} /> <button onClick ={changeSender}>change user</button> </form>
     <form> <input name ='participantID' type = 'text' ref= {participantRef } /> <button onClick ={changeParticipant}>change participant</button> </form>

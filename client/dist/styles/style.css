@@ -6,6 +6,7 @@
 .user-photo-thumbnail {
   width: 90px;
   height: 80px;
+  border-radius: .5em;
 }
 
 .friend-request-tile, .select-friend-tile {
@@ -13,8 +14,9 @@
   flex-direction: row;
   align-items: center;
   border: 1px solid;
-  border-color: black;
+  border-color: hsl(0deg 0% 0% / 65%);
   width: 100%;
+  border-radius: .5em;
 }
 
 .notification-tile {
@@ -23,8 +25,27 @@
   justify-content: space-between;
   align-items: center;
   border: 1px solid;
-  border-color: black;
+  border-color: hsl(0deg 0% 0% / 65%);
   padding: .5em;
+  border-radius: .5em;
+  margin-bottom: .4em;
+}
+
+.notification-tile > button {
+  padding: .5em;
+  border: 1px solid  hsl(0deg 0% 0% / 65%);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1;
+  font-size: 1em;
+  background-color : transparent;
+  outline: none;
+  border-radius: 4px;
+}
+
+.notification-button:hover {
+  color: #001F3F;
+  background-color: #fff;
 }
 
 .notification-badge {
@@ -36,8 +57,8 @@
   font-size: .7em;
   border: 2px solid;
   border-color: #1C1C1C;
-  height: 14px;
-  width: 14px;
+  height: 16px;
+  width: 16px;
 }
 
 .notification-badge p {
@@ -57,12 +78,42 @@
   flex-direction: row;
   border: 1px solid;
   border-color: black;
-  width: 100%;
+  width: 20em;
+  border-radius: .5em;
+  height: 80px;
+  position: relative;
+  padding: .5em;
+  align-items: center;
+
 }
-.name-timestamp {
+.friend-profile-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: .5em;
+
+}
+
+.friend-username {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  margin-left: 2px;
 }
+
+.timestamp {
+ position: absolute;
+ top: 5%;
+ right: 2%;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: .5em;
+}
+
+
+
 
 .arrow {
   margin-left: 10%;
@@ -73,6 +124,12 @@
   -webkit-transform: rotate(-45deg);
   position: relative;
   left: 21%;
+}
+
+.arrow-icon {
+  width: 1em;
+  position: relative;
+  left: 35%;
 }
 
 .map-container {
