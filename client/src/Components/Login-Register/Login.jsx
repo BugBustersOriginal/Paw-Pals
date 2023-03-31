@@ -22,16 +22,14 @@ function Login({handleUserLogin}) {
     event.preventDefault();
     try {
       const guest = await axios.post('/login', inputs);
-      //for testing
-      console.log(guest.data.reminder);
+
       if (guest.data.alert == undefined) {
         //render login page
         navigate(guest.data.url);
         if (guest.data.url === '/home') {
          //send userId(which is usename, icon, address into app.jsx when user first login)
          handleUserLogin(guest.data.user);
-          //for testing
-          console.log('login set userId success', {userId: guest.data.user.username})
+
 
         }
 

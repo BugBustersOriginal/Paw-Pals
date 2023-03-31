@@ -56,7 +56,7 @@ export function FriendRequest (props) {
       <img className="friend-request-icon" src="https://cdn-icons-png.flaticon.com/512/3602/3602500.png"/> :
       <img className="friend-request-icon" src="https://cdn-icons-png.flaticon.com/512/4458/4458569.png" onClick={handleFriendRequest}/>}
       <img className="user-photo-thumbnail" src={props.friendInfo.thumbnailUrl}/>
-      {friendSentRequest ? <p>@{props.friendInfo.userId} sent you a friend request</p> : <p>@{props.friendInfo.userId}</p>}
+      {friendSentRequest ? <p>@{props.friendInfo.userId} sent you a friend request!</p> : <p>@{props.friendInfo.userId}</p>}
     </div>
   )
 }
