@@ -40,7 +40,7 @@
 .iconButton {
   cursor: pointer;
   height: 25px;
-  padding: 3vh 7vh;
+  padding: 3vh 6vh;
 }
 
 .iconButton:hover {
@@ -85,7 +85,8 @@
 /* Message Window */
 .window-light {
   row-gap: 50px;
-  margin: auto;
+  margin: 2vh;
+  margin-bottom: 80px;
   border: 2px solid #dedede;
   background-color: rgb(252,255,178);
   border-radius: 5px;
@@ -97,7 +98,8 @@
 
 .window-dark {
   row-gap: 50px;
-  margin: auto;
+  margin: 2vh;
+  margin-bottom: 80px;
   border: 2px solid #dedede;
   background-color: rgb(62, 52, 80);
   border-radius: 5px;
@@ -169,9 +171,9 @@
 
 
 .message-container {
-  padding-top: 20px;
+  padding-top: 20vh;
   overflow-y: scroll;
-  height:400px;
+  height: 20vh;
 }
 
 /*Login and Register*/
@@ -229,7 +231,7 @@ button[type="submit"]  {
 /*Profile*/
 
 .profile {
-  padding-top: 35vh;
+  padding-top: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
