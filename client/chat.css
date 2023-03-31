@@ -37,7 +37,41 @@
   bottom: 0;
 }
 
+.iconButton {
+  cursor: pointer;
+  height: 25px;
+  padding: 3vh 7vh;
+}
 
+.iconButton:hover {
+  color:aqua
+}
+
+.navigationButton-dark {
+  border-style: solid none;
+  border-color: bisque;
+  border-bottom-style: none;
+  border-top-width: 2px;
+}
+
+.messageNavButton-dark {
+  border-color: bisque;
+  border-left-style: solid;
+  border-right-style: solid;
+}
+
+.navigationButton-light {
+  border-style: solid none;
+  border-color: black;
+  border-bottom-style: none;
+  border-top-width: 2px;
+}
+
+.messageNavButton-light {
+  border-color: black;
+  border-left-style: solid;
+  border-right-style: solid;
+}
 
 /*logo*/
 .logo-light{

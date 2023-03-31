@@ -12,6 +12,10 @@ import Login from './Components/Login-Register/Login.jsx';
 import Register from './Components/Login-Register/Register.jsx';
 import Profile from './Components/Profile/Profile.jsx';
 import ForgotPassword from './Components/Login-Register/ForgotPassword.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-regular-svg-icons';
+import { faUser, faLocationDot, faComments } from '@fortawesome/free-solid-svg-icons';
+
 
 export function App()  {
   const navigate = useNavigate();
@@ -193,9 +197,10 @@ return (
   <div className={`App ${theme}`} onClick={() => hideLogoNav(location.pathname)}>
     <img hidden={hide} className={`logo-${theme}`} src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
     <div className='notification-bar' hidden={!hide}>
-    <button onClick={(e) => handleDevClick(e)}>Notifications</button>
+    <FontAwesomeIcon icon={faBell} onClick={() => navigate('/notifications')} className="iconButton" />
         {incomingRequests.length && notificationBadge ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
     </div>
+
 
     <Routes>
       <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} incomingRequests={incomingRequests} pendingRequests={pendingRequests}/>}  />
@@ -211,12 +216,10 @@ return (
     </Routes>
 
     <div className="devButtons" hidden={!hide}>
-      <h4>Navigation</h4>
       <div>
-        <button onClick={(e) => handleDevClick(e)}>Profile</button>
-        <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
-        <button onClick={(e) => handleDevClick(e)}>Map</button>
-        {/*<button onClick={(e) => handleDevClick(e)}>MessageWindow</button>*/}
+        <FontAwesomeIcon icon={faUser} onClick={() => navigate('/profile')} className={`iconButton navigationButton-${theme}`} />
+        <FontAwesomeIcon icon={faComments} onClick={() => navigate('/home')} className={`iconButton navigationButton-${theme} messageNavButton-${theme}`} />
+        <FontAwesomeIcon icon={faLocationDot} onClick={() => navigate('/map')} className={`iconButton navigationButton-${theme}`} />
       </div>
     </div>
 
