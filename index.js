@@ -41,7 +41,9 @@ function getRoomsByUser(id){
 app.use(express.json());
 const io = new Server(server, {
   cors :{
+
     origin : [process.env.CORS_ORIGIN1, process.env.CORS_ORIGIN2],
+
     methods:['GET','POST','PUT']
   }
 })
