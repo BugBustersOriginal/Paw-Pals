@@ -26,7 +26,7 @@ const FriendTile = ( {conversation, userId} ) => {
       users: participants,
       currentUser: userOne,
       userTwo: userTwo,
-      userTwoIcon: conversation.friend.thumbnailUrl
+      userTwoProfileIcon: conversation.friend.thumbnailUrl
     }})
   }
 
