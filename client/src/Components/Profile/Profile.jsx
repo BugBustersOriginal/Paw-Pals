@@ -2,13 +2,16 @@ import React, {useEffect, useState} from 'react';
 import { Route, Routes, useNavigate, useLocation, withRouter } from 'react-router-dom';
 import axios from 'axios';
 
-function Profile({toggleTheme, userId}) {
+function Profile({toggleTheme, userId, userInfo}) {
 
   const [inputs, setInput] = useState({});
   const [alerts, setAlerts] = useState('');
   const [hidePButtons, setPHidden] = useState(false);
   const [hideChangePassword, setCPHidden] = useState(true);
   const [hideChangePFP, setCPFPHidden] = useState(true);
+  const [profileUrl, setPUrl] = useState('');
+
+  const [changePassText, setPT] = useState('ChangePassword');
 
   const navigate = useNavigate();
 
@@ -58,19 +61,31 @@ function Profile({toggleTheme, userId}) {
   function toggleChangePassword () {
     setPHidden(!hidePButtons);
     setCPHidden(!hideChangePassword);
+    if(!hidePButtons) {
+      setPT('Go Back');
+    } else {
+      setPT('Change Password');
+    }
   };
 
   useEffect (() => {
     inputs.username = userId.userId
-  }, [userId]);
+    if (userInfo !== null) {
+      if (userInfo.thumbnailUrl !== profileUrl) {
+        setPUrl(userInfo.thumbnailUrl);
+      }
+    }
+  }, [userId, userInfo]);
 
   return (
     <div className='profile'>
-      <div hidden={hidePButtons} className='auth-form-container'>
-        <button hidden={hidePButtons} onClick={toggleTheme}>Toggle Theme</button>
-        <button hidden={hidePButtons} onClick={() => handleLogout()}>Logout</button>
-        <button onClick={() => toggleChangePassword()}>Change Password</button>
-        <button hidden={hidePButtons} >Change Profile Picture</button>
+      <img className='profilePicture' src={profileUrl} alt="User Profile Picture" ></img>
+
+      <div className='profileButtons' hidden={hidePButtons} className='auth-form-container'>
+        <button className='profileButtons' hidden={hidePButtons} onClick={toggleTheme}>Toggle Theme</button>
+        <button className='profileButtons' hidden={hidePButtons} onClick={() => handleLogout()}>Logout</button>
+        <button className='profileButtons' onClick={() => toggleChangePassword()}>{changePassText}</button>
+        <button className='profileButtons' hidden={hidePButtons} >Change Profile Picture</button>
       </div>
       <div hidden={hideChangePassword} className="auth-form-container">
         <form hidden={hideChangePassword} className="login-form" onSubmit={handleSubmit} >
