@@ -25,7 +25,8 @@ const FriendTileList = ( props ) => {
     return latestChatB - latestChatA;
   })
 
-  let visibleChats = conversations.slice(0,4)
+  // let visibleChats = conversations.slice(0,4)
+  let visibleChats = conversations
 
   return (
     <div>
