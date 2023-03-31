@@ -135,27 +135,41 @@ const forgetPassword = async (req, res) => {
   //part1 way:
   //suppose req.body = {username: "debrazhang", firstname: "debra", lastname:"zhang", newPassword: ""}
   if (!req.body.username || !req.body.firstname || !req.body.lastname) {
-    res.send('input should have username, firstname, and lastname, render forgetPassword page');
+    res.send({
+      'alert':'input should have username, firstname, and lastname',
+      'url': '/forgotpassword'
+    });
     return;
   }
   let findUser = await getUser({username: req.body.username});
   if (findUser === null) {
     //user not exist in db users, redirect to signup page
-    res.send('new user, redirect to signup page');
+    res.send({
+      'alert':`${req.body.username} is a new user, you should register first`,
+      'url':'/forgotpassword'
+    });
   } else {
     //check firstname and lastname is correct
     if (findUser.firstname === req.body.firstname && findUser.lastname === req.body.lastname) {
       //vertify success
       if (!req.body.newPassword) {
-        res.send('input should have newPassword, render forgetPassword page')
+        res.send({
+          'alert': 'input should have newPassword',
+          'url':'/forgotpassword'
+        })
         return;
       }
       await updatePassward(findUser.id, req.body.newPassword);
       console.log('set new password success');
-      res.send('set new password success, render login page');
+      res.send({
+        'url':'/login'
+      });
 
     } else {
-      res.send('verity wrong, render login page');
+      res.send({
+        'alert':'verity wrong',
+        'url':'/forgotpassword'
+      });
    }
 
 
