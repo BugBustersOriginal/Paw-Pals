@@ -66,7 +66,7 @@ function ForgotPassword() {
       <button className="link-button" onClick={handleLoginClick} >Log in</button>
       <button className="link-button" onClick={handleClick} >Don't have an account? Register here</button>
       {/* if username exist, alert user to change a new username */}
-      {alerts !== '' ? <button>{alerts}</button>: null}
+      {alerts !== '' ? <span className="alert">{alerts}</span>: null}
     </div>
   );
 }
