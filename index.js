@@ -21,7 +21,7 @@ const {locationString} = require('./serverHelper.js');
 
 /***** helper functions for debugging socker rooms */
 
-
+app.use(cors());
 function getRoomsByUser(id){
   let usersRooms = [];
   let rooms = io.sockets.adapter.rooms;
@@ -41,7 +41,7 @@ function getRoomsByUser(id){
 app.use(express.json());
 const io = new Server(server, {
   cors :{
-    origin : ['http://localhost:1234', 'http://localhost:3000'],
+    origin : [process.env.CORS_ORIGIN1, process.env.CORS_ORIGIN2],
     methods:['GET','POST','PUT']
   }
 })
@@ -51,6 +51,7 @@ app.get('/', (req, res) => {
 });
 
 // front end needs to make a newconversation if the conversation has not happened before
+
 app.post("/newConversation", async (req,res) => {
 //will provide list of participants (JSON body)
 //will need to determine if there is already a convo between these 2 participants
@@ -60,21 +61,22 @@ app.post("/newConversation", async (req,res) => {
 app.post("/openedImage/:id", async (req, res) => {
   const imageId = req.params.id;
   try {
-    const message = await Message.findByIdAndUpdate(imageId, {
-      viewed: true,
-      viewTime: new Date()
-    });
-    // Update corresponding conversation
-    const conversationId = message.conversationId;
-    await Conversation.findByIdAndUpdate(conversationId, {
-      $set: {
-        "messages.$[elem].viewed": true,
-        "messages.$[elem].viewTime": new Date()
-      }
-    }, {
-      arrayFilters: [{ "elem._id": imageId }]
-    });
-    res.status(200).send({ message });
+    const updatedMessage = await Message.findOneAndUpdate(
+      { _id: messageId, type: 'image'},
+      { $set: { viewed: true } },
+      { new: true }
+    );
+    if (!updatedMessage) {
+      return res.status(404).send({ error: 'Message not found or does not contain an image' });
+    }
+    console.log(`convoId is equal to ${updatedMessage.conversationId}`);
+    const conversationId = updatedMessage.conversationId;
+    const updatedConversation = await Conversation.findOneAndUpdate(
+      { _id: conversationId, 'messages._id': messageId },
+      { $set: { 'messages.$.viewed': true } },
+      { new: true }
+    );
+    res.status(200).send(updatedConversation);
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: 'An error occurred while updating an viewed Image' });
@@ -115,8 +117,9 @@ app.get("/conversations/:userId", async (req, res) => {
 });
 
 app.get("/friendList", async (req, res) => {
+  console.log(`friendlist~`)
   let userId = req.body.userId;
-  console.log('checking friendList', userId);
+  // console.log('checking friendList', userId);
   try {
     const friend = await FriendList.find({userId})
     // console.log('got friend: ', friend[0]);
@@ -304,13 +307,12 @@ io.on('connection', async (socket) => {
                 $all: participants.sort()
               }
            }, { _id: 1, messages: 1 }).populate('messages')
-           console.log(`conversation is equal to ${JSON.stringify(conversation)}`)
            if(!conversation) {
+
             const newConversation = await Conversation.create({participants:[...participants]});
             await socket.emit('conversation', newConversation);
             return;
            }
-           console.log(`conversation before filter  is equal to ${JSON.stringify(conversation)}`)
            const messages = conversation.messages.filter((message) => {
                 if ( message.type === 'image ') {
                   const timeDifference = Math.abs(new Date() - message.openedAt);
@@ -320,6 +322,7 @@ io.on('connection', async (socket) => {
                 return true
               })
               conversation.messages = [...messages];
+
             socket.emit('conversation', conversation);
 
          } catch(err) {
