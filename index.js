@@ -219,6 +219,22 @@ app.post('/friendRequest', async (req, res) => {
   }
 });
 
+app.post('/imgDled', async (req, res) => {
+  let sender = req.body.sender;
+  let downloader = req.body.downloader;
+
+  let update = {$push: { incomingNotifications: {friendId: sender, type: 'saved photo'}  }};
+  let userFilter = {friendId: sender};
+  // console.log('got friendRequest in server: ', req.body.data.friendRequestObj);
+  try {
+    const pending = await FriendList.updateOne(userFilter, update)
+    res.status(201).send();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+});
+
 app.post('/acceptRequest', async (req, res) => {
   console.log('accept friend request server', req.body.data);
   let userId = req.body.data.userId;
