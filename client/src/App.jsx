@@ -47,21 +47,18 @@ export function App()  {
         // setPendingRequests([]);
         // setIncomingRequests([]);
         const guest = await axios.get('/logout');
-        //for testing
-        console.log(guest.data.reminder);
+
 
         navigate("/login");
       } catch (err) {
         console.log(err)
       }
     } else if (e.target.innerText === 'FriendTileList') {
-      //for testing
-      console.log('home has userId',userRealId)
+
       navigate('/home');
 
     } else {
-      //for testing
-      console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId);
+
       navigate(`/${(e.target.innerText).toLowerCase()}`);
     }
   }
@@ -76,12 +73,9 @@ export function App()  {
 }
   //set userInfo from postgres into state
   const handleUserLogin = (data) => {
-      //  let {address1, address2, city, state, country, zipcode} = data;
-      //  let userFromProsgres = {userId: data.username, thumbnailUrl: data.avatar_url, address1, address2, city, state, country, zipcode};
-      //  console.log('login path', userFromProsgres);
-      console.log(data.username, 'line 78 App.jsx')
+
       let userFromProsgres = {userId: data.username};
-       setUserRealId(userFromProsgres); //kona
+       setUserRealId(userFromProsgres);
   };
 
   //clears notification badge on notification page
@@ -130,13 +124,8 @@ export function App()  {
 
       axios.get('/authUser')
        .then((result) => {
-        //  console.log(result.data, 'line 111 App.jsx')
           if (result.data) {
             let authUser = result.data;
-            // console.log(authUser.username, 'line 113 App.jsx')
-            // let {address1, address2, city, state, country, zipcode} = authUser;
-            // let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avatar_url, address1, address2, city, state, country, zipcode};
-            // console.log('auth path', userFromProsgres);
             let userFromProsgres = {userId: authUser.username};
             setUserRealId(userFromProsgres);
             return authUser.username;
@@ -153,7 +142,7 @@ export function App()  {
           //user in register page, in login page or not login success, do nothing
           return null;
         }
-        console.log('check if user login success ', user);
+        // console.log('check if user login success ', user);
          axios.get('/getUserInfo', {params: {userId: user} })
           .then((result) => {
             let userInfo = result.data;
