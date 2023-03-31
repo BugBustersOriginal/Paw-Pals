@@ -64,6 +64,7 @@ app.get('/map',getAuth, reRoute);
 app.get('/friendtile',getAuth, reRoute);
 app.get('/messagewindow', getAuth, reRoute);
 app.get('/notifications',getAuth,reRoute);
+app.get('/profile',getAuth,reRoute);
 app.get('/authUser', getAuthLogin);
 
 

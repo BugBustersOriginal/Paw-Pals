@@ -209,7 +209,7 @@ return (
       <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
       <Route   path="/register"  element= {<Register />}  />
       <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  />
-      <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
+      <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme} userId={userRealId} />}  />
       <Route   path="/friendtile"  element= {<FriendTile />}  />
       <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} theme={theme} />}  />
       <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={notificationView} />} />
