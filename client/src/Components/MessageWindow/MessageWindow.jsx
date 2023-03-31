@@ -15,6 +15,7 @@ export default function MessageWindow(props) {
   const [mappedMessages, setMappedMessages] = useState([]);
   const [sender, setSender] = useState('');
   const [participant, setParticipant] = useState('');
+  const [participantProfilePic, setProfilePic] = useState('')
   const senderInputRef = useRef(null);
   const messageContainerRef= useRef(null);
   const participantRef = useRef(null);
@@ -34,6 +35,9 @@ export default function MessageWindow(props) {
     if(location.state?.users && location.state?.currentUser && location.state?.userTwo ) {
       // console.log(`users in message window is equal to ${location.state?.users}`)
       // console.log(`users in message window is equal to ${location.state?.currentUser}`)
+      if(location.state?.userTwoProfileIcon) {
+        setProfilePic(location.state?.userTwoProfileIcon)
+      }
       setSender(location.state?.currentUser);
       setParticipants([...location.state?.users]);
       setParticipant(location.state?.userTwo);
@@ -128,7 +132,10 @@ export default function MessageWindow(props) {
 
   return (
   <div className ={`window-${props.theme}`}>
-    {participant !== undefined ? participant : ''}
+    <div className = 'participant-info' style={{ display: 'flex', alignItems: 'center' }}>
+    <img src= {participantProfilePic} style={{ width: "75px", height: "75px", borderRadius: "50%" }}/>   <span style={{ marginLeft: "10px" }}> </span> @{participant !== undefined ? participant : ''}
+    </div>
+    <hr />
     {/* dev buttons below for troubleshooting  */}
     {/* <form> <input name ='userID' type = 'text' ref= {senderInputRef} /> <button onClick ={changeSender}>change user</button> </form>
     <form> <input name ='participantID' type = 'text' ref= {participantRef } /> <button onClick ={changeParticipant}>change participant</button> </form> */}
