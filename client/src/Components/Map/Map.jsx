@@ -44,10 +44,9 @@ export function Map({ userInfo, userFriends }) {
 
       <ul>
         {(state.query === '' ? "" : state.list.map(friend => {
-          return <li key={friend.userId} onClick={() => setScreenCenter(friend.location)}>{friend.userId}</li>
+          return <li key={friend.userId} onClick={() => setScreenCenter()}>{friend.userId}</li>
         }))}
       </ul>
-
       <MapView screenCenter={screenCenter} setScreenCenter={setScreenCenter} user={userInfo} friends={userFriends} />
     </>
   )
