@@ -42,7 +42,7 @@ export function FriendRequest (props) {
     console.log('selectionObj: ', selectionObj);
     axios.post('/sendFriendRequest', selectionObj)
     .then((result) => {
-      console.log('successful friendRequest');
+      // console.log('successful friendRequest');
       setRequestSent(true);
     })
     .catch((err) => {
