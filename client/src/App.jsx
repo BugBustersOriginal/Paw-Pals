@@ -142,7 +142,7 @@ export function App()  {
           //user in register page, in login page or not login success, do nothing
           return null;
         }
-        console.log('check if user login success ', user);
+        // console.log('check if user login success ', user);
          axios.get('/getUserInfo', {params: {userId: user} })
           .then((result) => {
             let userInfo = result.data;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, useLocation, withRouter, redirect } from 'react-router-dom';
 
 const FriendTile = ( {conversation, userId} ) => {
 
@@ -17,6 +17,7 @@ const FriendTile = ( {conversation, userId} ) => {
   }
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClick = (e) => {
     let userOne = userId;
@@ -50,6 +51,7 @@ const FriendTile = ( {conversation, userId} ) => {
           </div>
     </div>
     </div>
+
   )
 }
 

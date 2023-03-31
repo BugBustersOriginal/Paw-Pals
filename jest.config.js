@@ -10,6 +10,7 @@ module.exports = {
       "statements": 80
     }},
   testEnvironment: 'jsdom',
+  setupFiles: ["setimmediate"],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
     // "^image![a-zA-Z0-9$_-]+$": "GlobalImageStub",
