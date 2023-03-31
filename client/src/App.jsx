@@ -63,14 +63,14 @@ export function App()  {
     }
   }
 
-  //handles visibility of nav and logo elements
-  function hideLogoNav (pathname) {
-    if(['/', '/login', '/register', '/forgotpassword'].includes(pathname)) {
-      setHidden(false);
-    } else {
-      setHidden(true);
-    }
+ //handles visibility of nav and logo elements
+ function hideLogoNav (pathname) {
+  if(['/', '/login', '/register', '/forgotpassword'].includes(pathname)) {
+    setHidden(false);
+  } else {
+    setHidden(true);
   }
+}
   //set userInfo from postgres into state
   const handleUserLogin = (data) => {
 
@@ -143,10 +143,11 @@ export function App()  {
           return null;
         }
         console.log('check if user login success ', user);
-        axios.get('/getUserInfo', {params: {userId: user} })
+         axios.get('/getUserInfo', {params: {userId: user} })
           .then((result) => {
             let userInfo = result.data;
-            userInfo.location = userInfo.location.slice(-5);
+            //userInfo.location = userInfo.location.slice(-5);
+            userInfo.location = '90066'
             setUserId(userInfo.userId);
             setUserInfo(userInfo);
             setUserFriends(userInfo.friends);
@@ -163,64 +164,65 @@ export function App()  {
    }, [location,theme]);
 
 
-  //this is for page refresh set to every 5 seconds
-  useEffect(() => {
-    if (userId) {
+ //this is for page refresh set to every 5 seconds
+ useEffect(() => {
+  if (userId) {
 
-      const interval = setInterval(() => {
-        axios.get('/getUserInfo', {params: {userId: userId} })
-            .then((result) => {
-              // console.log('data refreshed');
-              let userInfo = result.data;
+    const interval = setInterval(() => {
+      axios.get('/getUserInfo', {params: {userId: userId} })
+          .then((result) => {
+            // console.log('data refreshed');
+            let userInfo = result.data;
 
-              setUserInfo(userInfo);
-              setUserFriends(userInfo.friends);
-              setPendingRequests(userInfo.sentRequest);
-              setIncomingRequests(userInfo.incomingNotifications);
-            })
-            .catch((err) => {
-              console.error(err);
-            })
-        }, 5000)
+            setUserInfo(userInfo);
+            setUserFriends(userInfo.friends);
+            setPendingRequests(userInfo.sentRequest);
+            setIncomingRequests(userInfo.incomingNotifications);
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+      }, 5000)
 
-        return () => clearInterval(interval);
-    }
-  }, [userId]);
-
-
-  return (
-    <div className={`App ${theme}`} onClick={() => hideLogoNav(location.pathname)}>
-      <img hidden={hide} className={`logo-${theme}`} src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
-      <div className='notification-bar' hidden={!hide}>
-      <button onClick={(e) => handleDevClick(e)}>Notifications</button>
-          {incomingRequests.length && notificationBadge ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
-      </div>
-
-      <Routes>
-        <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} incomingRequests={incomingRequests} pendingRequests={pendingRequests}/>}  />
-        <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
-        <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
-        <Route   path="/register"  element= {<Register />}  />
-        <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  />
-        <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
-        <Route   path="/friendtile"  element= {<FriendTile />}  />
-        <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
-        <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={notificationView} />} />
-      </Routes>
-
-      <div className="devButtons" hidden={!hide}>
-        <h4>Navigation</h4>
-        <div>
-          <button onClick={(e) => handleDevClick(e)}>Profile</button>
-          <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
-          <button onClick={(e) => handleDevClick(e)}>Map</button>
-          {/*<button onClick={(e) => handleDevClick(e)}>MessageWindow</button>*/}
-        </div>
-      </div>
+      return () => clearInterval(interval);
+  }
+}, [userId]);
 
 
+return (
+  <div className={`App ${theme}`} onClick={() => hideLogoNav(location.pathname)}>
+    <img hidden={hide} className={`logo-${theme}`} src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
+    <div className='notification-bar' hidden={!hide}>
+    <button onClick={(e) => handleDevClick(e)}>Notifications</button>
+        {incomingRequests.length && notificationBadge ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
     </div>
-  )
+
+    <Routes>
+      <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} incomingRequests={incomingRequests} pendingRequests={pendingRequests}/>}  />
+        {/* <Route   path="/"  element= {<Login />}  /> */}
+      <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
+      <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
+      <Route   path="/register"  element= {<Register />}  />
+      <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  />
+      <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
+      <Route   path="/friendtile"  element= {<FriendTile />}  />
+      <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} theme={theme} />}  />
+      <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={notificationView} />} />
+    </Routes>
+
+    <div className="devButtons" hidden={!hide}>
+      <h4>Navigation</h4>
+      <div>
+        <button onClick={(e) => handleDevClick(e)}>Profile</button>
+        <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
+        <button onClick={(e) => handleDevClick(e)}>Map</button>
+        {/*<button onClick={(e) => handleDevClick(e)}>MessageWindow</button>*/}
+      </div>
+    </div>
+
+
+  </div>
+)
 }
 
 
