@@ -25,7 +25,8 @@ const FriendTile = ( {conversation, userId} ) => {
     navigate('/messagewindow', {state: {
       users: participants,
       currentUser: userOne,
-      userTwo: userTwo
+      userTwo: userTwo,
+      userTwoProfileIcon: conversation.friend.thumbnailUrl
     }})
   }
 
