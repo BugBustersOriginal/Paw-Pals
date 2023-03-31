@@ -57,6 +57,7 @@ function MapView({ user, friends, screenCenter, setScreenCenter, theme }) {
   const [selectedCenter, setSelectedCenter] = useState(null);
   const [mapTheme, setMapTheme] = useState(null);
 
+
   useEffect(() => {
     if (theme === 'light') {
       setMapTheme({ styles: [
