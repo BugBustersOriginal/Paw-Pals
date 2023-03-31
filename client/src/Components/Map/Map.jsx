@@ -52,6 +52,7 @@ export function Map({ userInfo, userFriends, theme }) {
   )
 }
 
+
 function MapView({ user, friends, screenCenter, setScreenCenter, theme }) {
   const [selectedCenter, setSelectedCenter] = useState(null);
   const [mapTheme, setMapTheme] = useState(null);
