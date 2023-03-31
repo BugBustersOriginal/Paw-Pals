@@ -23,20 +23,13 @@ const FriendTile = ( {conversation, userId} ) => {
     let userOne = userId;
     let userTwo = conversation.friend.userId;
     let participants = [userOne, userTwo]
-    navigate(‘/messagewindow’, {state: {
+    navigate('/messagewindow', {state: {
       users: participants,
       currentUser: userOne,
       userTwo: userTwo,
       userTwoProfileIcon: conversation.friend.thumbnailUrl
     }})
   }
-
-  const otherParticipant = chat.participants.find((e) => {
-    return e.userId !== userId;
-  })
-
-  let last = chat.messages.length-1
-  const latestMessage = chat.messages[last]
 
   return (
     <div className="friend-tile-container" onClick={handleClick}>
