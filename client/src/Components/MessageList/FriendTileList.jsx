@@ -15,11 +15,18 @@ const FriendTileList = ( props ) => {
       })
   }, [props.userId])
 
+  conversations.sort((a,b) => {
+    const latestChatA = Math.max(...a.messages.map(m => Date.parse(m.createdAt)));
+    const latestChatB = Math.max(...b.messages.map(m => Date.parse(m.createdAt)));
+    return latestChatB - latestChatA;
+  })
+
+  let visibleChats = conversations.slice(0,4)
+
   return (
     <div>
       <Search userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId} incomingRequests={props.incomingRequests} pendingRequests={props.pendingRequests} />
-      {conversations.map((conversation, index) => <FriendTile conversation={conversation} key={index} userId={props.userId}/>
-      )}
+      {visibleChats.map((visibleChat, index) => <FriendTile visibleChat={visibleChat} key={index} userId={props.userId}/>)}
     </div>
   )
 }
