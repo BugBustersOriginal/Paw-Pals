@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
+import {socket} from '../../socket.js';
+import axios from 'axios';
 import "../../../../client/chat.css";
-import {socket} from '../../socket.js'
-import axios from 'axios'
 
 export default function Message(props) {
   console.log("message", props)
@@ -10,8 +10,8 @@ export default function Message(props) {
     content:'',
     type:'text', // change to image if sending image
     image:'',
-    participants: ['superman','batman'], // need to change this in the future once mary ann finishes their service
-    expirationTime: 2000,
+    participants: [], // need to change this in the future once mary ann finishes their service
+    expirationTime: '',
     conversationId:props.conversationID,
   });
   const [message, setMessage] = useState('');
@@ -93,6 +93,7 @@ export default function Message(props) {
             value={message}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
+            data-testid="write_message"
          />
         {img !== ''?
         <div>
@@ -102,6 +103,7 @@ export default function Message(props) {
         : null}
         </div>
          <input
+          className = "user-input"
           type="file"
           accept="image/*"
           onChange={handleNewImg}

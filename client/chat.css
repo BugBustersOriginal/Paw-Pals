@@ -37,7 +37,41 @@
   bottom: 0;
 }
 
+.iconButton {
+  cursor: pointer;
+  height: 25px;
+  padding: 3vh 6vh;
+}
 
+.iconButton:hover {
+  color:aqua
+}
+
+.navigationButton-dark {
+  border-style: solid none;
+  border-color: bisque;
+  border-bottom-style: none;
+  border-top-width: 2px;
+}
+
+.messageNavButton-dark {
+  border-color: bisque;
+  border-left-style: solid;
+  border-right-style: solid;
+}
+
+.navigationButton-light {
+  border-style: solid none;
+  border-color: black;
+  border-bottom-style: none;
+  border-top-width: 2px;
+}
+
+.messageNavButton-light {
+  border-color: black;
+  border-left-style: solid;
+  border-right-style: solid;
+}
 
 /*logo*/
 .logo-light{
@@ -49,11 +83,25 @@
   filter: invert(1);
 }
 /* Message Window */
-.window {
+.window-light {
   row-gap: 50px;
-  margin: auto;
+  margin: 2vh;
+  margin-bottom: 80px;
   border: 2px solid #dedede;
   background-color: rgb(252,255,178);
+  border-radius: 5px;
+  padding: 10px;
+  width: 95%;
+  height: 95%;
+  text-align:left;
+}
+
+.window-dark {
+  row-gap: 50px;
+  margin: 2vh;
+  margin-bottom: 80px;
+  border: 2px solid #dedede;
+  background-color: rgb(62, 52, 80);
   border-radius: 5px;
   padding: 10px;
   width: 95%;
@@ -123,9 +171,9 @@
 
 
 .message-container {
-  padding-top: 20px;
+  padding-top: 20vh;
   overflow-y: scroll;
-  height:400px;
+  height: 20vh;
 }
 
 /*Login and Register*/
@@ -183,7 +231,7 @@ button[type="submit"]  {
 /*Profile*/
 
 .profile {
-  padding-top: 35vh;
+  padding-top: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;

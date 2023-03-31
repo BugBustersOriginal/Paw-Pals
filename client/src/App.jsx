@@ -11,7 +11,10 @@ import Login from './Components/Login-Register/Login.jsx';
 import Register from './Components/Login-Register/Register.jsx';
 import Profile from './Components/Profile/Profile.jsx';
 import ForgotPassword from './Components/Login-Register/ForgotPassword.jsx';
-import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-regular-svg-icons';
+import { faUser, faLocationDot, faComments } from '@fortawesome/free-solid-svg-icons';
+
 
 export function App()  {
   const navigate = useNavigate();
@@ -47,21 +50,18 @@ export function App()  {
         // setPendingRequests([]);
         // setIncomingRequests([]);
         const guest = await axios.get('/logout');
-        //for testing
-        console.log(guest.data.reminder);
+
 
         navigate("/login");
       } catch (err) {
         console.log(err)
       }
     } else if (e.target.innerText === 'FriendTileList') {
-      //for testing
-      console.log('home has userId',userRealId)
+
       navigate('/home');
 
     } else {
-      //for testing
-      console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId);
+
       navigate(`/${(e.target.innerText).toLowerCase()}`);
     }
   }
@@ -76,12 +76,9 @@ export function App()  {
 }
   //set userInfo from postgres into state
   const handleUserLogin = (data) => {
-      //  let {address1, address2, city, state, country, zipcode} = data;
-      //  let userFromProsgres = {userId: data.username, thumbnailUrl: data.avatar_url, address1, address2, city, state, country, zipcode};
-      //  console.log('login path', userFromProsgres);
-      console.log(data.username, 'line 78 App.jsx')
+
       let userFromProsgres = {userId: data.username};
-       setUserRealId(userFromProsgres); //kona
+       setUserRealId(userFromProsgres);
   };
 
   //clears notification badge on notification page
@@ -130,13 +127,8 @@ export function App()  {
 
       axios.get('/authUser')
        .then((result) => {
-        //  console.log(result.data, 'line 111 App.jsx')
           if (result.data) {
             let authUser = result.data;
-            // console.log(authUser.username, 'line 113 App.jsx')
-            // let {address1, address2, city, state, country, zipcode} = authUser;
-            // let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avatar_url, address1, address2, city, state, country, zipcode};
-            // console.log('auth path', userFromProsgres);
             let userFromProsgres = {userId: authUser.username};
             setUserRealId(userFromProsgres);
             return authUser.username;
@@ -153,7 +145,7 @@ export function App()  {
           //user in register page, in login page or not login success, do nothing
           return null;
         }
-        console.log('check if user login success ', user);
+        // console.log('check if user login success ', user);
          axios.get('/getUserInfo', {params: {userId: user} })
           .then((result) => {
             let userInfo = result.data;
@@ -204,9 +196,10 @@ return (
   <div className={`App ${theme}`} onClick={() => hideLogoNav(location.pathname)}>
     <img hidden={hide} className={`logo-${theme}`} src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
     <div className='notification-bar' hidden={!hide}>
-    <button onClick={(e) => handleDevClick(e)}>Notifications</button>
+    <FontAwesomeIcon icon={faBell} onClick={() => navigate('/notifications')} className="iconButton" />
         {incomingRequests.length && notificationBadge ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
     </div>
+
 
     <Routes>
       <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} incomingRequests={incomingRequests} pendingRequests={pendingRequests}/>}  />
@@ -215,19 +208,17 @@ return (
       <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
       <Route   path="/register"  element= {<Register />}  />
       <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  />
-      <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
+      <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme} userId={userRealId} />}  />
       <Route   path="/friendtile"  element= {<FriendTile />}  />
-      <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} />}  />
+      <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} theme={theme} />}  />
       <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={notificationView} />} />
     </Routes>
 
     <div className="devButtons" hidden={!hide}>
-      <h4>Navigation</h4>
       <div>
-        <button onClick={(e) => handleDevClick(e)}>Profile</button>
-        <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
-        <button onClick={(e) => handleDevClick(e)}>Map</button>
-        <button onClick={(e) => handleDevClick(e)}>MessageWindow</button>
+        <FontAwesomeIcon icon={faUser} onClick={() => navigate('/profile')} className={`iconButton navigationButton-${theme}`} />
+        <FontAwesomeIcon icon={faComments} onClick={() => navigate('/home')} className={`iconButton navigationButton-${theme} messageNavButton-${theme}`} />
+        <FontAwesomeIcon icon={faLocationDot} onClick={() => navigate('/map')} className={`iconButton navigationButton-${theme}`} />
       </div>
     </div>
 

@@ -15,7 +15,7 @@
   align-items: center;
   border: 1px solid;
   border-color: hsl(0deg 0% 0% / 65%);
-  width: 20em;
+  width: 100%;
   border-radius: .5em;
 }
 
@@ -70,7 +70,7 @@
 }
 
 .friend-request-tile > img, .select-friend-tile > img {
-  margin: 1em .5em 1em .5em;
+  margin: 1em .5em 1em .25em;
 }
 
 .friend-tile-container {
@@ -79,14 +79,18 @@
   border: 1px solid;
   border-color: black;
   width: 100%;
+  border-radius: .5em;
   height: 80px;
   position: relative;
+  padding: .5em;
+  align-items: center;
 
 }
 .friend-profile-icon {
   width: 60px;
   height: 60px;
   border-radius: .5em;
+
 }
 
 .friend-username {
@@ -97,15 +101,15 @@
 
 .timestamp {
  position: absolute;
- top: 0;
- right: 0;
+ top: 5%;
+ right: 2%;
 }
 
 .message {
   display: flex;
   align-items: center;
   margin-top: 20px;
-  margin-left: 10px;
+  margin-left: .5em;
 }
 
 
