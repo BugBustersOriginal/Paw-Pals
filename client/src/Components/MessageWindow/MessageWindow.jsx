@@ -62,10 +62,10 @@ export default function MessageWindow(props) {
       //console.log(`mapping!`)
       const mappedMessages = conversation.map((message) => {
         console.log(`message is equal to ${JSON.stringify(message)}`);
-        if(message.type === 'image' && message.sender === sender) {
-          return ''
-        }
-        return <MessageBox key={message._id} sender={message.sender} content={message.content} currentUser = {sender} type={message.type} expirationTime = { message.expirationTime}  />;
+        // if(message.type === 'image' && message.sender === sender) {
+        //   return ''
+        // }
+        return <MessageBox key={message._id} sender={message.sender} view={message.viewed} participant={participants} msgId = {message._id} convId ={conversationID} content={message.content} currentUser = {sender} type={message.type} expirationTime = { message.expirationTime}  />;
       });
       setMappedMessages(mappedMessages);
   },[conversation, sender, participant])
@@ -100,6 +100,8 @@ export default function MessageWindow(props) {
   }
 
 
+
+
   return (
   <div className = "window">
     {participant !== undefined ? participant : ''}
@@ -108,7 +110,7 @@ export default function MessageWindow(props) {
     <div className="message-container" ref={messageContainerRef}>
       {mappedMessages}
     </div>
-    <Message sender = {sender} newMessage = {new_message} conversationID={conversationID} participants = {participants}/>
+    <Message sender = {sender} newMessage = {new_message}  conversationID={conversationID} participants = {participants}/>
   </div>
   )
 }

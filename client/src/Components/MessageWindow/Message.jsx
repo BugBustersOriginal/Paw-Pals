@@ -4,13 +4,14 @@ import {socket} from '../../socket.js'
 import axios from 'axios'
 
 export default function Message(props) {
+  console.log("message", props)
   const [newMessage, setNewMessage] = useState({
     sender:props.sender,
     content:'',
     type:'text', // change to image if sending image
     image:'',
     participants: ['superman','batman'], // need to change this in the future once mary ann finishes their service
-    expirationTime: '',
+    expirationTime: 2000,
     conversationId:props.conversationID,
   });
   const [message, setMessage] = useState('');
