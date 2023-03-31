@@ -35,7 +35,7 @@ const FriendTile = ( {conversation, userId} ) => {
       <img className="friend-profile-icon" src={conversation.friend.thumbnailUrl}/>
       <div>
         <div className="name-timestamp">
-          <div className="friend-username">{conversation.friend.userId}</div>
+          <div className="friend-username">@{conversation.friend.userId}</div>
           <div className="timestamp">{formattedTime}</div>
         </div>
         <div className="message">{conversation.messages.length > 0 ? (
