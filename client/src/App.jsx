@@ -86,25 +86,26 @@ export function App()  {
   const notificationView = () => {
     setNotificationBadge(false);
   }
-    useEffect(() => {
-      if (userId) {
-        console.log('hi')
-        axios.get('/getUserInfo', {params: {userId: userId} })
-          .then((result) => {
-            let userInfo = result.data;
-            console.log('userinfo', userInfo)
-            axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
-            .then((result) => {
-              userInfo.location = result.data.results[0].geometry.location
-              setUserLocation(userInfo)
-            })
-            .catch((err) => {
-                console.error('error getting location', err);
-              })
-          })
-        }
-    }, [userId])
 
+  // creates user object with coordinate location
+  useEffect(() => {
+    if (userId) {
+      axios.get('/getUserInfo', {params: {userId: userId} })
+        .then((result) => {
+          let userInfo = result.data;
+          axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
+          .then((result) => {
+            userInfo.location = result.data.results[0].geometry.location
+            setUserLocation(userInfo)
+          })
+          .catch((err) => {
+              console.error('error getting location', err);
+            })
+        })
+      }
+  }, [userId])
+
+  // creates array of objects that contain friends and their coordinate location
   useEffect(() => {
     let temp = []
     if (userLocation) {
