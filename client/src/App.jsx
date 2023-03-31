@@ -86,18 +86,24 @@ export function App()  {
   const notificationView = () => {
     setNotificationBadge(false);
   }
-  useEffect(() => {
-    if (userInfo) {
-      axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
-      .then((result) => {
-        userInfo.location = result.data.results[0].geometry.location
-        setUserLocation(userInfo)
-      })
-      .catch((err) => {
-          console.error('error getting location', err);
-        })
-      }
-  }, [userInfo])
+    useEffect(() => {
+      if (userId) {
+        console.log('hi')
+        axios.get('/getUserInfo', {params: {userId: userId} })
+          .then((result) => {
+            let userInfo = result.data;
+            console.log('userinfo', userInfo)
+            axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
+            .then((result) => {
+              userInfo.location = result.data.results[0].geometry.location
+              setUserLocation(userInfo)
+            })
+            .catch((err) => {
+                console.error('error getting location', err);
+              })
+          })
+        }
+    }, [userId])
 
   useEffect(() => {
     let temp = []
@@ -208,7 +214,7 @@ return (
       <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
       <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
       <Route   path="/register"  element= {<Register />}  />
-      <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  />
+      {/* <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  /> */}
       <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme} userId={userRealId} />}  />
       <Route   path="/friendtile"  element= {<FriendTile />}  />
       <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} theme={theme} />}  />
