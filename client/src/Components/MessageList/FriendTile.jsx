@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// const FriendTile = ( {conversation, userId} ) => {
-  const FriendTile = ( {visibleChat, userId} ) => {
+const FriendTile = ( {visibleChat, userId} ) => {
 
   if (visibleChat.messages === undefined) {
     visibleChat.messages = []
