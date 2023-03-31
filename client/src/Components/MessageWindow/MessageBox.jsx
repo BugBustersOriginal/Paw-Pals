@@ -94,7 +94,7 @@ export default function MessageBox(props) {
           ( props.view === false? ( (isSender ? <img src= {url}/> :  (img === false ?
            <button onClick={()=>{showSnap()}} >
            show snap
-         </button> : <div> <button onClick={(e)=>{download()}}>download</button> <img src= {url}/> </div>))) : content)}
+         </button> : <div> <button onClick={(e)=>{download()}}>download</button> <img className='img' src= {url}/> </div>))) : content)}
          </div>
          </div>
 

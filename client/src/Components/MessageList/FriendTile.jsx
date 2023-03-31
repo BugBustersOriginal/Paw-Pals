@@ -1,22 +1,53 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const FriendTile = ( {friend} ) => {
-  console.log(friend, 'line 5 friend FriendTile')
+const FriendTile = ( {conversation, userId} ) => {
+
+  if (conversation.messages === undefined) {
+    conversation.messages = []
+  }
+
+  let formattedTime;
+
+  if (conversation.messages.length > 0) {
+   let formattedDate = new Date(conversation.messages[conversation.messages.length-1].createdAt);
+   formattedTime = formattedDate.toLocaleString('en-US', {hour12: true, hour: 'numeric', minute: '2-digit'});
+  } else {
+    formattedTime = '';
+  }
 
   const navigate = useNavigate();
 
   const handleClick = (e) => {
-    navigate('/messagewindow', {state: {}})
-    // navigate('/messagewindow')
+    let userOne = userId;
+    let userTwo = conversation.friend.userId;
+    let participants = [userOne, userTwo]
+    navigate('/messagewindow', {state: {
+      users: participants,
+      currentUser: userOne,
+      userTwo: userTwo
+    }})
   }
 
   return (
-    <div className="friend-tile-container">
-      <img className="user-photo-thumbnail" src="https://pbs.twimg.com/profile_images/874661809139073025/X8yzIhNy_400x400.jpg/"/>
-      <div className="friend-tile-username" onClick={handleClick}>{friend.friend}</div>
-      <div>{friend.messages? friend.messages[friend.messages.length-1].content : 'no messages yet'}</div>
-      <div>{friend.messages? friend.messages[friend.messages.length-1].createdAt : ''}</div>
+    <div className="friend-tile-container" onClick={handleClick}>
+      <img className="friend-profile-icon" src={conversation.friend.thumbnailUrl}/>
+      <div>
+        <div className="name-timestamp">
+          <div className="friend-username">{conversation.friend.userId}</div>
+          <div className="timestamp">{formattedTime}</div>
+        </div>
+        <div className="message">{conversation.messages.length > 0 ? (
+          conversation.messages[conversation.messages.length-1].type === 'image' ? (
+            'I just sent you a photo!'
+          ) : (
+            conversation.messages[conversation.messages.length-1].content
+          )
+          ) : (
+            'no messages yet'
+          )}
+          </div>
+    </div>
     </div>
   )
 }

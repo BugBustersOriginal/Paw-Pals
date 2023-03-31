@@ -173,6 +173,7 @@ button[type="submit"]  {
   color: #7439db;
   text-decoration: underline;
   margin-top: 5vh;
+  cursor: pointer;
 }
 
 .forgot {
@@ -186,4 +187,14 @@ button[type="submit"]  {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.alert {
+  color: #d02323;
+}
+
+.img {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
 }

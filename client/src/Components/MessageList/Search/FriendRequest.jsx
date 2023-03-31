@@ -5,7 +5,18 @@ export function FriendRequest (props) {
 // console.log("🚀 ~ file: FriendRequest.jsx:5 ~ FriendRequest ~ sentRequest:", props.pendingRequests)
 
   const [requestSent, setRequestSent] = useState(false);
+  const [friendSentRequest, setFriendSentRequest] = useState(false);
   let pendingRequests = props.pendingRequests;
+  let incomingRequests = props.incomingRequests;
+
+  const checkFriendRequest = (list) => {
+    for (var i = 0; i < list.length; i ++) {
+      let user = list[i];
+      if (user.friendId === props.friendInfo.userId && user.type === 'friend request') {
+        setFriendSentRequest(true);
+      }
+    }
+  }
 
   useEffect(() => {
     if (pendingRequests) {
@@ -13,7 +24,13 @@ export function FriendRequest (props) {
         setRequestSent(true);
       }
     }
+    checkFriendRequest(incomingRequests);
+
   })
+
+  useEffect(() => {
+
+  }, [requestSent])
 
   const handleFriendRequest = (event) => {
     //make an axios call to send a friend request
@@ -35,11 +52,11 @@ export function FriendRequest (props) {
 
   return (
     <div className="friend-request-tile" data-testid="search-tile">
-      {requestSent ?
+      {requestSent || friendSentRequest ?
       <img className="friend-request-icon" src="https://cdn-icons-png.flaticon.com/512/3602/3602500.png"/> :
       <img className="friend-request-icon" src="https://cdn-icons-png.flaticon.com/512/4458/4458569.png" onClick={handleFriendRequest}/>}
       <img className="user-photo-thumbnail" src={props.friendInfo.thumbnailUrl}/>
-      <p>@{props.friendInfo.userId}</p>
+      {friendSentRequest ? <p>@{props.friendInfo.userId} sent you a friend request</p> : <p>@{props.friendInfo.userId}</p>}
     </div>
   )
 }
