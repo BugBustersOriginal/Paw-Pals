@@ -70,7 +70,7 @@
 }
 
 .friend-request-tile > img, .select-friend-tile > img {
-  margin: 1em .5em 1em .5em;
+  margin: 1em .5em 1em .25em;
 }
 
 .friend-tile-container {
