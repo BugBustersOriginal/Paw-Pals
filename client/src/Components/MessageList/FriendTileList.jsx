@@ -16,8 +16,12 @@ const FriendTileList = ( props ) => {
   }, [props.userId])
 
   conversations.sort((a,b) => {
-    const latestChatA = Math.max(...a.messages.map(m => Date.parse(m.createdAt)));
-    const latestChatB = Math.max(...b.messages.map(m => Date.parse(m.createdAt)));
+    const latestChatA = a.messages?.length > 0
+    ? Math.max(...a.messages.map(m => Date.parse(m.createdAt)))
+    : -Infinity;
+    const latestChatB = b.messages?.length > 0
+    ? Math.max(...b.messages.map(m => Date.parse(m.createdAt)))
+    : -Infinity;
     return latestChatB - latestChatA;
   })
 
