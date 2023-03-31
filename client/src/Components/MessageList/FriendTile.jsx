@@ -1,16 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const FriendTile = ( {conversation, userId} ) => {
+// const FriendTile = ( {conversation, userId} ) => {
+  const FriendTile = ( {visibleChat, userId} ) => {
 
-  if (conversation.messages === undefined) {
-    conversation.messages = []
+  if (visibleChat.messages === undefined) {
+    visibleChat.messages = []
   }
 
   let formattedTime;
 
-  if (conversation.messages.length > 0) {
-   let formattedDate = new Date(conversation.messages[conversation.messages.length-1].createdAt);
+  if (visibleChat.messages.length > 0) {
+   let formattedDate = new Date(visibleChat.messages[visibleChat.messages.length-1].createdAt);
    formattedTime = formattedDate.toLocaleString('en-US', {hour12: true, hour: 'numeric', minute: '2-digit'});
   } else {
     formattedTime = '';
@@ -20,29 +21,29 @@ const FriendTile = ( {conversation, userId} ) => {
 
   const handleClick = (e) => {
     let userOne = userId;
-    let userTwo = conversation.friend.userId;
+    let userTwo = visibleChat.friend.userId;
     let participants = [userOne, userTwo]
     navigate('/messagewindow', {state: {
       users: participants,
       currentUser: userOne,
       userTwo: userTwo,
-      userTwoProfileIcon: conversation.friend.thumbnailUrl
+      userTwoProfileIcon: visibleChat.friend.thumbnailUrl
     }})
   }
 
   return (
     <div className="friend-tile-container" onClick={handleClick}>
-      <img className="friend-profile-icon" src={conversation.friend.thumbnailUrl}/>
+      <img className="friend-profile-icon" src={visibleChat.friend.thumbnailUrl}/>
       <div>
         <div className="name-timestamp">
-          <div className="friend-username">@{conversation.friend.userId}</div>
+          <div className="friend-username">@{visibleChat.friend.userId}</div>
           <div className="timestamp">{formattedTime}</div>
         </div>
-        <div className="message">{conversation.messages.length > 0 ? (
-          conversation.messages[conversation.messages.length-1].type === 'image' ? (
+        <div className="message">{visibleChat.messages.length > 0 ? (
+          visibleChat.messages[visibleChat.messages.length-1].type === 'image' ? (
             'I just sent you a photo!'
           ) : (
-            conversation.messages[conversation.messages.length-1].content
+            visibleChat.messages[visibleChat.messages.length-1].content
           )
           ) : (
             'no messages yet'
