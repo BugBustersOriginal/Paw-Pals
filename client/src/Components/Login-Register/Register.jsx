@@ -23,7 +23,7 @@ function Register() {
 
       const guest = await axios.post('/signup', inputs);
       //for testing
-      console.log(guest.data.reminder);
+      // console.log(guest.data.reminder);
 
       if (guest.data.alert == undefined) {
         //render login page
@@ -46,7 +46,6 @@ function Register() {
     axios.get('/randomPhoto')
       .then(result => {
         let randomPhoto = result.data;
-        // console.log('randomPhoto', result.data);
         setInput({...inputs, photo: randomPhoto});
       })
   }, [])
