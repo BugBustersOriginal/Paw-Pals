@@ -3,6 +3,7 @@ import {socket} from '../../socket.js'
 import "../../../../client/chat.css"
 import Message from '../MessageWindow/Message.jsx'
 import MessageBox from '../MessageWindow/MessageBox.jsx'
+import DateSplitter from './DateSplitter.jsx'
 import { useLocation } from 'react-router-dom';
 
 
@@ -14,15 +15,29 @@ export default function MessageWindow(props) {
   const [mappedMessages, setMappedMessages] = useState([]);
   const [sender, setSender] = useState('');
   const [participant, setParticipant] = useState('');
+  const [participantProfilePic, setProfilePic] = useState('')
   const senderInputRef = useRef(null);
   const messageContainerRef= useRef(null);
   const participantRef = useRef(null);
   const [participants, setParticipants] = useState([]);
-  const location = useLocation()
+  const location = useLocation();
+
+  function isSameDay(date1, date2) {
+    console.log(`date1 is equal to ${date1}, date2 is equal to ${date2}`);
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  }
+
   useEffect(() => {
     if(location.state?.users && location.state?.currentUser && location.state?.userTwo ) {
       // console.log(`users in message window is equal to ${location.state?.users}`)
       // console.log(`users in message window is equal to ${location.state?.currentUser}`)
+      if(location.state?.userTwoProfileIcon) {
+        setProfilePic(location.state?.userTwoProfileIcon)
+      }
       setSender(location.state?.currentUser);
       setParticipants([...location.state?.users]);
       setParticipant(location.state?.userTwo);
@@ -60,12 +75,28 @@ export default function MessageWindow(props) {
 
   useEffect(()=> {
       //console.log(`mapping!`)
-      const mappedMessages = conversation.map((message) => {
-        console.log(`message is equal to ${JSON.stringify(message)}`);
-        if(message.type === 'image' && message.sender === sender) {
-          return ''
+      const mappedMessages = conversation.map((message, index) => {
+        var createdAtDate = new Date(message.createdAt);
+        let showDateSeparator = false;
+        if(index > 0) {
+          const prevDate = new Date(conversation[index-1].createdAt);
+          const currDate = new Date(conversation[index].createdAt);
+          showDateSeparator = prevDate && !isSameDay(prevDate, currDate);
+        } else if (index === 0) {
+          showDateSeparator = true;
         }
-        return <MessageBox key={message._id} sender={message.sender} content={message.content} currentUser = {sender} type={message.type} expirationTime = { message.expirationTime}  />;
+        // uncomment only if you want the receiver to see images and not the sender
+        // if(message.type === 'image' && message.sender === sender) {
+        //   return ''
+        // }
+        return (
+          <React.Fragment key = {message._id}>
+            {showDateSeparator && (
+            <DateSplitter date={createdAtDate} />
+            )}
+            <MessageBox sender={message.sender} content={message.content} currentUser = {sender} type={message.type} expirationTime = { message.expirationTime} />
+          </React.Fragment>
+        )
       });
       setMappedMessages(mappedMessages);
   },[conversation, sender, participant])
@@ -95,16 +126,19 @@ export default function MessageWindow(props) {
   const changeParticipant = (event) => {
     event.preventDefault()
     let newParticipant = participantRef.current.value;
-    console.log(`newParticipant is equal to ${newParticipant}`);
     setParticipants(prevParticipant => [sender,newParticipant]);
   }
 
 
   return (
   <div className ={`window-${props.theme}`}>
-    {participant !== undefined ? participant : ''}
-    <form> <input name ='userID' type = 'text' ref= {senderInputRef} /> <button onClick ={changeSender}>change user</button> </form>
-    <form> <input name ='userID' type = 'text' ref= {participantRef } /> <button onClick ={changeParticipant}>change participant</button> </form>
+    <div className = 'participant-info' style={{ display: 'flex', alignItems: 'center' }}>
+    <img src= {participantProfilePic} style={{ width: "75px", height: "75px", borderRadius: "50%" }}/>   <span style={{ marginLeft: "10px" }}> </span> @{participant !== undefined ? participant : ''}
+    </div>
+    <hr />
+    {/* dev buttons below for troubleshooting  */}
+    {/* <form> <input name ='userID' type = 'text' ref= {senderInputRef} /> <button onClick ={changeSender}>change user</button> </form>
+    <form> <input name ='participantID' type = 'text' ref= {participantRef } /> <button onClick ={changeParticipant}>change participant</button> </form> */}
     <div className="message-container" ref={messageContainerRef}>
       {mappedMessages}
     </div>
