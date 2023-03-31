@@ -6,6 +6,9 @@ function Profile({toggleTheme, userId}) {
 
   const [inputs, setInput] = useState({});
   const [alerts, setAlerts] = useState('');
+  const [hidePButtons, setPHidden] = useState(false);
+  const [hideChangePassword, setCPHidden] = useState(true);
+  const [hideChangePFP, setCPFPHidden] = useState(true);
 
   const navigate = useNavigate();
 
@@ -51,23 +54,29 @@ function Profile({toggleTheme, userId}) {
     }
 
   };
+
+  function toggleChangePassword () {
+    setPHidden(!hidePButtons);
+    setCPHidden(!hideChangePassword);
+  };
+
   useEffect (() => {
-    console.log(userId);
+    inputs.username = userId.userId
   }, [userId]);
 
   return (
     <div className='profile'>
-      <div>
-        <button onClick={toggleTheme}>Toggle Theme</button>
-        <button onClick={() => handleLogout()}>Logout</button>
-        <button>Change Password</button>
-        <button>Change Profile Picture</button>
+      <div hidden={hidePButtons} className='auth-form-container'>
+        <button hidden={hidePButtons} onClick={toggleTheme}>Toggle Theme</button>
+        <button hidden={hidePButtons} onClick={() => handleLogout()}>Logout</button>
+        <button onClick={() => toggleChangePassword()}>Change Password</button>
+        <button hidden={hidePButtons} >Change Profile Picture</button>
       </div>
-      <div className="auth-form-container">
-        <form className="login-form" onSubmit={handleSubmit} >
-          <label htmlFor="password">Password</label>
-          <input type="password" placeholder="New Password" id="newPassword" name="newPassword" onChange={handleInputChange} value={inputs.newPassword|| ''} required/>
-          <button type="submit">Create New Password</button>
+      <div hidden={hideChangePassword} className="auth-form-container">
+        <form hidden={hideChangePassword} className="login-form" onSubmit={handleSubmit} >
+          <label hidden={hideChangePassword} htmlFor="password">Password</label>
+          <input hidden={hideChangePassword} type="password" placeholder="New Password" id="newPassword" name="newPassword" onChange={handleInputChange} value={inputs.newPassword|| ''} required/>
+          <button hidden={hideChangePassword} type="submit">Set New Password</button>
         </form>
         {alerts !== '' ? <button>{alerts}</button>: null}
     </div>
