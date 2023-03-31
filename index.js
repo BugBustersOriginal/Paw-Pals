@@ -51,10 +51,7 @@ app.get('/', (req, res) => {
 });
 
 // front end needs to make a newconversation if the conversation has not happened before
-<<<<<<< HEAD
-app.post("/test", async (req,res) => {
-  console.log(`test came in!!!!`)
-=======
+
 app.post("/newConversation", async (req,res) => {
 //will provide list of participants (JSON body)
 //will need to determine if there is already a convo between these 2 participants
