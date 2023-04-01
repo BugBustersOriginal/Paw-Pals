@@ -221,7 +221,7 @@ return (
       <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme} userId={userRealId} userInfo={userInfo} />}  />
       <Route   path="/friendtile"  element= {<FriendTile />}  />
       <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} theme={theme} />}  />
-      <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={notificationView} />} />
+      <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={notificationView} theme={theme} />} />
     </Routes>
 
     <div className={`devButtons-${theme}`} hidden={!hide}>

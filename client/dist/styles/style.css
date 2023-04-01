@@ -19,7 +19,7 @@
   border-radius: .5em;
 }
 
-.notification-tile {
+.notification-tile-light {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -31,7 +31,19 @@
   margin-bottom: .4em;
 }
 
-.notification-tile > button {
+.notification-tile-dark {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid;
+  border-color: bisque;
+  padding: .5em;
+  border-radius: .5em;
+  margin-bottom: .4em;
+}
+
+.notification-tile-light > button {
   padding: .5em;
   border: 1px solid  hsl(0deg 0% 0% / 65%);
   text-transform: uppercase;
@@ -43,7 +55,32 @@
   border-radius: 4px;
 }
 
-.notification-button:hover {
+.notification-tile-dark > button {
+  padding: .5em;
+  border: 1px solid  bisque;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1;
+  font-size: 1em;
+  background-color : transparent;
+  outline: none;
+  border-radius: 4px;
+}
+
+.notification-button-light {
+  color: black;
+}
+
+.notification-button-dark {
+  color: bisque;
+}
+
+.notification-button-light:hover {
+  color: #001F3F;
+  background-color: #fff;
+}
+
+.notification-button-dark:hover {
   color: #001F3F;
   background-color: #fff;
 }
