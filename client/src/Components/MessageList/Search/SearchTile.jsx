@@ -14,10 +14,10 @@ export function SearchTile (props) {
   useEffect(() => {
     if (userFriends.length) {
       if (userFriends.indexOf(friendInfo.userId) !== -1) {
-        console.log('is friends');
+        // console.log('is friends');
         setIsFriend(true);
       } else {
-        console.log('is not friends');
+        // console.log('is not friends');
         setIsFriend(false);
       }
 

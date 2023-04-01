@@ -3,7 +3,7 @@ module.exports = {
   testRegex: "((\\.|/*.)(spec))\\.js?$",
   collectCoverage: true,
   collectCoverageFrom: ["<rootDir>/client/src/**/*.{js,jsx,ts,tsx}"],
-  // coverageDirectory: '../coverage',
+  coverageDirectory: '../coverage',
   coverageThreshold: {
     "global": {
       "lines": 80,

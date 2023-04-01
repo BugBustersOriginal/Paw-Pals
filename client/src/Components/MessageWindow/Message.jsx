@@ -4,6 +4,7 @@ import axios from 'axios';
 import "../../../../client/chat.css";
 
 export default function Message(props) {
+  console.log("message", props)
   const [newMessage, setNewMessage] = useState({
     sender:props.sender,
     content:'',

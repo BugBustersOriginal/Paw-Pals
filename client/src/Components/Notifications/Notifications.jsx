@@ -94,7 +94,7 @@ useEffect(() => {
       <h4>Notifications</h4>
       {friendData?.map((friend, index) => {
         return (
-            <NotificationTile key={index} userId={friend.userId} thumbnailUrl={friend.thumbnailUrl} savedPhoto={savedPhoto} requestList={requestList} acceptRequest={acceptRequest} dismissNotification={dismissNotification} />
+            <NotificationTile key={index} userId={friend.userId} thumbnailUrl={friend.thumbnailUrl} savedPhoto={savedPhoto} requestList={requestList} acceptRequest={acceptRequest} dismissNotification={dismissNotification} theme={props.theme} />
           )
       })}
     </div>

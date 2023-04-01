@@ -130,6 +130,8 @@ export default function MessageWindow(props) {
   }
 
 
+
+
   return (
   <div className ={`window-${props.theme}`}>
     <div className = 'participant-info' style={{ display: 'flex', alignItems: 'center' }}>
@@ -142,7 +144,7 @@ export default function MessageWindow(props) {
     <div className="message-container" ref={messageContainerRef}>
       {mappedMessages}
     </div>
-    <Message sender = {sender} newMessage = {new_message} conversationID={conversationID} participants = {participants}/>
+    <Message sender = {sender} newMessage = {new_message}  conversationID={conversationID} participants = {participants}/>
   </div>
   )
 }
