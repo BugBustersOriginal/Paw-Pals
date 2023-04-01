@@ -53,7 +53,7 @@ export default function Message(props) {
         data: fileImage
       })
         .then ((res) => {
-          console.log(`res from image upload is equal to ${res.data.data.image.url}`)
+          //console.log(`res from image upload is equal to ${res.data.data.image.url}`)
           // setNewMessage({...newMessage,content:"<img>"+res.data.data.image.url+"</img>"})
           setNewMessage({...newMessage,content:res.data.data.image.url, type:'image'})
           return res;
@@ -62,7 +62,7 @@ export default function Message(props) {
   }
 
   useEffect(() => {
-    console.log(`props.conversationID is equal to ${props.conversationID}`)
+    //console.log(`props.conversationID is equal to ${props.conversationID}`)
     setNewMessage(prevNewMessage => ({
       ...prevNewMessage,
       sender: props.sender,
@@ -72,14 +72,14 @@ export default function Message(props) {
     },[props.sender, props.conversationID, props.participants]);
 
   useEffect(()=>{
-    console.log(`newMessage is currently equal to ${JSON.stringify(newMessage)}`);
+    //console.log(`newMessage is currently equal to ${JSON.stringify(newMessage)}`);
     if(newMessage.content){
       handleNewMessage()
     }
   },[newMessage]);
 
   const setTime=(e)=>{
-    console.log(e.target.value)
+    //console.log(e.target.value)
     settime({time:e.target.value})
     setNewMessage({...newMessage,'expirationTime':Number(e.target.value)})
   }

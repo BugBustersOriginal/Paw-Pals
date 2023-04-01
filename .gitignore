@@ -108,3 +108,4 @@ bundle.js.LICENSE.txt
 bundle.js
 .DS_STORE
 fluffyDog.png
+.env
