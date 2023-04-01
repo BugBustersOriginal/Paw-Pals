@@ -42,7 +42,7 @@ app.use(express.json());
 const io = new Server(server, {
   cors :{
 
-    origin : [process.env.CORS_ORIGIN1, process.env.CORS_ORIGIN2],
+    origin : [process.env.CORS_ORIGIN1, process.env.CORS_ORIGIN2, 'http://localhost:3000', 'http://localhost:1234'],
 
     methods:['GET','POST','PUT']
   }
