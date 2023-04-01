@@ -109,12 +109,9 @@ export function App()  {
   useEffect(() => {
     let temp = []
     if (userLocation) {
-      userLocation.friends.forEach((friend, idx) => {
-        axios.get('/getUserInfo', {params: {userId: friend} })
-        .then((result) => {
-          // console.log('result', result.data)
-          let friendInfo = result.data;
-          axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
+      // if (userLocation.friends.length > 0) {
+        userLocation.friends.forEach((friend, idx) => {
+          axios.get('/getUserInfo', {params: {userId: friend} })
           .then((result) => {
                 temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
                 // setFriendsLocation(current => [...current, friend])
@@ -124,7 +121,7 @@ export function App()  {
         .catch((err) => {
           console.error(err);
         })
-      })
+      // }
     }
   }, [userLocation])
 
