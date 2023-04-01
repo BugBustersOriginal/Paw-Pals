@@ -135,7 +135,7 @@
 
 
 .message-container {
-  padding-top: 20px;
+  padding-top: 20px; /* trying to change css on git hub*/
   overflow-y: scroll;
   height:400px;
 }
