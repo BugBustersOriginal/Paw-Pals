@@ -27,12 +27,12 @@ export default function MessageBox(props) {
     resolveAfterXSeconds(props.expirationTime)
   }
   useEffect(()=>{
-    console.log("img", img)
-    console.log(`url is equal to`, url)
+    // console.log("img", img)
+    // console.log(`url is equal to`, url)
   },[url])
 
   const resolveAfterXSeconds=(expirationTime) => {
-    console.log(`expirationTime is equal to ${expirationTime}`);
+    //console.log(`expirationTime is equal to ${expirationTime}`);
     var prom = new Promise(resolve => {
       setTimeout(() => {
         seturl('');
