@@ -38,16 +38,31 @@ export function Search (props) {
     // after sucessful search, change tileStatus to true
   }
 
-  const handleSelection = (userOne, userTwo) => {
-    let conversation = [userOne, userTwo]
+  const handleSelection = (userOne, userTwo, profileIcon) => {
+    let currentUser = userOne;
+    let selectedUser = userTwo;
+    let conversation = [currentUser, selectedUser]
     navigate(`/messagewindow`,{
       state: {
         users: conversation,
-        currentUser: userInfo.userId,
-        userTwo: userTwo
+        currentUser: currentUser,
+        userTwo: selectedUser,
+        userTwoProfileIcon: profileIcon
       }
     })
   }
+
+  // const handleClick = (e) => {
+  //   let userOne = userId;
+  //   let userTwo = visibleChat.friend.userId;
+  //   let participants = [userOne, userTwo]
+  //   navigate('/messagewindow', {state: {
+  //     users: participants,
+  //     currentUser: userOne,
+  //     userTwo: userTwo,
+  //     userTwoProfileIcon: visibleChat.friend.thumbnailUrl
+  //   }})
+  // }
 
 
   return (
