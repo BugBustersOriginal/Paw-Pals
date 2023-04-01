@@ -95,8 +95,13 @@ export function App()  {
           let userInfo = result.data;
           axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
           .then((result) => {
+            if (result.data.results[0]) {
               userInfo.location = result.data.results[0].geometry.location
               setUserLocation(userInfo)
+            } else {
+              userInfo.location = { lat: -34.397, lng: 150.644 };
+              setUserLocation(userInfo);
+            }
           })
           .catch((err) => {
               console.error('error getting location', err);
@@ -113,13 +118,25 @@ export function App()  {
         userLocation.friends.forEach((friend, idx) => {
           axios.get('/getUserInfo', {params: {userId: friend} })
           .then((result) => {
-                temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
-                // setFriendsLocation(current => [...current, friend])
-                setFriendsLocation(temp)
-            })
-        })
-        .catch((err) => {
-          console.error(err);
+            // console.log('result', result.data)
+            let friendInfo = result.data;
+            axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
+            .then((result) => {
+                if (result.data.results[0]) {
+                  temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
+                  // setFriendsLocation(current => [...current, friend])
+                  setFriendsLocation(temp)
+                } else {
+                  temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: { lat: -34.397, lng: 150.644 }}
+                  // setFriendsLocation(current => [...current, friend])
+                  setFriendsLocation(temp)
+                }
+                // console.log(friendsLocation)
+              })
+          })
+          .catch((err) => {
+            console.error(err);
+          })
         })
       // }
     }
