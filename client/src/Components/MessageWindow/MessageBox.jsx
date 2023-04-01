@@ -3,6 +3,8 @@ import {socket} from '../../socket.js';
 import "../../../../client/chat.css";
 import axios from 'axios';
 
+const MESSAGE_SERVER_IMG_VIEWED = 'http://localhost:3000/imgViewed';
+const MESSAGE_SERVER_IMG_DLED = 'http://localhost:3000/imgDled'
 
 export default function MessageBox(props) {
   const [img, setimg]  = useState(false);
@@ -38,16 +40,7 @@ export default function MessageBox(props) {
         seturl('');
         settype('expired')
         setcontent('Snap deleted')
-        // axios.post('http://localhost:3000/imgViewed', {viewed: true})
-        axios.post(`http://localhost:3000/imgViewed`, {msgID : props.msgId, convID: props.convId })
-        // axios({
-        //   method: 'post',
-        //   url: 'http://localhost:3000/imgViewed',
-        //   data: {
-        //     firstName: 'Fred',
-        //     lastName: 'Flintstone'
-        //   }
-        // });
+        axios.post(MESSAGE_SERVER_IMG_VIEWED, {msgID : props.msgId, convID: props.convId })
       }, expirationTime);
     });
   }
@@ -55,14 +48,14 @@ export default function MessageBox(props) {
 
   const download = async() =>{
     const a = document.createElement("a");
-    a.href = await toDataURL(url.url);
+    a.href = await toDataURL(url);
     a.download = "snap.png";
     document.body.appendChild(a);
     console.log(a)
     a.click();
     document.body.removeChild(a);
     console.log("sender", props.sender)
-    axios.post("http://localhost:3000/imgDled", {sender: props.sender})
+    axios.post(MESSAGE_SERVER_IMG_DLED, {sender: props.sender})
   }
 
   function toDataURL(url) {
