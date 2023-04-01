@@ -53,3 +53,15 @@ exports.dismissNotification = (req, res) => {
   axios.post(`${process.env.MONGODB_SERVER}/dismissNotification`, {data: dismissObj})
 }
 
+exports.changeProfilePicure = (req,res) => {
+  let changePFP = req.body;
+  axios.post(`${process.env.MONGODB_SERVER}/changeprofilepicture`, { data: changePFP })
+    .then((result) => {
+      console.log('accept Request succuess');
+      res.status(201).send();
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send(err);
+    })
+}

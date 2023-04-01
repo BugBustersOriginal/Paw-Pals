@@ -54,7 +54,7 @@
 .iconButton {
   cursor: pointer;
   height: 25px;
-  padding: 3vh 8vh;
+  padding: 3vh 7vh;
 }
 
 .iconButton:hover {
@@ -253,6 +253,8 @@ button[type="submit"]  {
   object-fit: cover;
   border-radius: 50%;
   margin-bottom: 2vh;
+  margin-top: 2vh;
+  align-self: center;
 }
 
 .profileButtons {
@@ -260,6 +262,13 @@ button[type="submit"]  {
   margin-top: 20px;
   background-color: white;
   padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #7439db;
+}
+
+.imageSubmission {
+  background-color: white;
   border-radius: 10px;
   cursor: pointer;
   color: #7439db;

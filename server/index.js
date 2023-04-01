@@ -86,6 +86,8 @@ app.post('/forgotpassword', forgetPassword);
 
 app.post('/changepassword', changePassword);
 
+app.post('/changePFP', postControllers.changeProfilePicure)
+
 app.post('/signup', postSignUp);
 app.post('/login',postLogIn);
 app.get('/logout', getLogOut);
