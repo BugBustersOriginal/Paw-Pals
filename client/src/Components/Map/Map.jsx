@@ -7,7 +7,7 @@ export function Map({ userInfo, userFriends, theme }) {
   const [screenCenter, setScreenCenter] = useState({lat: 0, lng: 0});
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyB1le7LEHbnuufJ03zPAF2Mh1xlmszRo4U" // restricted key
+    googleMapsApiKey: "AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs" // restricted key
   });
 
   const [state, setstate] = useState({
