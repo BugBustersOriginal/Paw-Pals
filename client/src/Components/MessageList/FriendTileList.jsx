@@ -31,7 +31,9 @@ const FriendTileList = ( props ) => {
   return (
     <div>
       <Search userFriends={props.userFriends} userInfo={props.userInfo} userId={props.userId} incomingRequests={props.incomingRequests} pendingRequests={props.pendingRequests} />
+      <div className="scroll-list">
       {visibleChats.map((visibleChat, index) => <FriendTile visibleChat={visibleChat} key={index} userId={props.userId}/>)}
+      </div>
     </div>
   )
 }
