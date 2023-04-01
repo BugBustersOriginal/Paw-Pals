@@ -30,14 +30,59 @@
   color: bisque;
 }
 
-.devButtons {
+.devButtons-dark {
   flex-direction: row;
   padding-bottom: 0.5rem;
   position: fixed;
   bottom: 0;
+  background: rgb(59, 49, 60);
+  width: 500px;
+  border-top: solid;
+  flex-shrink: 0;
+}
+.devButtons-light {
+  flex-direction: row;
+  padding-bottom: 0.5rem;
+  position: fixed;
+  bottom: 0;
+  background: rgb(250 253 156);
+  width: 500px;
+  border-top: solid;
+  flex-shrink: 0;
 }
 
+.iconButton {
+  cursor: pointer;
+  height: 25px;
+  padding: 3vh 7vh;
+}
 
+.iconButton:hover {
+  color:aqua
+}
+
+.navigationButton-dark {
+  border-bottom-style: none;
+  border-top-width: 2px;
+}
+
+.messageNavButton-dark {
+  border-color: bisque;
+  border-left-style: solid;
+  border-right-style: solid;
+
+}
+
+.navigationButton-light {
+  border-bottom-style: none;
+  border-top-width: 2px;
+}
+
+.messageNavButton-light {
+  border-color: black;
+  border-left-style: solid;
+  border-right-style: solid;
+}
 
 /*logo*/
 .logo-light{
@@ -51,7 +96,8 @@
 /* Message Window */
 .window-light {
   row-gap: 50px;
-  margin: auto;
+  margin: 2vh;
+  margin-bottom: 80px;
   border: 2px solid #dedede;
   background-color: rgb(252,255,178);
   border-radius: 5px;
@@ -63,7 +109,8 @@
 
 .window-dark {
   row-gap: 50px;
-  margin: auto;
+  margin: 2vh;
+  margin-bottom: 80px;
   border: 2px solid #dedede;
   background-color: rgb(62, 52, 80);
   border-radius: 5px;
@@ -135,9 +182,9 @@
 
 
 .message-container {
-  padding-top: 20px;
+  padding-top: 20vh;
   overflow-y: scroll;
-  height:400px;
+  height: 20vh;
 }
 
 /*Login and Register*/
@@ -195,12 +242,44 @@ button[type="submit"]  {
 /*Profile*/
 
 .profile {
-  padding-top: 35vh;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.profilePicture{
+  height: 20vh;
+  width: 20vh;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 2vh;
+  margin-top: 2vh;
+  align-self: center;
+}
+
+.profileButtons {
+  border: none;
+  margin-top: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #7439db;
+}
+
+.imageSubmission {
+  background-color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #7439db;
+}
+
 .alert {
   color: #d02323;
+}
+
+.img {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
 }

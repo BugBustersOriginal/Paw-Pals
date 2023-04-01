@@ -21,9 +21,17 @@ function ForgotPassword() {
     event.preventDefault();
     try {
       const guest = await axios.post('/forgotpassword', inputs);
-      //for testing
-      console.log(guest.data);
-      navigate('/login');
+
+      if (guest.data.alert === undefined) {
+        //render login page
+        navigate(guest.data.url);
+
+      } else {
+       setAlerts(() => (
+        guest.data.alert
+       ))
+      }
+      // navigate('/login');
 
     } catch (err) {
       console.log(err);
@@ -57,7 +65,7 @@ function ForgotPassword() {
       <button className="link-button" onClick={handleLoginClick} >Log in</button>
       <button className="link-button" onClick={handleClick} >Don't have an account? Register here</button>
       {/* if username exist, alert user to change a new username */}
-      {alerts !== '' ? <button>{alerts}</button>: null}
+      {alerts !== '' ? <span className="alert">{alerts}</span>: null}
     </div>
   );
 }

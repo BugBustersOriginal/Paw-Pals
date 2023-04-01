@@ -12,6 +12,10 @@ import Login from './Components/Login-Register/Login.jsx';
 import Register from './Components/Login-Register/Register.jsx';
 import Profile from './Components/Profile/Profile.jsx';
 import ForgotPassword from './Components/Login-Register/ForgotPassword.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-regular-svg-icons';
+import { faUser, faLocationDot, faComments } from '@fortawesome/free-solid-svg-icons';
+
 
 export function App()  {
   const navigate = useNavigate();
@@ -47,21 +51,18 @@ export function App()  {
         // setPendingRequests([]);
         // setIncomingRequests([]);
         const guest = await axios.get('/logout');
-        //for testing
-        console.log(guest.data.reminder);
+
 
         navigate("/login");
       } catch (err) {
         console.log(err)
       }
     } else if (e.target.innerText === 'FriendTileList') {
-      //for testing
-      console.log('home has userId',userRealId)
+
       navigate('/home');
 
     } else {
-      //for testing
-      console.log(`${(e.target.innerText).toLowerCase()} has userId`, userRealId);
+
       navigate(`/${(e.target.innerText).toLowerCase()}`);
     }
   }
@@ -76,51 +77,57 @@ export function App()  {
 }
   //set userInfo from postgres into state
   const handleUserLogin = (data) => {
-      //  let {address1, address2, city, state, country, zipcode} = data;
-      //  let userFromProsgres = {userId: data.username, thumbnailUrl: data.avatar_url, address1, address2, city, state, country, zipcode};
-      //  console.log('login path', userFromProsgres);
-      console.log(data.username, 'line 78 App.jsx')
+
       let userFromProsgres = {userId: data.username};
-       setUserRealId(userFromProsgres); //kona
+       setUserRealId(userFromProsgres);
   };
 
   //clears notification badge on notification page
   const notificationView = () => {
     setNotificationBadge(false);
   }
+
+  // creates user object with coordinate location
   useEffect(() => {
-    if (userInfo) {
-      axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
-      .then((result) => {
-        userInfo.location = result.data.results[0].geometry.location
-        setUserLocation(userInfo)
-      })
-      .catch((err) => {
-          console.error('error getting location', err);
+    if (userId) {
+      axios.get('/getUserInfo', {params: {userId: userId} })
+        .then((result) => {
+          let userInfo = result.data;
+          axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
+          .then((result) => {
+            userInfo.location = result.data.results[0].geometry.location
+            setUserLocation(userInfo)
+          })
+          .catch((err) => {
+              console.error('error getting location', err);
+            })
         })
       }
-  }, [userInfo])
+  }, [userId])
 
+  // creates array of objects that contain friends and their coordinate location
   useEffect(() => {
     let temp = []
-    userFriends.forEach((friend, idx) => {
-      axios.get('/getUserInfo', {params: {userId: friend} })
-      .then((result) => {
-        // console.log('result', result.data)
-        let friendInfo = result.data;
-        axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
+    if (userLocation) {
+      userLocation.friends.forEach((friend, idx) => {
+        axios.get('/getUserInfo', {params: {userId: friend} })
         .then((result) => {
-          temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
-          // setFriendsLocation(current => [...current, friend])
-          setFriendsLocation(temp)
-          // console.log(friendsLocation)
+          // console.log('result', result.data)
+          let friendInfo = result.data;
+          axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
+          .then((result) => {
+            temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
+            // setFriendsLocation(current => [...current, friend])
+            setFriendsLocation(temp)
+            // console.log(friendsLocation)
+          })
+        })
+        .catch((err) => {
+          console.error(err);
         })
       })
-      .catch((err) => {
-        console.error(err);
-      })
-    })
-  }, [userFriends])
+    }
+  }, [userLocation])
 
 
   //runs on document change
@@ -130,13 +137,8 @@ export function App()  {
 
       axios.get('/authUser')
        .then((result) => {
-        //  console.log(result.data, 'line 111 App.jsx')
           if (result.data) {
             let authUser = result.data;
-            // console.log(authUser.username, 'line 113 App.jsx')
-            // let {address1, address2, city, state, country, zipcode} = authUser;
-            // let userFromProsgres = {userId: authUser.username, thumbnailUrl: authUser.avatar_url, address1, address2, city, state, country, zipcode};
-            // console.log('auth path', userFromProsgres);
             let userFromProsgres = {userId: authUser.username};
             setUserRealId(userFromProsgres);
             return authUser.username;
@@ -153,7 +155,7 @@ export function App()  {
           //user in register page, in login page or not login success, do nothing
           return null;
         }
-        console.log('check if user login success ', user);
+        // console.log('check if user login success ', user);
          axios.get('/getUserInfo', {params: {userId: user} })
           .then((result) => {
             let userInfo = result.data;
@@ -204,9 +206,10 @@ return (
   <div className={`App ${theme}`} onClick={() => hideLogoNav(location.pathname)}>
     <img hidden={hide} className={`logo-${theme}`} src="https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__480.png" alt="fluffy doggy" ></img>
     <div className='notification-bar' hidden={!hide}>
-    <button onClick={(e) => handleDevClick(e)}>Notifications</button>
+    <FontAwesomeIcon icon={faBell} onClick={() => navigate('/notifications')} className="iconButton" />
         {incomingRequests.length && notificationBadge ? <span className="notification-badge"><p>{incomingRequests.length}</p></span> : null}
     </div>
+
 
     <Routes>
       <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} incomingRequests={incomingRequests} pendingRequests={pendingRequests}/>}  />
@@ -214,20 +217,18 @@ return (
       <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
       <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
       <Route   path="/register"  element= {<Register />}  />
-      <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  />
-      <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme}/>}  />
+      <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} theme={theme} />}  />
+      <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme} userId={userRealId} userInfo={userInfo} />}  />
       <Route   path="/friendtile"  element= {<FriendTile />}  />
       <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} theme={theme} />}  />
-      <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={notificationView} />} />
+      <Route   path="/notifications" element={<Notifications userId={userId} incomingRequests={incomingRequests} notificationView={notificationView} theme={theme} />} />
     </Routes>
 
-    <div className="devButtons" hidden={!hide}>
-      <h4>Navigation</h4>
+    <div className={`devButtons-${theme}`} hidden={!hide}>
       <div>
-        <button onClick={(e) => handleDevClick(e)}>Profile</button>
-        <button onClick={(e) => handleDevClick(e)}>FriendTileList</button>
-        <button onClick={(e) => handleDevClick(e)}>Map</button>
-        {/*<button onClick={(e) => handleDevClick(e)}>MessageWindow</button>*/}
+        <FontAwesomeIcon icon={faUser} onClick={() => navigate('/profile')} className={`iconButton navigationButton-${theme}`} />
+        <FontAwesomeIcon icon={faComments} onClick={() => navigate('/home')} className={`iconButton navigationButton-${theme} messageNavButton-${theme}`} />
+        <FontAwesomeIcon icon={faLocationDot} onClick={() => navigate('/map')} className={`iconButton navigationButton-${theme}`} />
       </div>
     </div>
 
@@ -235,8 +236,4 @@ return (
   </div>
 )
 }
-
-
-
-
 

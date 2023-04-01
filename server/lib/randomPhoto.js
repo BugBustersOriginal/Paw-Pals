@@ -14,7 +14,7 @@ const getRandomPhoto = (req, res) => {
     res.status(200).send(photoUrl);
   })
   .catch(error => {
-    //console.log(error);
+    console.log(error);
     res.send('')
   });
 

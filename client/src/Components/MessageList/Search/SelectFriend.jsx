@@ -13,7 +13,7 @@ export function SelectFriend (props) {
 
   return (
     <div className="select-friend-tile" data-testid="search-tile">
-      <input type="checkbox" name="select" value="true" onClick={handleClick}/>
+      <input data-testid="select-friend-tile" type="checkbox" name="select" value="true" onClick={handleClick}/>
       <img className="user-photo-thumbnail" src={props.friendInfo.thumbnailUrl}/>
       <p>@{props.friendInfo.userId}</p>
       {/* {arrow ? <span className="arrow right" onClick={() => props.handleSelection(userId, props.friendInfo.userId)}></span> : null} */}
