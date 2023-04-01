@@ -190,6 +190,7 @@ export function App()  {
    }, [location,theme]);
 
 
+
  //this is for page refresh set to every 5 seconds
  useEffect(() => {
   if (userId) {
