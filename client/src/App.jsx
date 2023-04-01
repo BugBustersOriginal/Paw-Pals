@@ -86,39 +86,48 @@ export function App()  {
   const notificationView = () => {
     setNotificationBadge(false);
   }
+
+  // creates user object with coordinate location
   useEffect(() => {
-    if (userInfo) {
-      axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
-      .then((result) => {
-        userInfo.location = result.data.results[0].geometry.location
-        setUserLocation(userInfo)
-      })
-      .catch((err) => {
-          console.error('error getting location', err);
+    if (userId) {
+      axios.get('/getUserInfo', {params: {userId: userId} })
+        .then((result) => {
+          let userInfo = result.data;
+          axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
+          .then((result) => {
+            userInfo.location = result.data.results[0].geometry.location
+            setUserLocation(userInfo)
+          })
+          .catch((err) => {
+              console.error('error getting location', err);
+            })
         })
       }
-  }, [userInfo])
+  }, [userId])
 
+  // creates array of objects that contain friends and their coordinate location
   useEffect(() => {
     let temp = []
-    userFriends.forEach((friend, idx) => {
-      axios.get('/getUserInfo', {params: {userId: friend} })
-      .then((result) => {
-        // console.log('result', result.data)
-        let friendInfo = result.data;
-        axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || 90680, key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
+    if (userLocation) {
+      userLocation.friends.forEach((friend, idx) => {
+        axios.get('/getUserInfo', {params: {userId: friend} })
         .then((result) => {
-          temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
-          // setFriendsLocation(current => [...current, friend])
-          setFriendsLocation(temp)
-          // console.log(friendsLocation)
+          // console.log('result', result.data)
+          let friendInfo = result.data;
+          axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
+          .then((result) => {
+            temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
+            // setFriendsLocation(current => [...current, friend])
+            setFriendsLocation(temp)
+            // console.log(friendsLocation)
+          })
+        })
+        .catch((err) => {
+          console.error(err);
         })
       })
-      .catch((err) => {
-        console.error(err);
-      })
-    })
-  }, [userFriends])
+    }
+  }, [userLocation])
 
 
   //runs on document change
@@ -208,7 +217,7 @@ return (
       <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
       <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />
       <Route   path="/register"  element= {<Register />}  />
-      <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} />}  />
+      <Route   path="/map"  element= {<Map userInfo={userLocation} userFriends={friendsLocation} theme={theme} />}  />
       <Route   path="/profile"  element= {<Profile toggleTheme={toggleTheme} userId={userRealId} userInfo={userInfo} />}  />
       <Route   path="/friendtile"  element= {<FriendTile />}  />
       <Route   path="/messagewindow"  element= {<MessageWindow userId={userId} theme={theme} />}  />

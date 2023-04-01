@@ -88,20 +88,7 @@
 .notification-badge {
   position: absolute;
   background-color: #f25959;
-  margin-left: -0.5em;
-  margin-top: -0.5em;
-  border-radius: 100%;
-  font-size: .7em;
-  border: 2px solid;
-  border-color: #1C1C1C;
-  height: 16px;
-  width: 16px;
-}
-
-.notification-badge {
-  position: absolute;
-  background-color: #f25959;
-  margin-left: -7vh;
+  margin-left: -8vh;
   margin-top: 1vh;
   border-radius: 100%;
   font-size: .7em;
@@ -110,12 +97,24 @@
   height: 16px;
   width: 16px;
 }
+
+.notification-badge > p {
+  position: relative;
+  top: -0.7em;
+}
+
+
 .friend-request-tile > p {
   padding: 1%;
 }
 
 .friend-request-tile > img, .select-friend-tile > img {
   margin: 1em .5em 1em .25em;
+}
+
+.scroll-list {
+  height: 72vh;
+  overflow: auto;
 }
 
 .friend-tile-container {
@@ -179,5 +178,5 @@
 
 .map-container {
   width: 100%;
-  height: 100vh;
+  height: 50vh;
 }
