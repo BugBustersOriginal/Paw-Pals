@@ -12,8 +12,10 @@ Users will recieve real time notifications when they recieve a friend request or
 Users can search for existing friends in the search bar to quickly select them to send a new message
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_300/v1680644002/Screenshot_2023-04-04_at_3.27.08_PM_ycxcik.png)
 
+
 Users can search for other users and send them a friend request
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_300/v1680644137/Screenshot_2023-04-04_at_3.26.29_PM_od99ii.png)
+
 
 Users will be informed if the user they are searching for has already sent them a friend request
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_300/v1680643999/Screenshot_2023-04-04_at_3.26.46_PM_bhrgkw.png)
