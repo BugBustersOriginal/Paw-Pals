@@ -46,9 +46,9 @@ The messaging feature also includes other useful functionalities such as read re
 
 # Team Members:
 
-Thomas Van
-Debra Zhang
-Mary Ann Hereford
-Michaelangelo Bellinghausen
-Tony Vo
-Andy Ma
+- Thomas Van
+- Debra Zhang
+- Mary Ann Hereford
+- Michaelangelo Bellinghausen
+- Tony Vo
+- Andy Ma
