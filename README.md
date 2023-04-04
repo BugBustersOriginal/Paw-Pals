@@ -5,8 +5,18 @@ PawPals is a fun and exciting app that is perfect for anyone who loves pets! Ins
 # Login/Authentication
 
 # Notifications
+Users will recieve real time notifications when they recieve a friend request or when their friend saves their snap photo.
+![alt](https://file.notion.so/f/s/4746f731-0577-4395-824d-c2dad1c08438/Screenshot_2023-04-04_at_3.11.48_PM.png?id=4518fb3e-364d-4679-99b0-838a1641835d&table=block&spaceId=2a363adf-b596-4270-823e-50a4b7bb0c67&expirationTimestamp=1680729793018&signature=4C7tPg7eqsTQEYk8jydw0rSjTgJKXQKX75MogUiX0Xo&downloadName=Screenshot+2023-04-04+at+3.11.48+PM.png)
 
 # Friends List
+Users can search for existing friends in the search bar to quickly select them to send a new message
+![alt](https://file.notion.so/f/s/abca2915-04ac-498f-b2d4-afb7e146ce5e/Screenshot_2023-04-04_at_3.27.08_PM.png?id=5de77ed3-8404-4e71-8c3e-b54301b5ead4&table=block&spaceId=2a363adf-b596-4270-823e-50a4b7bb0c67&expirationTimestamp=1680730133808&signature=t1AiT0A3PnJqlWjz5LdijIJ-FWKx8VCbW9hxTHTm6EE&downloadName=Screenshot+2023-04-04+at+3.27.08+PM.png)
+
+Users can search for other users and send them a friend request
+![alt](https://file.notion.so/f/s/75232439-77bb-4548-a726-fbf3d2286327/Screenshot_2023-04-04_at_3.26.29_PM.png?id=100ae1ed-7907-4635-8907-4e66b096f4be&table=block&spaceId=2a363adf-b596-4270-823e-50a4b7bb0c67&expirationTimestamp=1680730155644&signature=-dnGC7uYSiERSaArIykUZyZ5T1KeZcJ58Qwd3hjmzp0&downloadName=Screenshot+2023-04-04+at+3.26.29+PM.png)
+
+Users will be informed if the user they are searching for has sent them a friend request
+![alt](https://file.notion.so/f/s/8e09ed8b-3151-4a07-be8a-fd994c33bcc3/Screenshot_2023-04-04_at_3.26.46_PM.png?id=53740a82-b0ee-4b36-a09b-e5302f4253f6&table=block&spaceId=2a363adf-b596-4270-823e-50a4b7bb0c67&expirationTimestamp=1680730177121&signature=oM-IUOExTCIJcEHFF9y5-YS7cYDZzafVJCVosIrWID0&downloadName=Screenshot+2023-04-04+at+3.26.46+PM.png)
 
 # Instant Messages
 
