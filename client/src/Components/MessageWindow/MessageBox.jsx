@@ -3,8 +3,8 @@ import {socket} from '../../socket.js';
 import "../../../../client/chat.css";
 import axios from 'axios';
 
-const MESSAGE_SERVER_IMG_VIEWED = 'http://localhost:3000/imgViewed';
-const MESSAGE_SERVER_IMG_DLED = 'http://localhost:3000/imgDled'
+const MESSAGE_SERVER_IMG_VIEWED = 'http://localhost:1234/imgViewed';
+const MESSAGE_SERVER_IMG_DLED = 'http://localhost:1234/imgDled'
 
 export default function MessageBox(props) {
   const [img, setimg]  = useState(false);
@@ -55,7 +55,8 @@ export default function MessageBox(props) {
     a.click();
     document.body.removeChild(a);
     console.log("sender", props.sender)
-    axios.post(MESSAGE_SERVER_IMG_DLED, {sender: props.sender})
+    console.log("downloader: ", props.currentUser);
+    axios.post(MESSAGE_SERVER_IMG_DLED, {sender: props.sender, downloader: props.currentUser})
   }
 
   function toDataURL(url) {
