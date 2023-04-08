@@ -95,8 +95,14 @@ export function App()  {
           let userInfo = result.data;
           axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: userInfo.location || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} }) // restricted key
           .then((result) => {
-            userInfo.location = result.data.results[0].geometry.location
-            setUserLocation(userInfo)
+              console.log('result', result.data)
+            if (result.data.results[0]) {
+              userInfo.location = result.data.results[0].geometry.location
+              setUserLocation(userInfo)
+            } else {
+              userInfo.location = { lat: 33.804, lng: -117.996 };
+              setUserLocation(userInfo);
+            }
           })
           .catch((err) => {
               console.error('error getting location', err);
@@ -109,23 +115,32 @@ export function App()  {
   useEffect(() => {
     let temp = []
     if (userLocation) {
-      userLocation.friends.forEach((friend, idx) => {
-        axios.get('/getUserInfo', {params: {userId: friend} })
-        .then((result) => {
-          // console.log('result', result.data)
-          let friendInfo = result.data;
-          axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
+      // if (userLocation.friends.length > 0) {
+        userLocation.friends.forEach((friend, idx) => {
+          axios.get('/getUserInfo', {params: {userId: friend} })
           .then((result) => {
-            temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
-            // setFriendsLocation(current => [...current, friend])
-            setFriendsLocation(temp)
-            // console.log(friendsLocation)
+            let friendInfo = result.data;
+            axios.get('https://maps.googleapis.com/maps/api/geocode/json', {params: {address: friendInfo.location.slice(-5) || '90680', key: 'AIzaSyDzYeSOmXDSnEUDWziiihd5ngEZ9EXylbs'} })
+            .then((result) => {
+              // console.log('result', result.data)
+              {
+                // if (result.data.results[0]) {
+                //   temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: result.data.results[0].geometry.location }
+                //   // setFriendsLocation(current => [...current, friend])
+                //   setFriendsLocation(temp)
+                // } else {
+                  temp[idx] = {userId: friendInfo.userId, thumbnailUrl: friendInfo.thumbnailUrl, location: { lat: (33.804 + (1+idx)**2), lng: (-117.996 + (1+idx)**2) }}
+                  // setFriendsLocation(current => [...current, friend])
+                  setFriendsLocation(temp)
+                }
+                // console.log(friendsLocation)
+              })
+          })
+          .catch((err) => {
+            console.error(err);
           })
         })
-        .catch((err) => {
-          console.error(err);
-        })
-      })
+      // }
     }
   }, [userLocation])
 
@@ -212,7 +227,7 @@ return (
 
 
     <Routes>
-      <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} incomingRequests={incomingRequests} pendingRequests={pendingRequests}/>}  />
+      <Route   path="/home"  element= {<FriendTileList userId={userId} userInfo={userInfo} userFriends={userFriends} incomingRequests={incomingRequests} pendingRequests={pendingRequests} theme={theme} />}  />
         {/* <Route   path="/"  element= {<Login />}  /> */}
       <Route   path="/login"  element= {<Login handleUserLogin={handleUserLogin}/>}  />
       <Route   path="/forgotpassword"  element= {<ForgotPassword/>}  />

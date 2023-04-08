@@ -3,6 +3,8 @@ import {socket} from '../../socket.js';
 import "../../../../client/chat.css";
 import axios from 'axios';
 
+const MESSAGE_SERVER_IMG_VIEWED = 'http://localhost:1234/imgViewed';
+const MESSAGE_SERVER_IMG_DLED = 'http://localhost:1234/imgDled'
 
 export default function MessageBox(props) {
   const [img, setimg]  = useState(false);
@@ -27,27 +29,18 @@ export default function MessageBox(props) {
     resolveAfterXSeconds(props.expirationTime)
   }
   useEffect(()=>{
-    console.log("img", img)
-    console.log(`url is equal to`, url)
+    // console.log("img", img)
+    // console.log(`url is equal to`, url)
   },[url])
 
   const resolveAfterXSeconds=(expirationTime) => {
-    console.log(`expirationTime is equal to ${expirationTime}`);
+    //console.log(`expirationTime is equal to ${expirationTime}`);
     var prom = new Promise(resolve => {
       setTimeout(() => {
         seturl('');
         settype('expired')
         setcontent('Snap deleted')
-        // axios.post('http://localhost:3000/imgViewed', {viewed: true})
-        axios.post(`http://localhost:3000/imgViewed`, {msgID : props.msgId, convID: props.convId })
-        // axios({
-        //   method: 'post',
-        //   url: 'http://localhost:3000/imgViewed',
-        //   data: {
-        //     firstName: 'Fred',
-        //     lastName: 'Flintstone'
-        //   }
-        // });
+        axios.post(MESSAGE_SERVER_IMG_VIEWED, {msgID : props.msgId, convID: props.convId })
       }, expirationTime);
     });
   }
@@ -55,14 +48,15 @@ export default function MessageBox(props) {
 
   const download = async() =>{
     const a = document.createElement("a");
-    a.href = await toDataURL(url.url);
+    a.href = await toDataURL(url);
     a.download = "snap.png";
     document.body.appendChild(a);
     console.log(a)
     a.click();
     document.body.removeChild(a);
     console.log("sender", props.sender)
-    axios.post("http://localhost:3000/imgDled", {sender: props.sender})
+    console.log("downloader: ", props.currentUser);
+    axios.post(MESSAGE_SERVER_IMG_DLED, {sender: props.sender, downloader: props.currentUser})
   }
 
   function toDataURL(url) {

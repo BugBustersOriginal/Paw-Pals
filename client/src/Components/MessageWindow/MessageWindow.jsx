@@ -94,7 +94,7 @@ export default function MessageWindow(props) {
             {showDateSeparator && (
             <DateSplitter date={createdAtDate} />
             )}
-            <MessageBox sender={message.sender} content={message.content} currentUser = {sender} type={message.type} expirationTime = { message.expirationTime} />
+            <MessageBox key={message._id} sender={message.sender} view={message.viewed} participant={participants} msgId = {message._id} convId ={conversationID} content={message.content} currentUser = {sender} type={message.type} expirationTime = { message.expirationTime}  />
           </React.Fragment>
         )
       });

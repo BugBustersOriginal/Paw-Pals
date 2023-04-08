@@ -182,9 +182,9 @@
 
 
 .message-container {
-  padding-top: 20vh;
+  padding-top: 20px; /* trying to change css on git hub*/
   overflow-y: scroll;
-  height: 20vh;
+  height:400px;
 }
 
 /*Login and Register*/
