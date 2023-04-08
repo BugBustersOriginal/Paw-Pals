@@ -5,9 +5,9 @@ PawPals is a fun and exciting app that is perfect for anyone who loves pets! Ins
 # Login/Authentication
 
 # Notifications
-Notifications is a crucial feature to connect a user to the wider community of Paw Pals. Notifications allow users to accept friend requests from others and to also be notified when their friend downloads a photo that the user had sent. This feature was implemented using React to capture current user and friend data, and MongoDB to update the two user profiles. Node.js and Express was use for the API server. 
+Notifications is a crucial feature to connect a user to the wider community of Paw Pals. Notifications allow users to accept friend requests from others and to also be notified when their friend downloads a photo that the user had sent. This feature was implemented using React to capture current user and friend data, and MongoDB to update the two user profiles. Node.js and Express was use for the API server.
 
-Every user has a userProfile Model in the MongoDB Paw Pals collection. Each userProfile has an "incomingNotifications" property which is an array that accepts objects. Each object contains a key indicating the friendId that is notifying the user, and key "type" containing the type of notification. Paw Pals currently has two types of notifications, "friend request" and "saved photo". 
+Every user has a userProfile Model in the MongoDB Paw Pals collection. Each userProfile has an "incomingNotifications" property which is an array that accepts objects. Each object contains a key indicating the friendId that is notifying the user, and key "type" containing the type of notification. Paw Pals currently has two types of notifications, "friend request" and "saved photo".
 
 When a recieving user "downloads" a photo that was sent to them, the client makes a POST request to the API, modifying the userProfile model of the sender photo, adding an object to the senders "incomingNotifications" array with an object containing the current user's "userId" and the "type": "saved photo". The same process happens when a user accepts a friend request, the client makes a POST request to the API, except now the object with the key "type" has a value of "friend request" in the incomingNotifications array.
 
@@ -40,6 +40,8 @@ Users can also send pictures to one another through the messaging feature. These
 
 The messaging feature also includes other useful functionalities such as read receipts, typing indicators, and message notifications. These features help users to stay on top of their conversations and respond quickly to their friends.
 
+![alt](https://i.imgur.com/BEaOymf.png)
+![alt](https://i.imgur.com/Ww92Mhl.png)
 # User customization
 
 
