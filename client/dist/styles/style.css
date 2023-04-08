@@ -117,7 +117,7 @@
   overflow: auto;
 }
 
-.friend-tile-container {
+.friend-tile-container-light {
   display: flex;
   flex-direction: row;
   border: 1px solid;
@@ -130,6 +130,21 @@
   align-items: center;
 
 }
+
+.friend-tile-container-dark {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid;
+  border-color: bisque;
+  width: 20em;
+  border-radius: .5em;
+  height: 80px;
+  position: relative;
+  padding: .5em;
+  align-items: center;
+
+}
+
 .friend-profile-icon {
   width: 60px;
   height: 60px;

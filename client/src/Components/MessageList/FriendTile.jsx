@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes, useNavigate, useLocation, withRouter, redirect } from 'react-router-dom';
 
-const FriendTile = ( {visibleChat, userId} ) => {
+const FriendTile = ( {visibleChat, userId, theme} ) => {
 
   if (visibleChat.messages === undefined) {
     visibleChat.messages = []
@@ -32,7 +32,7 @@ const FriendTile = ( {visibleChat, userId} ) => {
   }
 
   return (
-    <div className="friend-tile-container" onClick={handleClick}>
+    <div className={`friend-tile-container-${theme}`} onClick={handleClick}>
       <img className="friend-profile-icon" src={visibleChat.friend.thumbnailUrl}/>
       <div>
         <div className="name-timestamp">

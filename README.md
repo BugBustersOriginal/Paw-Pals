@@ -5,8 +5,28 @@ PawPals is a fun and exciting app that is perfect for anyone who loves pets! Ins
 # Login/Authentication
 
 # Notifications
+Notifications is a crucial feature to connect a user to the wider community of Paw Pals. Notifications allow users to accept friend requests from others and to also be notified when their friend downloads a photo that the user had sent. This feature was implemented using React to capture current user and friend data, and MongoDB to update the two user profiles. Node.js and Express was use for the API server. 
+
+Every user has a userProfile Model in the MongoDB Paw Pals collection. Each userProfile has an "incomingNotifications" property which is an array that accepts objects. Each object contains a key indicating the friendId that is notifying the user, and key "type" containing the type of notification. Paw Pals currently has two types of notifications, "friend request" and "saved photo". 
+
+When a recieving user "downloads" a photo that was sent to them, the client makes a POST request to the API, modifying the userProfile model of the sender photo, adding an object to the senders "incomingNotifications" array with an object containing the current user's "userId" and the "type": "saved photo". The same process happens when a user accepts a friend request, the client makes a POST request to the API, except now the object with the key "type" has a value of "friend request" in the incomingNotifications array.
+
+![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_300/v1680643996/Screenshot_2023-04-04_at_3.11.48_PM_eeid0k.png)
 
 # Friends List
+Users can search for existing friends in the search bar to quickly select them to send a new message
+
+![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_300/v1680644002/Screenshot_2023-04-04_at_3.27.08_PM_ycxcik.png)
+
+
+Users can search for other users and send them a friend request
+
+![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_300/v1680644137/Screenshot_2023-04-04_at_3.26.29_PM_od99ii.png)
+
+
+Users will be informed if the user they are searching for has already sent them a friend request
+
+![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_300/v1680643999/Screenshot_2023-04-04_at_3.26.46_PM_bhrgkw.png)
 
 # Instant Messages
 
@@ -26,9 +46,9 @@ The messaging feature also includes other useful functionalities such as read re
 
 # Team Members:
 
-Thomas Van
-Debra Zhang
-Mary Ann Hereford
-Michaelangelo Bellinghausen
-Tony Vo
-Andy Ma
+- Thomas Van
+- Debra Zhang
+- Mary Ann Hereford
+- Michaelangelo Bellinghausen
+- Tony Vo
+- Andy Ma
