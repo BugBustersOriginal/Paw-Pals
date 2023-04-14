@@ -5,7 +5,7 @@ PawPals is a fun and exciting app that is perfect for anyone who loves pets! Ins
 # Login/Authentication
 
 # Notifications
-Notifications is a crucial feature to connect a user to the wider community of Paw Pals. Notifications allow users to accept friend requests from others and to also be notified when their friend downloads a photo that the user had sent. This feature was implemented using React to capture current user and friend data, and MongoDB to update the two user profiles. Node.js and Express was use for the API server.
+Notifications is a crucial feature to connect a user to the wider community of Paw Pals. Notifications allow users to accept friend requests from others and to also be notified when their friend downloads a photo that the user had sent. This feature was implemented using React to capture current user and friend data, and MongoDB to update the two user profiles. Node.js and Express was used for the API server.
 
 Every user has a userProfile Model in the MongoDB Paw Pals collection. Each userProfile has an "incomingNotifications" property which is an array that accepts objects. Each object contains a key indicating the friendId that is notifying the user, and key "type" containing the type of notification. Paw Pals currently has two types of notifications, "friend request" and "saved photo".
 
@@ -14,17 +14,22 @@ When a recieving user "downloads" a photo that was sent to them, the client make
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_300/v1680643996/Screenshot_2023-04-04_at_3.11.48_PM_eeid0k.png)
 
 # Friends List
-Users can search for existing friends in the search bar to quickly select them to send a new message
+
+The friends list is the landing page after a user logs in. It shows a list of friends, sorted by those the user has had recent chats with.  The user can scroll down to see their entire list of friends.
+
+Users can click anywhere in the friend tile to be redirected to the chat window where they will be able to use the instant messaging feature.
+
+User can also search for existing friends in the search bar and then click on the arrow to be redirected to the chat window to start instant messaging.
 
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_300/v1680644002/Screenshot_2023-04-04_at_3.27.08_PM_ycxcik.png)
 
 
-Users can search for other users and send them a friend request
+Users can search for other users and send them a friend request.
 
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_300/v1680644137/Screenshot_2023-04-04_at_3.26.29_PM_od99ii.png)
 
 
-Users will be informed if the user they are searching for has already sent them a friend request
+If the user seachers for another use that has already sent them a friend request, the search bar will state that a friend request has been sent. The user can then select notifications where they will be able to accept the friend request. Once this is completed, the new friend will appear at the bottom of the friend list.
 
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_300/v1680643999/Screenshot_2023-04-04_at_3.26.46_PM_bhrgkw.png)
 
